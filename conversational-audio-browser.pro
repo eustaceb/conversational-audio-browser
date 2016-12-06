@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,8 +13,28 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    participantmanager.cpp \
+    topic.cpp \
+    speaker.cpp \
+    section.cpp \
+    turn.cpp \
+    transcription.cpp \
+    participant.cpp \
+    helpers.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    participantmanager.h \
+    topic.h \
+    speaker.h \
+    section.h \
+    turn.h \
+    transcription.h \
+    participant.h \
+    helpers.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    participantmanager.ui
+
+DISTFILES += \
+    ../rand.wav

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>ParticipantManager</class>
  <widget class="QDialog" name="ParticipantManager">
@@ -5,13 +6,506 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>722</width>
+    <height>414</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>File 1 - some.wav</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="3">
+       <widget class="QComboBox" name="comboBox_3">
+        <item>
+         <property name="text">
+          <string>laughter_r</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>laughter_c</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>overlap</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QComboBox" name="comboBox_7"/>
+      </item>
+      <item row="2" column="8">
+       <widget class="QToolButton" name="toolButton_12">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <widget class="QComboBox" name="comboBox_4"/>
+      </item>
+      <item row="1" column="7">
+       <widget class="QComboBox" name="comboBox_5"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="comboBox_2">
+        <item>
+         <property name="text">
+          <string>[         ]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>----------</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>///////////</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>\\\\\\\\\\\</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Framing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Participant</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QToolButton" name="toolButton_7">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="lineEdit_4">
+        <property name="text">
+         <string>Sylvester Stallone</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="lineEdit_3">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Jimi Hendrix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="9">
+       <widget class="QComboBox" name="comboBox_6"/>
+      </item>
+      <item row="2" column="5">
+       <widget class="QComboBox" name="comboBox_8"/>
+      </item>
+      <item row="1" column="2" rowspan="2">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="8">
+       <widget class="QToolButton" name="toolButton_11">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboBox">
+        <item>
+         <property name="text">
+          <string>[         ]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>----------</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>///////////</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>\\\\\\\\\\\</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="9">
+       <widget class="QComboBox" name="comboBox_10"/>
+      </item>
+      <item row="2" column="6">
+       <widget class="QToolButton" name="toolButton_10">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="7">
+       <widget class="QComboBox" name="comboBox_9"/>
+      </item>
+      <item row="2" column="4">
+       <widget class="QToolButton" name="toolButton_8">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="QToolButton" name="toolButton_9">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="10">
+       <widget class="QToolButton" name="toolButton_13">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="10">
+       <widget class="QToolButton" name="toolButton_14">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Speakers</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="9">
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="7">
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>New file...</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Audio file</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_5">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="toolButton_16">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Annotations file</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_6">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="toolButton_15">
+        <property name="text">
+         <string>...</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Recording from that session - other.wav</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboBox_11">
+        <item>
+         <property name="text">
+          <string>[         ]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>----------</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>///////////</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>\\\\\\\\\\\</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="text">
+         <string>Donald Trump</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QToolButton" name="toolButton_2">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Participant</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="lineEdit_2">
+        <property name="text">
+         <string>Hillary Clinton</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="comboBox_15">
+        <item>
+         <property name="text">
+          <string>[         ]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>----------</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>///////////</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>\\\\\\\\\\\</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="7">
+       <widget class="QComboBox" name="comboBox_14"/>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Framing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Speakers</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QComboBox" name="comboBox_12"/>
+      </item>
+      <item row="1" column="2" rowspan="2">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <widget class="QComboBox" name="comboBox_13"/>
+      </item>
+      <item row="2" column="3">
+       <widget class="QComboBox" name="comboBox_16"/>
+      </item>
+      <item row="2" column="5">
+       <widget class="QComboBox" name="comboBox_17"/>
+      </item>
+      <item row="2" column="7">
+       <widget class="QComboBox" name="comboBox_18"/>
+      </item>
+      <item row="1" column="4">
+       <widget class="QToolButton" name="toolButton">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="QToolButton" name="toolButton_3">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="8">
+       <widget class="QToolButton" name="toolButton_5">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="7">
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Save</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="6">
+       <widget class="QToolButton" name="toolButton_4">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="8">
+       <widget class="QToolButton" name="toolButton_6">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
