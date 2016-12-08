@@ -30,8 +30,8 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                         QString val = xml.attributes()[i].value().toString();
 
                         if (key == "speaker") t.setSpeaker(val);
-                        else if (val == "startTime") t.setStartTime(val);
-                        else if (val == "endTime") t.setEndTime(val);
+                        else if (key == "startTime") t.setStartTime(val);
+                        else if (key == "endTime") t.setEndTime(val);
                     }
                     currentSection.addTurn(t);
                 }
@@ -43,8 +43,8 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                         QString val = xml.attributes()[i].value().toString();
 
                         if (key == "topic") currentSection.setTopic(val);
-                        else if (val == "startTime") currentSection.setStartTime(val);
-                        else if (val == "endTime") currentSection.setEndTime(val);
+                        else if (key == "startTime") currentSection.setStartTime(val.toDouble());
+                        else if (key == "endTime") currentSection.setEndTime(val.toDouble());
                     }
                 }
                 else if (tag == "Topic") {

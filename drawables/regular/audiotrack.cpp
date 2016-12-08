@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <QStyleOption>
 
-AudioTrack::AudioTrack(RegularTimelineWidget *timelineWidget)
+AudioTrack::AudioTrack(TimelineWidget *timelineWidget)
     : timelineWidget(timelineWidget)
 {
     setFlag(ItemIsMovable);

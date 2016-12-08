@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include "helpers.h"
 #include "participantmanager.h"
-#include "drawables/regulartimelinewidget.h"
+#include "drawables/regular/timelinewidget.h"
 
 #include <QtMultimedia/QMediaPlayer>
 #include <QString>
@@ -15,7 +15,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     delete ui->timelineView;
-    RegularTimelineWidget *t = new RegularTimelineWidget(this);
+
+    Transcription trs = Helpers::parseTranscript("/home/justas/Dissertation/F01.trs");
+
+    TimelineWidget *t = new TimelineWidget(&trs, this);
 
     ui->splitter->insertWidget(0, t);
     player = new QMediaPlayer;
@@ -51,5 +54,5 @@ void MainWindow::on_playButton_clicked()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    Transcription t = Helpers::parseTranscript("/home/justas/Dissertation/F01.trs");
+
 }

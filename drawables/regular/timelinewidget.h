@@ -3,15 +3,17 @@
 
 #include <QGraphicsView>
 #include "audiotrack.h"
+#include "transcription.h"
 
 class AudioTrack;
+class Transcription;
 
-class RegularTimelineWidget : public QGraphicsView
+class TimelineWidget : public QGraphicsView
 {
     Q_OBJECT
 
 public:
-    RegularTimelineWidget(QWidget *parent = 0);
+    TimelineWidget(Transcription *t, QWidget *parent = 0);
 
     void itemMoved();
 
@@ -30,9 +32,14 @@ protected:
 
     void scaleView(qreal scaleFactor);
 
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     //int timerId;
     AudioTrack *sampleTrack;
+    Transcription *transcription;
+
+    int m_originY, m_originX;
 };
 
 #endif // REGULARTIMELINEWIDGET_H

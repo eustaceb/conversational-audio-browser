@@ -1,23 +1,30 @@
-#ifndef AUDIOTRACK_H
-#define AUDIOTRACK_H
+#ifndef SECTIONGRAPHICSITEM_H
+#define SECTIONGRAPHICSITEM_H
 
 #include <QGraphicsItem>
-#include "regulartimelinewidget.h"
+#include "timelinewidget.h"
+#include "data-models/section.h"
 
-class RegularTimelineWidget;
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
-class AudioTrack : public QGraphicsItem
+class TimelineWidget;
+class Section;
+
+class SectionGraphicsItem : public QGraphicsItem
 {
 public:
-    AudioTrack(RegularTimelineWidget *timelineWidget);
+    SectionGraphicsItem(TimelineWidget *timelineWidget);
+    SectionGraphicsItem(Section *s, TimelineWidget *timelineWidget);
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
+
+    Section *getSection() const;
+    void setSection(Section *s);
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
@@ -26,7 +33,10 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
-    RegularTimelineWidget *timelineWidget;
+    TimelineWidget *timelineWidget;
+    QRectF rect;
+    Section *section;
+    //QColor color;
 };
 
-#endif // AUDIOTRACK_H
+#endif // SECTIONGRAPHICSITEM_H

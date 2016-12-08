@@ -1,12 +1,12 @@
 #include "section.h"
 
-
+#include <QDebug>
 Section::Section()
 {
 
 }
 
-Section::Section(const QString &startTime, const QString &endTime, const QString &topic)
+Section::Section(const double &startTime, const double &endTime, const double &topic)
 {
     this->startTime = startTime;
     this->endTime = endTime;
@@ -18,22 +18,22 @@ void Section::addTurn(const Turn &turn)
     turns.append(turn);
 }
 
-QString Section::getStartTime() const
+double Section::getStartTime() const
 {
     return startTime;
 }
 
-void Section::setStartTime(const QString &value)
+void Section::setStartTime(const double &value)
 {
     startTime = value;
 }
 
-QString Section::getEndTime() const
+double Section::getEndTime() const
 {
     return endTime;
 }
 
-void Section::setEndTime(const QString &value)
+void Section::setEndTime(const double &value)
 {
     endTime = value;
 }
@@ -57,3 +57,14 @@ void Section::setTurns(const QList<Turn> &value)
 {
     turns = value;
 }
+/*
+SectionGraphicsItem Section::getRegularGraphic() const
+{
+    return regularGraphic;
+}
+
+void Section::setRegularGraphic(const SectionGraphicsItem &value)
+{
+    regularGraphic = value;
+}
+*/
