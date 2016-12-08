@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>722</width>
+    <width>731</width>
     <height>414</height>
    </rect>
   </property>
@@ -103,7 +103,7 @@
       <item row="2" column="0">
        <widget class="QLineEdit" name="lineEdit_4">
         <property name="text">
-         <string>Sylvester Stallone</string>
+         <string>Receiver</string>
         </property>
        </widget>
       </item>
@@ -116,7 +116,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Jimi Hendrix</string>
+         <string>Caller</string>
         </property>
        </widget>
       </item>
@@ -346,7 +346,7 @@
       <item row="1" column="0">
        <widget class="QLineEdit" name="lineEdit">
         <property name="text">
-         <string>Donald Trump</string>
+         <string>Caller</string>
         </property>
        </widget>
       </item>
@@ -367,7 +367,7 @@
       <item row="2" column="0">
        <widget class="QLineEdit" name="lineEdit_2">
         <property name="text">
-         <string>Hillary Clinton</string>
+         <string>Receiver</string>
         </property>
        </widget>
       </item>

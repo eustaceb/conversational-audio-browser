@@ -72,7 +72,7 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                 }
             } else if (xml.isEndElement()) {
                 if (tag == "Section") {
-                    qInfo() << "This section had turns: " << currentSection.getTurns().size();
+                    qInfo() << "This section had" << currentSection.getTurns().size() << "turns";
                     result.addSection(currentSection);
                     //currentSection = NULL;
                 }
@@ -81,7 +81,7 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                 qInfo() << "XML error: " << xml.errorString() << endl;
             }
             else if (xml.atEnd()) {
-                qInfo() << "Reached end, done" << endl;
+                qInfo() << "Parsing complete" << endl;
             }
         }
     }
@@ -90,8 +90,6 @@ Transcription Helpers::parseTranscript(const QString &fileName)
     qInfo() << "No of sections: " << result.getSections().size();
 
     file->close();
-    qInfo() << "Here we are";
     delete file;
-    qInfo() << "Are we even here?";
     return result;
 }

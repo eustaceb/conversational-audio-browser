@@ -15,23 +15,27 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     participantmanager.cpp \
-    topic.cpp \
-    speaker.cpp \
-    section.cpp \
-    turn.cpp \
     transcription.cpp \
-    participant.cpp \
-    helpers.cpp
+    helpers.cpp \
+    data-models/participant.cpp \
+    data-models/section.cpp \
+    data-models/speaker.cpp \
+    data-models/topic.cpp \
+    data-models/turn.cpp \
+    drawables/audiotrack.cpp \
+    drawables/regulartimelinewidget.cpp
 
 HEADERS  += mainwindow.h \
     participantmanager.h \
-    topic.h \
-    speaker.h \
-    section.h \
-    turn.h \
     transcription.h \
-    participant.h \
-    helpers.h
+    helpers.h \
+    data-models/participant.h \
+    data-models/section.h \
+    data-models/speaker.h \
+    data-models/topic.h \
+    data-models/turn.h \
+    drawables/audiotrack.h \
+    drawables/regulartimelinewidget.h
 
 FORMS    += mainwindow.ui \
     participantmanager.ui

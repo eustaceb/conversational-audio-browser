@@ -1,7 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <helpers.h>
-#include <participantmanager.h>
+#include "helpers.h"
+#include "participantmanager.h"
+#include "drawables/regulartimelinewidget.h"
 
 #include <QtMultimedia/QMediaPlayer>
 #include <QString>
@@ -13,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    delete ui->timelineView;
+    RegularTimelineWidget *t = new RegularTimelineWidget(this);
+
+    ui->splitter->insertWidget(0, t);
     player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/rand.wav"));
     player->setVolume(50);

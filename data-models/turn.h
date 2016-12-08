@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QList>
-#include <speaker.h>
+#include "speaker.h"
 
 class Turn
 {

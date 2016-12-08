@@ -2,9 +2,9 @@
 #define TRANSCRIPTION_H
 
 #include <QList>
-#include <topic.h>
-#include <speaker.h>
-#include <section.h>
+#include <data-models/topic.h>
+#include <data-models/speaker.h>
+#include <data-models/section.h>
 
 class Transcription
 {
