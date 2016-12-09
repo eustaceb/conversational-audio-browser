@@ -6,13 +6,6 @@ Section::Section()
 
 }
 
-Section::Section(const double &startTime, const double &endTime, const double &topic)
-{
-    this->startTime = startTime;
-    this->endTime = endTime;
-    this->topic = topic;
-}
-
 void Section::addTurn(const Turn &turn)
 {
     turns.append(turn);
@@ -38,12 +31,12 @@ void Section::setEndTime(const double &value)
     endTime = value;
 }
 
-QString Section::getTopic() const
+Topic Section::getTopic() const
 {
     return topic;
 }
 
-void Section::setTopic(const QString &value)
+void Section::setTopic(const Topic &value)
 {
     topic = value;
 }

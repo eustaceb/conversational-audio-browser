@@ -4,13 +4,13 @@
 #include <QString>
 #include <QList>
 #include "turn.h"
+#include "topic.h"
 //#include "drawables/regular/sectiongraphicsitem.h"
 
 class Section
 {
 public:
     Section();
-    Section(const double &startTime, const double &endTime, const double &topic);
 
     void addTurn(const Turn &turn);
 
@@ -20,8 +20,8 @@ public:
     double getEndTime() const;
     void setEndTime(const double &value);
 
-    QString getTopic() const;
-    void setTopic(const QString &value);
+    Topic getTopic() const;
+    void setTopic(const Topic &value);
 
     QList<Turn> getTurns() const;
     void setTurns(const QList<Turn> &value);
@@ -32,9 +32,8 @@ public:
 private:
     // <Section endTime="18.025" startTime="0.0" topic="to2" type="report">
     double startTime, endTime;
-    QString topic; // TODO: Refer to Topic class
+    Topic topic;
     QList <Turn> turns;
-    //SectionGraphicsItem regularGraphic; // might be useless
 };
 
 #endif // SECTION_H

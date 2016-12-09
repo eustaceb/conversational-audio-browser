@@ -5,35 +5,45 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QDebug>
+#include <QTextOption>
 
 SectionGraphicsItem::SectionGraphicsItem(TimelineWidget *timelineWidget)
     : timelineWidget(timelineWidget)
 {
+    color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
     //setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
 }
 
-SectionGraphicsItem::SectionGraphicsItem(Section *s, TimelineWidget *timelineWidget)
+SectionGraphicsItem::SectionGraphicsItem(const Section &s, TimelineWidget *timelineWidget)
     : section(s), timelineWidget(timelineWidget)
 {
+    color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
     double adjust = -200;
-    qInfo() << section->getTopic();
+
     this->rect = QRectF(
-                section->getStartTime() + adjust, // x
+                section.getStartTime() * 10 + adjust, // x
                 -10 + adjust, // y
-                (section->getEndTime() - section->getStartTime()), // w
+                (section.getEndTime() - section.getStartTime()) * 10, // w
                 30); // h;
+
+    label = QStaticText(section.getTopic().getDesc());
+    QTextOption opt;
+    opt.setWrapMode(QTextOption::WordWrap);
+    label.setTextOption(opt);
+    label.setTextWidth(rect.width());
+
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
+
+    //qInfo() << rect.x() << rect.width() << "next -" << rect.x()+rect.width();
 }
 
 QRectF SectionGraphicsItem::boundingRect() const
 {
-    //qreal adjust = 2;
-    // QRectF(-10 - adjust, -10 - adjust, width + adjust, 30 + adjust);
     return rect;
 }
 
@@ -48,33 +58,13 @@ void SectionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 {
     painter->setPen(Qt::NoPen);
     //painter->setBrush(Qt::darkBlue);
-    QBrush gradient = QBrush(QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255));
+    QBrush gradient = QBrush(color);
     //painter->setBrush()
     painter->setBrush(gradient);
     painter->drawRect(rect);
-    /*
-     *     painter->setPen(Qt::NoPen);
-
-    brush.setColor(Qt::GlobalColor::darkMagenta);
-    painter->setBrush(brush);
-    painter->drawRect(rect);
-    */
-    //painter->drawEllipse(-7, -7, 20, 20);
-
-    /*QRadialGradient gradient(-3, -3, 10);
-    if (option->state & QStyle::State_Sunken) {
-        gradient.setCenter(3, 3);
-        gradient.setFocalPoint(3, 3);
-        gradient.setColorAt(1, QColor(Qt::yellow).light(120));
-        gradient.setColorAt(0, QColor(Qt::darkYellow).light(120));
-    } else {
-        gradient.setColorAt(0, Qt::yellow);
-        gradient.setColorAt(1, Qt::darkYellow);
-    }
-    painter->setBrush(gradient);*/
-
-    //painter->setPen(QPen(Qt::black, 0));
-    //painter->drawEllipse(-10, -10, 20, 20);
+    painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));
+    //painter->drawStaticText(rect.x(), rect.y(), label);
+    painter->drawText(rect, Qt::TextWrapAnywhere, section.getTopic().getDesc());
 }
 
 QVariant SectionGraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
@@ -102,19 +92,19 @@ void SectionGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-Section *SectionGraphicsItem::getSection() const
+Section SectionGraphicsItem::getSection() const
 {
     return section;
 }
 
-void SectionGraphicsItem::setSection(Section *s)
+void SectionGraphicsItem::setSection(const Section &s)
 {
     double adjust = -200;
     section = s;
     //this->section = s;
     this->rect = QRectF(
-                section->getStartTime() * 10 + adjust, // x
+                section.getStartTime() * 10 + adjust, // x
                 -10 + adjust, // y
-                (section->getEndTime() - section->getStartTime()) * 10, // w
+                (section.getEndTime() - section.getStartTime()) * 10, // w
                 30); // h;
 }

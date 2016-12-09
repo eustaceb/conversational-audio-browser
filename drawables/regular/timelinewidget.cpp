@@ -24,9 +24,7 @@ TimelineWidget::TimelineWidget(Transcription *t, QWidget *parent)
     //sampleTrack->setPos(-50, 0);
     for (int i = 0; i < transcription->getSections().size(); i++) {
         Section s = transcription->getSections().at(i);
-        SectionGraphicsItem *item = new SectionGraphicsItem(&s, this);
-        //qInfo() << item->boundingRect().width();
-        scene->addItem(item);
+        scene->addItem(new SectionGraphicsItem(s, this));
     }
 }
 

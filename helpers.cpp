@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QXmlStreamReader>
+#include <QMap>
 
 Helpers::Helpers()
 {
@@ -16,6 +17,8 @@ Transcription Helpers::parseTranscript(const QString &fileName)
 
     Transcription result;
     Section currentSection;
+
+    QMap<QString, Topic> topicMap;
 
     if (file->open(QIODevice::ReadOnly)) {
         while (!xml.atEnd() && !xml.hasError()) {
@@ -42,7 +45,7 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                         QString key = xml.attributes()[i].name().toString();
                         QString val = xml.attributes()[i].value().toString();
 
-                        if (key == "topic") currentSection.setTopic(val);
+                        if (key == "topic") currentSection.setTopic(topicMap.find(val).value());
                         else if (key == "startTime") currentSection.setStartTime(val.toDouble());
                         else if (key == "endTime") currentSection.setEndTime(val.toDouble());
                     }
@@ -57,6 +60,7 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                         if (key == "desc") t.setDesc(val);
                         else if (key == "id") t.setId(val);
                     }
+                    topicMap.insert(t.getId(), t);
                     result.addTopic(t);
                 } else if (tag == "Speaker") {
                     // <Speaker accent="" check="no" dialect="native" id="spk7" name="filler_r" scope="local" type="unknown" />

@@ -2,6 +2,7 @@
 #define SECTIONGRAPHICSITEM_H
 
 #include <QGraphicsItem>
+#include <QStaticText>
 #include "timelinewidget.h"
 #include "data-models/section.h"
 
@@ -16,15 +17,15 @@ class SectionGraphicsItem : public QGraphicsItem
 {
 public:
     SectionGraphicsItem(TimelineWidget *timelineWidget);
-    SectionGraphicsItem(Section *s, TimelineWidget *timelineWidget);
+    SectionGraphicsItem(const Section &s, TimelineWidget *timelineWidget);
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 
-    Section *getSection() const;
-    void setSection(Section *s);
+    Section getSection() const;
+    void setSection(const Section &s);
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
@@ -35,8 +36,9 @@ protected:
 private:
     TimelineWidget *timelineWidget;
     QRectF rect;
-    Section *section;
-    //QColor color;
+    Section section;
+    QColor color;
+    QStaticText label;
 };
 
 #endif // SECTIONGRAPHICSITEM_H
