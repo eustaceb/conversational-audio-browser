@@ -13,7 +13,11 @@ class TimelineWidget : public QGraphicsView
     Q_OBJECT
 
 public:
-    TimelineWidget(Transcription *t, QWidget *parent = 0);
+    TimelineWidget(const Transcription &t, QWidget *parent = 0);
+
+    void setTranscription(const Transcription &t);
+
+    void reloadScene();
 
     void itemMoved();
 
@@ -37,8 +41,8 @@ protected:
 private:
     //int timerId;
     AudioTrack *sampleTrack;
-    Transcription *transcription;
-
+    Transcription transcription;
+    QGraphicsScene *scene;
     int m_originY, m_originX;
 };
 

@@ -18,11 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     Transcription trs = Helpers::parseTranscript("/home/justas/Dissertation/F01.trs");
 
-    TimelineWidget *t = new TimelineWidget(&trs, this);
+    timeline = new TimelineWidget(trs, this);
 
-    ui->splitter->insertWidget(0, t);
+    ui->splitter->insertWidget(0, timeline);
     player = new QMediaPlayer;
-    player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/rand.wav"));
+    player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/loomer.wav"));
     player->setVolume(50);
 }
 
@@ -34,9 +34,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionParticipant_manager_triggered()
 {
-    ParticipantManager pm;
-    pm.exec();
-    pm.show();
+    ParticipantManager *p = new ParticipantManager;
+    connect(p, SIGNAL(notify_mainWindow_transcriptionFile(QString)),
+            this, SLOT(on_transcriptionFile_loaded(QString)));
+    p->exec();
+    p->show();
+}
+
+void MainWindow::on_transcriptionFile_loaded(const QString &filename)
+{
+    qInfo() << "SLOT" << filename;
+    Transcription trs = Helpers::parseTranscript(filename);
+
+    timeline->setTranscription(trs);
+    timeline->reloadScene();
 }
 
 void MainWindow::on_playButton_clicked()

@@ -6,16 +6,9 @@
 #include <QStyleOption>
 #include <QDebug>
 #include <QTextOption>
+#include <QFontMetrics>
 
-SectionGraphicsItem::SectionGraphicsItem(TimelineWidget *timelineWidget)
-    : timelineWidget(timelineWidget)
-{
-    color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
-    //setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
-    setCacheMode(DeviceCoordinateCache);
-    setZValue(-1);
-}
+QFont SectionGraphicsItem::font = QFont("times", 18);
 
 SectionGraphicsItem::SectionGraphicsItem(const Section &s, TimelineWidget *timelineWidget)
     : section(s), timelineWidget(timelineWidget)
@@ -27,19 +20,16 @@ SectionGraphicsItem::SectionGraphicsItem(const Section &s, TimelineWidget *timel
                 section.getStartTime() * 10 + adjust, // x
                 -10 + adjust, // y
                 (section.getEndTime() - section.getStartTime()) * 10, // w
-                30); // h;
+                400); // h;
 
-    label = QStaticText(section.getTopic().getDesc());
-    QTextOption opt;
-    opt.setWrapMode(QTextOption::WordWrap);
-    label.setTextOption(opt);
-    label.setTextWidth(rect.width());
+    QFontMetrics metrics(font);
+    int repeat = rect.width() / metrics.width(section.getTopic().getDesc());
+
+    label = QStaticText((section.getTopic().getDesc() + " ").repeated(repeat + 1));
 
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-
-    //qInfo() << rect.x() << rect.width() << "next -" << rect.x()+rect.width();
 }
 
 QRectF SectionGraphicsItem::boundingRect() const
@@ -56,15 +46,15 @@ QPainterPath SectionGraphicsItem::shape() const
 
 void SectionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    painter->setPen(Qt::NoPen);
-    //painter->setBrush(Qt::darkBlue);
-    QBrush gradient = QBrush(color);
-    //painter->setBrush()
-    painter->setBrush(gradient);
+    QBrush brush = QBrush(color);
+    brush.setStyle(Qt::SolidPattern);
+    painter->setBrush(brush);
     painter->drawRect(rect);
+
+    painter->setFont(font);
     painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));
-    //painter->drawStaticText(rect.x(), rect.y(), label);
-    painter->drawText(rect, Qt::TextWrapAnywhere, section.getTopic().getDesc());
+    painter->drawStaticText(rect.x(), rect.y(), label);
+    painter->drawStaticText(rect.x(), rect.y() + rect.height() - 18, label);
 }
 
 QVariant SectionGraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
@@ -97,14 +87,3 @@ Section SectionGraphicsItem::getSection() const
     return section;
 }
 
-void SectionGraphicsItem::setSection(const Section &s)
-{
-    double adjust = -200;
-    section = s;
-    //this->section = s;
-    this->rect = QRectF(
-                section.getStartTime() * 10 + adjust, // x
-                -10 + adjust, // y
-                (section.getEndTime() - section.getStartTime()) * 10, // w
-                30); // h;
-}

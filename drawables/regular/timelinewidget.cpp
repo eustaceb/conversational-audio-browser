@@ -1,36 +1,55 @@
 #include "timelinewidget.h"
 #include "drawables/regular/sectiongraphicsitem.h"
+#include "drawables/regular/speakergraphicsitem.h"
+
 #include <math.h>
 #include <QKeyEvent>
 #include <QDebug>
 
 
-TimelineWidget::TimelineWidget(Transcription *t, QWidget *parent)
+TimelineWidget::TimelineWidget(const Transcription &t, QWidget *parent)
     : QGraphicsView(parent), transcription(t)
 {
-    QGraphicsScene *scene = new QGraphicsScene(this);
+    scene = new QGraphicsScene(this);
     // TODO: Change to some indexing for possible optimisation
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     //scene->setSceneRect(-200, -200, 1600, 1600);
     setScene(scene);
     setCacheMode(CacheBackground);
     this->setViewportUpdateMode(BoundingRectViewportUpdate);
+    this->setCursor(Qt::OpenHandCursor);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
 
-    //sampleTrack = new AudioTrack(this);
-    //scene->addItem(sampleTrack);
-    //sampleTrack->setPos(-50, 0);
-    for (int i = 0; i < transcription->getSections().size(); i++) {
-        Section s = transcription->getSections().at(i);
+    reloadScene();
+}
+
+void TimelineWidget::setTranscription(const Transcription &t)
+{
+    transcription = t;
+}
+
+void TimelineWidget::reloadScene()
+{
+    SpeakerGraphicsItem::setHeightCounter(0);
+    scene->clear();
+    for (int i = 0; i < transcription.getSections().size(); i++) {
+        Section s = transcription.getSections().at(i);
         scene->addItem(new SectionGraphicsItem(s, this));
+
     }
+
+    for (int i = 0; i < transcription.getSpeakers().size(); i++) {
+        Speaker s = transcription.getSpeakers().at(i);
+        scene->addItem(new SpeakerGraphicsItem(s, this));
+    }
+    this->viewport()->update();
 }
 
 void TimelineWidget::mousePressEvent(QMouseEvent* event)
 {
-    if (event->button() == Qt::MiddleButton)
+    if (event->button() == Qt::LeftButton)
     {
         // Store original position.
         m_originX = event->x();
@@ -40,7 +59,7 @@ void TimelineWidget::mousePressEvent(QMouseEvent* event)
 
 void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
 {
-    if (event->buttons() & Qt::MidButton)
+    if (event->buttons() & Qt::LeftButton)
     {
         QPointF oldp = mapToScene(m_originX, m_originY);
         QPointF newp = mapToScene(event->pos());

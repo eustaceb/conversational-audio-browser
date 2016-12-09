@@ -2,8 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSignalMapper>
 
 #include <QtMultimedia/QMediaPlayer>
+
+#include <drawables/regular/timelinewidget.h>
 
 namespace Ui {
 class MainWindow;
@@ -20,6 +23,8 @@ public:
 private slots:
     void on_actionParticipant_manager_triggered();
 
+    void on_transcriptionFile_loaded(const QString &filename);
+
     void on_playButton_clicked();
 
     void on_actionOpen_triggered();
@@ -27,6 +32,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
+    TimelineWidget *timeline;
 };
 
 #endif // MAINWINDOW_H

@@ -1,32 +1,33 @@
-#ifndef SECTIONGRAPHICSITEM_H
-#define SECTIONGRAPHICSITEM_H
+#ifndef SPEAKERGRAPHICSITEM_H
+#define SPEAKERGRAPHICSITEM_H
 
 #include <QGraphicsItem>
 #include <QStaticText>
 #include <QFont>
 
 #include "timelinewidget.h"
-#include "data-models/section.h"
+#include "data-models/speaker.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
 class TimelineWidget;
-class Section;
+class Speaker;
 
-class SectionGraphicsItem : public QGraphicsItem
+class SpeakerGraphicsItem : public QGraphicsItem
 {
 public:
-    //SectionGraphicsItem(TimelineWidget *timelineWidget);
-    SectionGraphicsItem(const Section &s, TimelineWidget *timelineWidget);
+    SpeakerGraphicsItem(const Speaker &s, TimelineWidget *timelineWidget);
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 
-    Section getSection() const;
+    Speaker getSpeaker() const;
+
+    static void setHeightCounter(int value);
 
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
@@ -35,12 +36,13 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
+    Speaker speaker;
     TimelineWidget *timelineWidget;
     QRectF rect;
-    Section section;
     QColor color;
     QStaticText label;
     static QFont font;
+    static int heightCounter;
 };
 
-#endif // SECTIONGRAPHICSITEM_H
+#endif // SPEAKERGRAPHICSITEM_H
