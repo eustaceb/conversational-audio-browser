@@ -23,11 +23,13 @@ public:
 private slots:
     void on_actionParticipant_manager_triggered();
 
-    void on_transcriptionFile_loaded(const QString &filename);
-
-    void on_playButton_clicked();
+    void when_transcription_loaded(const QString &filename);
 
     void on_actionOpen_triggered();
+
+    void on_actionPlay_triggered();
+
+    void on_action_Tool_triggered();
 
 private:
     Ui::MainWindow *ui;

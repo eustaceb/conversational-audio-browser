@@ -9,7 +9,6 @@ Turn::Turn(const QString &startTime, const QString &endTime, const QString &spea
 {
     this->startTime = startTime;
     this->endTime = endTime;
-    this->speaker = speaker;
 }
 
 void Turn::addSpeaker(const Speaker &speaker)
@@ -45,14 +44,4 @@ QList<Speaker> Turn::getSpeakers() const
 void Turn::setSpeakers(const QList<Speaker> &value)
 {
     speakers = value;
-}
-
-QString Turn::getSpeaker() const
-{
-    return speaker;
-}
-
-void Turn::setSpeaker(const QString &value)
-{
-    speaker = value;
 }

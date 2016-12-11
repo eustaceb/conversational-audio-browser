@@ -6,9 +6,8 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-
 TimelineWidget::TimelineWidget(const Transcription &t, QWidget *parent)
-    : QGraphicsView(parent), transcription(t)
+    : QGraphicsView(parent), transcription(t), zoomScale(1)
 {
     scene = new QGraphicsScene(this);
     // TODO: Change to some indexing for possible optimisation
@@ -19,7 +18,9 @@ TimelineWidget::TimelineWidget(const Transcription &t, QWidget *parent)
     this->setViewportUpdateMode(BoundingRectViewportUpdate);
     this->setCursor(Qt::OpenHandCursor);
     setRenderHint(QPainter::Antialiasing);
-    setTransformationAnchor(AnchorUnderMouse);
+    setTransformationAnchor(NoAnchor);
+    setDragMode(RubberBandDrag);
+
     scale(qreal(0.8), qreal(0.8));
 
     reloadScene();
@@ -61,14 +62,33 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
 {
     if (event->buttons() & Qt::LeftButton)
     {
-        QPointF oldp = mapToScene(m_originX, m_originY);
+        QPointF oldp = mapToScene(QPoint(m_originX, m_originY));
         QPointF newp = mapToScene(event->pos());
         QPointF translation = newp - oldp;
 
-        translate(translation.x(), translation.y());
+        translate(translation.x() / zoomScale, translation.y() / zoomScale);
 
         m_originX = event->x();
         m_originY = event->y();
+    }
+}
+
+TimelineWidget::Tool TimelineWidget::getTool() const
+{
+    return tool;
+}
+
+void TimelineWidget::triggerTool()
+{
+    switch (tool) {
+    case HandTool:
+        tool = SelectTool;
+        break;
+    case SelectTool:
+        tool = HandTool;
+        break;
+    default:
+        break;
     }
 }
 
@@ -78,54 +98,31 @@ void TimelineWidget::itemMoved()
 
 }
 
-void TimelineWidget::shuffle()
-{
-
-}
 
 void TimelineWidget::zoomIn()
 {
+    zoomScale *= 4;
     scaleView(qreal(1.2));
 }
 
 void TimelineWidget::zoomOut()
 {
+    zoomScale /= 4;
     scaleView(1 / qreal(1.2));
 }
 
 void TimelineWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
-    case Qt::Key_Up:
-        sampleTrack->moveBy(0, -20);
-        break;
-    case Qt::Key_Down:
-        sampleTrack->moveBy(0, 20);
-        break;
-    case Qt::Key_Left:
-        sampleTrack->moveBy(-20, 0);
-        break;
-    case Qt::Key_Right:
-        sampleTrack->moveBy(20, 0);
-        break;
     case Qt::Key_Plus:
         zoomIn();
         break;
     case Qt::Key_Minus:
         zoomOut();
         break;
-    case Qt::Key_Space:
-    case Qt::Key_Enter:
-        shuffle();
-        break;
     default:
         QGraphicsView::keyPressEvent(event);
     }
-}
-
-void TimelineWidget::timerEvent(QTimerEvent *event)
-{
-
 }
 
 #ifndef QT_NO_WHEELEVENT

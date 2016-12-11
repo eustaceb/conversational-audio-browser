@@ -19,6 +19,11 @@ Transcription Helpers::parseTranscript(const QString &fileName)
     Section currentSection;
 
     QMap<QString, Topic> topicMap;
+    QMap<QString, Speaker> speakerMap;
+
+    Speaker none("", "None");
+    speakerMap.insert(none.getId(), none);
+    result.addSpeaker(none);
 
     if (file->open(QIODevice::ReadOnly)) {
         while (!xml.atEnd() && !xml.hasError()) {
@@ -32,7 +37,11 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                         QString key = xml.attributes()[i].name().toString();
                         QString val = xml.attributes()[i].value().toString();
 
-                        if (key == "speaker") t.setSpeaker(val);
+                        if (key == "speaker") {
+                            foreach (const QString &spkr, val.split(" ")) {
+                                t.addSpeaker(speakerMap.find(spkr).value());
+                            }
+                        }
                         else if (key == "startTime") t.setStartTime(val);
                         else if (key == "endTime") t.setEndTime(val);
                     }
@@ -72,6 +81,7 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                         if (key == "name") s.setName(val);
                         else if (key == "id") s.setId(val);
                     }
+                    speakerMap.insert(s.getId(), s);
                     result.addSpeaker(s);
                 }
             } else if (xml.isEndElement()) {

@@ -46,3 +46,6 @@ FORMS    += mainwindow.ui \
 
 DISTFILES += \
     ../rand.wav
+
+RESOURCES += \
+    res.qrc

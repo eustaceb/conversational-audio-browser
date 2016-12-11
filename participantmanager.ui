@@ -20,6 +20,27 @@
       <string>File 1 - some.wav</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Participant</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Framing</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QToolButton" name="toolButton_7">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="3">
        <widget class="QComboBox" name="comboBox_3">
         <item>
@@ -38,22 +59,6 @@
          </property>
         </item>
        </widget>
-      </item>
-      <item row="2" column="3">
-       <widget class="QComboBox" name="comboBox_7"/>
-      </item>
-      <item row="2" column="8">
-       <widget class="QToolButton" name="toolButton_12">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="5">
-       <widget class="QComboBox" name="comboBox_4"/>
-      </item>
-      <item row="1" column="7">
-       <widget class="QComboBox" name="comboBox_5"/>
       </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="comboBox_2">
@@ -79,26 +84,28 @@
         </item>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>Framing</string>
-        </property>
-       </widget>
+      <item row="1" column="7">
+       <widget class="QComboBox" name="comboBox_5"/>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Participant</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="4">
-       <widget class="QToolButton" name="toolButton_7">
+      <item row="1" column="10">
+       <widget class="QToolButton" name="toolButton_13">
         <property name="text">
          <string>C</string>
         </property>
        </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Speakers</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QComboBox" name="comboBox_7"/>
+      </item>
+      <item row="1" column="9">
+       <widget class="QComboBox" name="comboBox_6"/>
       </item>
       <item row="2" column="0">
        <widget class="QLineEdit" name="lineEdit_4">
@@ -113,6 +120,67 @@
         </property>
         <property name="readOnly">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QComboBox" name="comboBox_8"/>
+      </item>
+      <item row="2" column="8">
+       <widget class="QToolButton" name="toolButton_12">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="8">
+       <widget class="QToolButton" name="toolButton_11">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QToolButton" name="toolButton_8">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="7">
+       <widget class="QComboBox" name="comboBox_9"/>
+      </item>
+      <item row="2" column="9">
+       <widget class="QComboBox" name="comboBox_10"/>
+      </item>
+      <item row="1" column="5">
+       <widget class="QComboBox" name="comboBox_4"/>
+      </item>
+      <item row="2" column="6">
+       <widget class="QToolButton" name="toolButton_10">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="10">
+       <widget class="QToolButton" name="toolButton_14">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="QToolButton" name="toolButton_9">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2" rowspan="2">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
        </widget>
       </item>
@@ -138,26 +206,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="9">
-       <widget class="QComboBox" name="comboBox_6"/>
-      </item>
-      <item row="2" column="5">
-       <widget class="QComboBox" name="comboBox_8"/>
-      </item>
-      <item row="1" column="2" rowspan="2">
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="8">
-       <widget class="QToolButton" name="toolButton_11">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="comboBox">
         <item>
@@ -180,68 +228,6 @@
           <string>\\\\\\\\\\\</string>
          </property>
         </item>
-       </widget>
-      </item>
-      <item row="2" column="9">
-       <widget class="QComboBox" name="comboBox_10"/>
-      </item>
-      <item row="2" column="6">
-       <widget class="QToolButton" name="toolButton_10">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="7">
-       <widget class="QComboBox" name="comboBox_9"/>
-      </item>
-      <item row="2" column="4">
-       <widget class="QToolButton" name="toolButton_8">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="6">
-       <widget class="QToolButton" name="toolButton_9">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="10">
-       <widget class="QToolButton" name="toolButton_13">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="10">
-       <widget class="QToolButton" name="toolButton_14">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Speakers</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="9">
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>Save</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="7">
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>Reset</string>
-        </property>
        </widget>
       </item>
      </layout>
@@ -298,7 +284,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_6">
+       <widget class="QLineEdit" name="annotationsFileLine">
         <property name="text">
          <string/>
         </property>
@@ -308,23 +294,16 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="toolButton_15">
+       <widget class="QToolButton" name="annotationFileLookupButton">
         <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="QPushButton" name="loadFilesButton">
         <property name="text">
          <string>Load</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_6">
-        <property name="text">
-         <string>Reset</string>
         </property>
        </widget>
       </item>
@@ -337,50 +316,13 @@
       <string>Recording from that session - other.wav</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="1">
-       <widget class="QComboBox" name="comboBox_11">
-        <item>
-         <property name="text">
-          <string>[         ]</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>----------</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>///////////</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>\\\\\\\\\\\</string>
-         </property>
-        </item>
-       </widget>
+      <item row="2" column="3">
+       <widget class="QComboBox" name="comboBox_16"/>
       </item>
-      <item row="1" column="0">
-       <widget class="QLineEdit" name="lineEdit">
-        <property name="maximumSize">
-         <size>
-          <width>60</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Caller</string>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="4">
-       <widget class="QToolButton" name="toolButton_2">
-        <property name="text">
-         <string>C</string>
+      <item row="1" column="2" rowspan="2">
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
        </widget>
       </item>
@@ -388,6 +330,26 @@
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Participant</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="7">
+       <widget class="QComboBox" name="comboBox_18"/>
+      </item>
+      <item row="1" column="5">
+       <widget class="QComboBox" name="comboBox_13"/>
+      </item>
+      <item row="1" column="4">
+       <widget class="QToolButton" name="toolButton">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="8">
+       <widget class="QToolButton" name="toolButton_6">
+        <property name="text">
+         <string>C</string>
         </property>
        </widget>
       </item>
@@ -407,8 +369,39 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="comboBox_15">
+      <item row="1" column="8">
+       <widget class="QToolButton" name="toolButton_5">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QToolButton" name="toolButton_2">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="6">
+       <widget class="QToolButton" name="toolButton_3">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QComboBox" name="comboBox_17"/>
+      </item>
+      <item row="2" column="6">
+       <widget class="QToolButton" name="toolButton_4">
+        <property name="text">
+         <string>C</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboBox_11">
         <item>
          <property name="text">
           <string>[         ]</string>
@@ -434,6 +427,33 @@
       <item row="1" column="7">
        <widget class="QComboBox" name="comboBox_14"/>
       </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="comboBox_15">
+        <item>
+         <property name="text">
+          <string>[         ]</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>----------</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>///////////</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>\\\\\\\\\\\</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QComboBox" name="comboBox_12"/>
+      </item>
       <item row="0" column="1">
        <widget class="QLabel" name="label_3">
         <property name="text">
@@ -448,86 +468,19 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="3">
-       <widget class="QComboBox" name="comboBox_12"/>
-      </item>
-      <item row="1" column="2" rowspan="2">
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="5">
-       <widget class="QComboBox" name="comboBox_13"/>
-      </item>
-      <item row="2" column="3">
-       <widget class="QComboBox" name="comboBox_16"/>
-      </item>
-      <item row="2" column="5">
-       <widget class="QComboBox" name="comboBox_17"/>
-      </item>
-      <item row="2" column="7">
-       <widget class="QComboBox" name="comboBox_18"/>
-      </item>
-      <item row="1" column="4">
-       <widget class="QToolButton" name="toolButton">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="6">
-       <widget class="QToolButton" name="toolButton_3">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="8">
-       <widget class="QToolButton" name="toolButton_5">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="5">
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="minimumSize">
+      <item row="1" column="0">
+       <widget class="QLineEdit" name="lineEdit">
+        <property name="maximumSize">
          <size>
-          <width>0</width>
-          <height>22</height>
+          <width>60</width>
+          <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string>Reset</string>
+         <string>Caller</string>
         </property>
-       </widget>
-      </item>
-      <item row="3" column="7">
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>22</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Save</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="6">
-       <widget class="QToolButton" name="toolButton_4">
-        <property name="text">
-         <string>C</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="8">
-       <widget class="QToolButton" name="toolButton_6">
-        <property name="text">
-         <string>C</string>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -535,7 +488,7 @@
     </widget>
    </item>
    <item row="4" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="cancelOkButtonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>

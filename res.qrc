@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/toolbar/icons">
+        <file alias="hand">res/hand-128.png</file>
+        <file alias="pointer">res/pixelated-cursor-arrow-hi.png</file>
+        <file alias="fbw">res/media-fast-backward.png</file>
+        <file alias="ffw">res/media-fast-forward.png</file>
+        <file alias="pause">res/icon-pause-128.png</file>
+        <file alias="play">res/play1.png</file>
+    </qresource>
+</RCC>

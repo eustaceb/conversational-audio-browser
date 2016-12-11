@@ -22,11 +22,7 @@ public:
     QList<Speaker> getSpeakers() const;
     void setSpeakers(const QList<Speaker> &value);
 
-    QString getSpeaker() const;
-    void setSpeaker(const QString &value);
-
 private:
-    QString speaker;
     QString startTime;
     QString endTime;
     QList <Speaker> speakers;

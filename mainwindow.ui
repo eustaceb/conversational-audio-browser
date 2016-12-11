@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+    <item row="0" column="0" colspan="2">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -251,30 +251,25 @@ QTabBar::tab:!selected {
          <string>Markers</string>
         </attribute>
        </widget>
-       <widget class="QWidget" name="statesTab">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <attribute name="title">
-         <string>States</string>
-        </attribute>
-       </widget>
        <widget class="QWidget" name="statisticsTab">
         <attribute name="title">
          <string>Statistics</string>
         </attribute>
+        <widget class="QLabel" name="label">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>110</y>
+           <width>181</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Total / Selection Statistics</string>
+         </property>
+        </widget>
        </widget>
       </widget>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QPushButton" name="playButton">
-      <property name="text">
-       <string>Play</string>
-      </property>
      </widget>
     </item>
    </layout>
@@ -292,9 +287,17 @@ QTabBar::tab:!selected {
     <property name="title">
      <string>File</string>
     </property>
+    <widget class="QMenu" name="menuActive_file">
+     <property name="title">
+      <string>Active file</string>
+     </property>
+     <addaction name="actionSome_trs"/>
+     <addaction name="actionOther_trs"/>
+    </widget>
     <addaction name="actionOpen"/>
     <addaction name="actionAttach_annotations"/>
     <addaction name="actionLoad_from_state"/>
+    <addaction name="menuActive_file"/>
    </widget>
    <widget class="QMenu" name="menuSelect">
     <property name="title">
@@ -348,6 +351,22 @@ QTabBar::tab:!selected {
    <addaction name="menuTools"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_Tool"/>
+   <addaction name="separator"/>
+   <addaction name="actionBeginning"/>
+   <addaction name="actionPlay"/>
+   <addaction name="actionEnding"/>
+  </widget>
   <action name="actionOpen">
    <property name="text">
     <string>Open...</string>
@@ -428,8 +447,76 @@ QTabBar::tab:!selected {
     <string>Participant manager</string>
    </property>
   </action>
+  <action name="action_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/toolbar/icons/pointer</normaloff>
+     <normalon>:/toolbar/icons/hand</normalon>:/toolbar/icons/pointer</iconset>
+   </property>
+   <property name="text">
+    <string>Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Tool&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Switch between Hand and Selection tool.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>H</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/toolbar/icons/play</normaloff>
+     <normalon>:/toolbar/icons/pause</normalon>:/toolbar/icons/play</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+   <property name="shortcut">
+    <string>Space</string>
+   </property>
+  </action>
+  <action name="actionBeginning">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/toolbar/icons/fbw</normaloff>:/toolbar/icons/fbw</iconset>
+   </property>
+   <property name="text">
+    <string>Beginning</string>
+   </property>
+   <property name="toolTip">
+    <string>Go to the beginning of the track</string>
+   </property>
+  </action>
+  <action name="actionEnding">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/toolbar/icons/ffw</normaloff>:/toolbar/icons/ffw</iconset>
+   </property>
+   <property name="text">
+    <string>Ending</string>
+   </property>
+   <property name="toolTip">
+    <string>Go to the ending of the track</string>
+   </property>
+  </action>
+  <action name="actionSome_trs">
+   <property name="text">
+    <string>some.trs</string>
+   </property>
+  </action>
+  <action name="actionOther_trs">
+   <property name="text">
+    <string>other.trs</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -36,34 +36,36 @@ void MainWindow::on_actionParticipant_manager_triggered()
 {
     ParticipantManager *p = new ParticipantManager;
     connect(p, SIGNAL(notify_mainWindow_transcriptionFile(QString)),
-            this, SLOT(on_transcriptionFile_loaded(QString)));
+            this, SLOT(when_transcription_loaded(QString)));
     p->exec();
-    p->show();
+    //p->show();
 }
 
-void MainWindow::on_transcriptionFile_loaded(const QString &filename)
+void MainWindow::when_transcription_loaded(const QString &filename)
 {
-    qInfo() << "SLOT" << filename;
     Transcription trs = Helpers::parseTranscript(filename);
 
     timeline->setTranscription(trs);
     timeline->reloadScene();
 }
 
-void MainWindow::on_playButton_clicked()
+void MainWindow::on_actionOpen_triggered()
+{
+
+}
+
+void MainWindow::on_actionPlay_triggered()
 {
     QString duration = QString::number(player->duration()/1000);
     QString current = QString::number(player->position()/1000);
     if (player->state() == QMediaPlayer::PlayingState) {
         player->pause();
-        ui->playButton->setText("Continue - " + current + "/" + duration);
     } else {
         player->play();
-        ui->playButton->setText("Pause");
     }
 }
 
-void MainWindow::on_actionOpen_triggered()
+void MainWindow::on_action_Tool_triggered()
 {
-
+    timeline->triggerTool();
 }

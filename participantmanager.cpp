@@ -17,9 +17,27 @@ ParticipantManager::~ParticipantManager()
     delete ui;
 }
 
-void ParticipantManager::on_toolButton_15_clicked()
+void ParticipantManager::on_annotationFileLookupButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this,
         tr("Open Image"), "/home/justas/Dissertation", tr("TRS Files (*.trs)"));
-    emit notify_mainWindow_transcriptionFile(filename);
+    ui->annotationsFileLine->setText(filename);
+}
+
+void ParticipantManager::on_cancelOkButtonBox_accepted()
+{
+    // TODO: Save
+    this->close();
+}
+
+void ParticipantManager::on_cancelOkButtonBox_rejected()
+{
+    this->close();
+}
+
+void ParticipantManager::on_loadFilesButton_clicked()
+{
+    QString filename = ui->annotationsFileLine->text();
+    if (filename != "")
+        emit notify_mainWindow_transcriptionFile(filename);
 }

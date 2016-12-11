@@ -2,7 +2,6 @@
 #define REGULARTIMELINEWIDGET_H
 
 #include <QGraphicsView>
-#include "audiotrack.h"
 #include "transcription.h"
 
 class AudioTrack;
@@ -21,14 +20,18 @@ public:
 
     void itemMoved();
 
+    enum Tool { SelectTool, HandTool };
+
+
+    Tool getTool() const;
+    void triggerTool();
+
 public slots:
-    void shuffle();
     void zoomIn();
     void zoomOut();
 
 protected:
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
-    void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
@@ -39,11 +42,14 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
-    //int timerId;
     AudioTrack *sampleTrack;
     Transcription transcription;
     QGraphicsScene *scene;
+
+    Tool tool;
+
     int m_originY, m_originX;
+    qreal zoomScale;
 };
 
 #endif // REGULARTIMELINEWIDGET_H
