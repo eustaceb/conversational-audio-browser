@@ -6,5 +6,6 @@
         <file alias="ffw">res/media-fast-forward.png</file>
         <file alias="pause">res/icon-pause-128.png</file>
         <file alias="play">res/play1.png</file>
+        <file alias="interval">res/interval-select.png</file>
     </qresource>
 </RCC>

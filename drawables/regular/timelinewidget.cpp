@@ -7,21 +7,27 @@
 #include <QDebug>
 
 TimelineWidget::TimelineWidget(const Transcription &t, QWidget *parent)
-    : QGraphicsView(parent), transcription(t), zoomScale(1)
+    : QGraphicsView(parent), transcription(t), zoomScale(1), cursor(0, 0)
 {
     scene = new QGraphicsScene(this);
     // TODO: Change to some indexing for possible optimisation
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     //scene->setSceneRect(-200, -200, 1600, 1600);
     setScene(scene);
-    setCacheMode(CacheBackground);
+    setCacheMode(CacheNone);
     this->setViewportUpdateMode(BoundingRectViewportUpdate);
-    this->setCursor(Qt::OpenHandCursor);
+
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(NoAnchor);
-    setDragMode(RubberBandDrag);
 
+    setDragMode(RubberBandDrag);
+    setMouseTracking(true);
     scale(qreal(0.8), qreal(0.8));
+
+    // Setup default tool
+    tool = SelectTool;
+    this->setCursor(Qt::ArrowCursor);
+    selectArea = new QRubberBand(QRubberBand::Rectangle, this);
 
     reloadScene();
 }
@@ -45,32 +51,52 @@ void TimelineWidget::reloadScene()
         Speaker s = transcription.getSpeakers().at(i);
         scene->addItem(new SpeakerGraphicsItem(s, this));
     }
-    this->viewport()->update();
+
+    // Calculate scene rect
+    int margin = 100;
+    QRectF r = scene->itemsBoundingRect();
+    scene->setSceneRect(r.x() - margin, r.y() - margin, r.width() + margin*2, r.height() + margin * 2);
+
+    viewport()->update();
 }
 
 void TimelineWidget::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        // Store original position.
-        m_originX = event->x();
-        m_originY = event->y();
+        origin = event->pos();
+        if (tool == SelectTool) {
+            selectArea->setGeometry(QRect(event->pos(), QSize(0, 0)));
+            selectArea->show();
+        }
     }
 }
 
 void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    cursor = mapToScene(event->pos());
+    if (tool == SelectTool) {
+        selectArea->setGeometry(QRect(origin.toPoint(), event->pos()).normalized());
+    }
+    if ((event->buttons() & Qt::LeftButton) && (tool == HandTool))
     {
-        QPointF oldp = mapToScene(QPoint(m_originX, m_originY));
+        QPointF oldp = mapToScene(origin.toPoint());
         QPointF newp = mapToScene(event->pos());
         QPointF translation = newp - oldp;
 
         translate(translation.x() / zoomScale, translation.y() / zoomScale);
 
-        m_originX = event->x();
-        m_originY = event->y();
+        origin = event->pos();
     }
+    viewport()->repaint();
+}
+
+void TimelineWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (tool == SelectTool)
+        selectArea->hide();
+    // determine selection, for example using QRect::intersects()
+    // and QRect::contains().
 }
 
 TimelineWidget::Tool TimelineWidget::getTool() const
@@ -78,20 +104,10 @@ TimelineWidget::Tool TimelineWidget::getTool() const
     return tool;
 }
 
-void TimelineWidget::triggerTool()
+void TimelineWidget::setTool(const Tool &t)
 {
-    switch (tool) {
-    case HandTool:
-        tool = SelectTool;
-        break;
-    case SelectTool:
-        tool = HandTool;
-        break;
-    default:
-        break;
-    }
+    tool = t;
 }
-
 
 void TimelineWidget::itemMoved()
 {
@@ -131,6 +147,17 @@ void TimelineWidget::wheelEvent(QWheelEvent *event)
     scaleView(pow((double)2, event->delta() / 240.0));
 }
 #endif
+
+void TimelineWidget::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    if (tool == IntervalSelectTool) {
+        // Draw mouse tracker
+        QPoint from(cursor.x(), scene->sceneRect().y());
+        QPoint to(cursor.x(), scene->sceneRect().y() + scene->sceneRect().height());
+        painter->drawLine(from, to);
+    }
+}
+
 
 void TimelineWidget::drawBackground(QPainter *painter, const QRectF &rect)
 {

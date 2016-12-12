@@ -361,7 +361,9 @@ QTabBar::tab:!selected {
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_Tool"/>
+   <addaction name="actionSelect_Tool"/>
+   <addaction name="actionHand_Tool"/>
+   <addaction name="actionInterval_Select"/>
    <addaction name="separator"/>
    <addaction name="actionBeginning"/>
    <addaction name="actionPlay"/>
@@ -447,23 +449,23 @@ QTabBar::tab:!selected {
     <string>Participant manager</string>
    </property>
   </action>
-  <action name="action_Tool">
+  <action name="actionSelect_Tool">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
     <iconset resource="res.qrc">
      <normaloff>:/toolbar/icons/pointer</normaloff>
-     <normalon>:/toolbar/icons/hand</normalon>:/toolbar/icons/pointer</iconset>
+     <normalon>:/toolbar/icons/pointer</normalon>:/toolbar/icons/pointer</iconset>
    </property>
    <property name="text">
-    <string>Tool</string>
+    <string>Select Tool</string>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Tool&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Switch between Hand and Selection tool.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Selection Tool&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Allows selection of items that fit in the select box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
-    <string>H</string>
+    <string>S</string>
    </property>
   </action>
   <action name="actionPlay">
@@ -511,6 +513,42 @@ QTabBar::tab:!selected {
   <action name="actionOther_trs">
    <property name="text">
     <string>other.trs</string>
+   </property>
+  </action>
+  <action name="actionHand_Tool">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/toolbar/icons/hand</normaloff>:/toolbar/icons/hand</iconset>
+   </property>
+   <property name="text">
+    <string>Hand Tool</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Hand Tool&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primarily used for navigation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>H</string>
+   </property>
+  </action>
+  <action name="actionInterval_Select">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/toolbar/icons/interval</normaloff>:/toolbar/icons/interval</iconset>
+   </property>
+   <property name="text">
+    <string>Interval Select</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Interval Select&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Allows you to select a specific time interval.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>I</string>
    </property>
   </action>
  </widget>

@@ -29,7 +29,11 @@ private slots:
 
     void on_actionPlay_triggered();
 
-    void on_action_Tool_triggered();
+    void on_actionSelect_Tool_triggered();
+
+    void on_actionHand_Tool_triggered();
+
+    void on_actionInterval_Select_triggered();
 
 private:
     Ui::MainWindow *ui;

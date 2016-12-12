@@ -58,6 +58,7 @@ void MainWindow::on_actionPlay_triggered()
 {
     QString duration = QString::number(player->duration()/1000);
     QString current = QString::number(player->position()/1000);
+    // TODO: Set the play marker to the sound position
     if (player->state() == QMediaPlayer::PlayingState) {
         player->pause();
     } else {
@@ -65,7 +66,32 @@ void MainWindow::on_actionPlay_triggered()
     }
 }
 
-void MainWindow::on_action_Tool_triggered()
+void MainWindow::on_actionSelect_Tool_triggered()
 {
-    timeline->triggerTool();
+    timeline->setTool(TimelineWidget::SelectTool);
+    timeline->setCursor(Qt::ArrowCursor);
+
+    ui->actionSelect_Tool->setChecked(true);
+    ui->actionHand_Tool->setChecked(false);
+    ui->actionInterval_Select->setChecked(false);
+}
+
+void MainWindow::on_actionHand_Tool_triggered()
+{
+    timeline->setTool(TimelineWidget::HandTool);
+    timeline->setCursor(Qt::OpenHandCursor);
+
+    ui->actionHand_Tool->setChecked(true);
+    ui->actionInterval_Select->setChecked(false);
+    ui->actionSelect_Tool->setChecked(false);
+}
+
+void MainWindow::on_actionInterval_Select_triggered()
+{
+    timeline->setTool(TimelineWidget::IntervalSelectTool);
+    timeline->setCursor(Qt::IBeamCursor);
+
+    ui->actionInterval_Select->setChecked(true);
+    ui->actionHand_Tool->setChecked(false);
+    ui->actionSelect_Tool->setChecked(false);
 }
