@@ -20,6 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     timeline = new TimelineWidget(trs, this);
 
+    // Trigger the Hand Tool by default
+    on_actionHand_Tool_triggered();
+
     ui->splitter->insertWidget(0, timeline);
     player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/loomer.wav"));
@@ -29,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete player;
+    delete timeline;
     delete ui;
 }
 

@@ -41,10 +41,18 @@ void TimelineWidget::reloadScene()
 {
     SpeakerGraphicsItem::setHeightCounter(0);
     scene->clear();
+
+    // Ruler start point, the top-left point of the first section
+    QRectF sectionsRect(0, 0, 0, 0);
+
     for (int i = 0; i < transcription.getSections().size(); i++) {
         Section s = transcription.getSections().at(i);
-        scene->addItem(new SectionGraphicsItem(s, this));
+        SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
 
+        // Calculate the biggest rect that surrounds sections
+        sectionsRect = sectionsRect.united(sectionItem->boundingRect());
+
+        scene->addItem(sectionItem);
     }
 
     for (int i = 0; i < transcription.getSpeakers().size(); i++) {
@@ -56,6 +64,11 @@ void TimelineWidget::reloadScene()
     int margin = 100;
     QRectF r = scene->itemsBoundingRect();
     scene->setSceneRect(r.x() - margin, r.y() - margin, r.width() + margin*2, r.height() + margin * 2);
+
+    // Add rulers
+    // TODO: length maybe max(audioRec, lastSection)?
+    scene->addItem(new Ruler(sectionsRect, Ruler::Above));
+    scene->addItem(new Ruler(sectionsRect, Ruler::Below));
 
     viewport()->update();
 }

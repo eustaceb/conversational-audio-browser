@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     drawables/regular/audiotrack.cpp \
     drawables/regular/sectiongraphicsitem.cpp \
     drawables/regular/timelinewidget.cpp \
-    drawables/regular/speakergraphicsitem.cpp
+    drawables/regular/speakergraphicsitem.cpp \
+    drawables/ruler.cpp
 
 HEADERS  += mainwindow.h \
     participantmanager.h \
@@ -39,7 +40,8 @@ HEADERS  += mainwindow.h \
     drawables/regular/audiotrack.h \
     drawables/regular/sectiongraphicsitem.h \
     drawables/regular/timelinewidget.h \
-    drawables/regular/speakergraphicsitem.h
+    drawables/regular/speakergraphicsitem.h \
+    drawables/ruler.h
 
 FORMS    += mainwindow.ui \
     participantmanager.ui

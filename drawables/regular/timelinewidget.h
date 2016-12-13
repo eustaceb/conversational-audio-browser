@@ -5,6 +5,7 @@
 #include <QRubberBand>
 #include <QRect>
 #include "transcription.h"
+#include "drawables/ruler.h"
 
 class AudioTrack;
 class Transcription;
@@ -14,6 +15,8 @@ class TimelineWidget : public QGraphicsView
     Q_OBJECT
 
 public:
+    enum Tool { SelectTool, HandTool, IntervalSelectTool };
+
     TimelineWidget(const Transcription &t, QWidget *parent = 0);
 
     void setTranscription(const Transcription &t);
@@ -21,9 +24,6 @@ public:
     void reloadScene();
 
     void itemMoved();
-
-    enum Tool { SelectTool, HandTool, IntervalSelectTool };
-
 
     Tool getTool() const;
     void setTool(const Tool &t);

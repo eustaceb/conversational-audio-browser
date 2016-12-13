@@ -1,5 +1,6 @@
 #include "sectiongraphicsitem.h"
 
+// TODO: Move these out of here?
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -20,7 +21,7 @@ SectionGraphicsItem::SectionGraphicsItem(const Section &s, TimelineWidget *timel
                 section.getStartTime() * 10 + adjust, // x
                 -10 + adjust, // y
                 (section.getEndTime() - section.getStartTime()) * 10, // w
-                400); // h;
+                460); // h;
 
     QFontMetrics metrics(font);
     int repeat = rect.width() / metrics.width(section.getTopic().getDesc());
@@ -52,9 +53,9 @@ void SectionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawRect(rect);
 
     painter->setFont(font);
-    painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));
+    painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue(), 100)));
     painter->drawStaticText(rect.x(), rect.y(), label);
-    painter->drawStaticText(rect.x(), rect.y() + rect.height() - 18, label);
+    painter->drawStaticText(rect.x(), rect.y() + rect.height() - 25, label);
 }
 
 QVariant SectionGraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
