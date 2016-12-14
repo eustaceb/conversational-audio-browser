@@ -9,21 +9,21 @@ class Turn
 {
 public:
     Turn();
-    Turn(const QString &startTime, const QString &endTime, Speaker *speaker);
+    Turn(const double &startTime, const double &endTime, Speaker *speaker);
 
     void setSpeaker(Speaker *speaker);
     Speaker *getSpeaker() const;
 
-    QString getStartTime() const;
-    void setStartTime(const QString &value);
+    double getStartTime() const;
+    void setStartTime(const double &value);
 
-    QString getEndTime() const;
-    void setEndTime(const QString &value);
+    double getEndTime() const;
+    void setEndTime(const double &value);
 
 
 private:
-    QString startTime;
-    QString endTime;
+    double startTime;
+    double endTime;
 
     Speaker *speaker;
 };

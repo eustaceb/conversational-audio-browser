@@ -5,7 +5,7 @@ Turn::Turn()
 
 }
 
-Turn::Turn(const QString &startTime, const QString &endTime, Speaker *speaker)
+Turn::Turn(const double &startTime, const double &endTime, Speaker *speaker)
 {
     this->startTime = startTime;
     this->endTime = endTime;
@@ -22,22 +22,22 @@ Speaker *Turn::getSpeaker() const
     return speaker;
 }
 
-QString Turn::getStartTime() const
+double Turn::getStartTime() const
 {
     return startTime;
 }
 
-void Turn::setStartTime(const QString &value)
+void Turn::setStartTime(const double &value)
 {
     startTime = value;
 }
 
-QString Turn::getEndTime() const
+double Turn::getEndTime() const
 {
     return endTime;
 }
 
-void Turn::setEndTime(const QString &value)
+void Turn::setEndTime(const double &value)
 {
     endTime = value;
 }

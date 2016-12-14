@@ -29,6 +29,8 @@ public:
 
     static void setHeightCounter(int value);
 
+    QColor getColor() const;
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;

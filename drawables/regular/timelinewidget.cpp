@@ -1,6 +1,7 @@
 #include "timelinewidget.h"
 #include "drawables/regular/sectiongraphicsitem.h"
 #include "drawables/regular/speakergraphicsitem.h"
+#include "drawables/regular/turngraphicsitem.h"
 
 #include <math.h>
 #include <QKeyEvent>
@@ -48,19 +49,6 @@ void TimelineWidget::reloadScene()
     SpeakerGraphicsItem::setHeightCounter(0);
     scene->clear();
 
-    // Ruler start point, the top-left point of the first section
-    QRectF sectionsRect(0, 0, 0, 0);
-
-    for (int i = 0; i < transcription->getSections().size(); i++) {
-        Section s = transcription->getSections().at(i);
-        SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
-
-        // Calculate the biggest rect that surrounds sections
-        sectionsRect = sectionsRect.united(sectionItem->boundingRect());
-
-        scene->addItem(sectionItem);
-    }
-
     for (int i = 0; i < transcription->getSpeakers().size(); i++) {
         Speaker *s = transcription->getSpeakers().at(i);
         SpeakerGraphicsItem *sg = new SpeakerGraphicsItem(s, this);
@@ -68,6 +56,25 @@ void TimelineWidget::reloadScene()
         scene->addItem(sg);
     }
 
+    // Ruler start point, the top-left point of the first section
+    QRectF sectionsRect(0, 0, 0, 0);
+
+    for (int i = 0; i < transcription->getSections().size(); i++) {
+        Section s = transcription->getSections().at(i);
+        // TODO: Move those to fields for memory management
+        SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
+
+        for (int i = 0; i < s.getTurns().size(); i++) {
+            Turn t = s.getTurns().at(i);
+            TurnGraphicsItem *turnItem = new TurnGraphicsItem(t, this);
+            scene->addItem(turnItem);
+        }
+
+        // Calculate the biggest rect that surrounds sections for rulers
+        sectionsRect = sectionsRect.united(sectionItem->boundingRect());
+
+        scene->addItem(sectionItem);
+    }
     // Calculate scene rect
     int margin = 100;
     QRectF r = scene->itemsBoundingRect();

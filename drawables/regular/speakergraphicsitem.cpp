@@ -68,6 +68,11 @@ void SpeakerGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
+QColor SpeakerGraphicsItem::getColor() const
+{
+    return color;
+}
+
 void SpeakerGraphicsItem::setHeightCounter(int value)
 {
     heightCounter = value;

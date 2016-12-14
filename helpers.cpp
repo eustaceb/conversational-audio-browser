@@ -32,7 +32,7 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
             if (xml.isStartElement()) {
                 if (tag == "Turn") {
                     // <Turn endTime="5.056" speaker="spk5" startTime="4.094">
-                    QString endTime, startTime;
+                    double endTime, startTime;
                     QList<Speaker*> speakers;
                     for (int i = 0; i < xml.attributes().length(); i++) {
                         QString key = xml.attributes()[i].name().toString();
@@ -43,8 +43,8 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
                                 speakers.append(speakerMap.find(spkr).value());
                             }
                         }
-                        else if (key == "startTime") startTime = val;
-                        else if (key == "endTime") endTime = val;
+                        else if (key == "startTime") startTime = val.toDouble();
+                        else if (key == "endTime") endTime = val.toDouble();
                     }
                     // If there are multiple speakers - create separate turns for them
                     foreach (Speaker *s, speakers) {
