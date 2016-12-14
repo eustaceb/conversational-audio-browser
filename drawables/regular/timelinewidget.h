@@ -4,11 +4,15 @@
 #include <QGraphicsView>
 #include <QRubberBand>
 #include <QRect>
+#include <QMap>
+
 #include "transcription.h"
 #include "drawables/ruler.h"
+#include "drawables/regular/speakergraphicsitem.h"
 
 class AudioTrack;
 class Transcription;
+class SpeakerGraphicsItem;
 
 class TimelineWidget : public QGraphicsView
 {
@@ -17,9 +21,10 @@ class TimelineWidget : public QGraphicsView
 public:
     enum Tool { SelectTool, HandTool, IntervalSelectTool };
 
-    TimelineWidget(const Transcription &t, QWidget *parent = 0);
+    TimelineWidget(Transcription *t, QWidget *parent = 0);
+    ~TimelineWidget();
 
-    void setTranscription(const Transcription &t);
+    void setTranscription(Transcription *t);
 
     void reloadScene();
 
@@ -27,6 +32,9 @@ public:
 
     Tool getTool() const;
     void setTool(const Tool &t);
+
+    // @TODO: Think whether this is a good idea - consider having a ptr to SpeakerGraphicsItem in Speaker
+    QMap<Speaker*, SpeakerGraphicsItem*> getSpeakerGraphics() const;
 
 public slots:
     void zoomIn();
@@ -47,10 +55,10 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     QGraphicsScene *scene;
-    AudioTrack *sampleTrack;
     QRubberBand *selectArea;
 
-    Transcription transcription;
+    Transcription *transcription;
+    QMap<Speaker*, SpeakerGraphicsItem*> speakerGraphics;
 
     Tool tool;
 

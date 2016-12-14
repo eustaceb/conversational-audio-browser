@@ -30,3 +30,8 @@ void Speaker::setName(const QString &value)
 {
     name = value;
 }
+
+bool Speaker::operator <(const Speaker& x) const
+{
+    return name < x.getName();
+}

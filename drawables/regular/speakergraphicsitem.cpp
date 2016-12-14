@@ -11,7 +11,7 @@
 int SpeakerGraphicsItem::heightCounter = 0;
 QFont SpeakerGraphicsItem::font = QFont("times", 18);
 
-SpeakerGraphicsItem::SpeakerGraphicsItem(const Speaker &s, TimelineWidget *timelineWidget)
+SpeakerGraphicsItem::SpeakerGraphicsItem(Speaker *s, TimelineWidget *timelineWidget)
     : speaker(s), timelineWidget(timelineWidget)
 {
     color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
@@ -24,7 +24,7 @@ SpeakerGraphicsItem::SpeakerGraphicsItem(const Speaker &s, TimelineWidget *timel
 
     heightCounter += 30 + 10;
 
-    label = QStaticText(speaker.getName());
+    label = QStaticText(speaker->getName());
 
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -55,18 +55,6 @@ QPainterPath SpeakerGraphicsItem::shape() const
     return path;
 }
 
-QVariant SpeakerGraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-{
-    switch (change) {
-    case ItemPositionHasChanged:
-        timelineWidget->itemMoved();
-           break;
-    default:
-        break;
-    };
-
-    return QGraphicsItem::itemChange(change, value);
-}
 
 void SpeakerGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
@@ -85,7 +73,7 @@ void SpeakerGraphicsItem::setHeightCounter(int value)
     heightCounter = value;
 }
 
-Speaker SpeakerGraphicsItem::getSpeaker() const
+Speaker *SpeakerGraphicsItem::getSpeaker() const
 {
     return speaker;
 }

@@ -15,6 +15,7 @@ public:
     QString getName() const;
     void setName(const QString &value);
 
+    bool operator <(const Speaker &x) const;
 private:
     //TODO: Add more fields for
     // accent="" check="no" dialect="native" id="spk4" name="filler_c" scope="local" type="unknown"

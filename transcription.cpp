@@ -5,14 +5,19 @@ Transcription::Transcription()
 
 }
 
+Transcription::~Transcription()
+{
+    qDeleteAll(speakers);
+}
+
 void Transcription::addTopic(const Topic &t)
 {
     this->topics.append(t);
 }
 
-void Transcription::addSpeaker(const Speaker &p)
+void Transcription::addSpeaker(Speaker *speaker)
 {
-    this->speakers.append(p);
+    this->speakers.append(speaker);
 }
 
 void Transcription::addSection(const Section &s)
@@ -30,12 +35,12 @@ void Transcription::setTopics(const QList<Topic> &value)
     topics = value;
 }
 
-QList<Speaker> Transcription::getSpeakers() const
+QList<Speaker*> Transcription::getSpeakers() const
 {
     return speakers;
 }
 
-void Transcription::setSpeakers(const QList<Speaker> &value)
+void Transcription::setSpeakers(const QList<Speaker*> &value)
 {
     speakers = value;
 }

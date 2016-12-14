@@ -109,7 +109,7 @@ QTabBar::tab:!selected {
         </attribute>
         <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0">
          <item row="1" column="0" colspan="2">
-          <widget class="QGroupBox" name="groupBox">
+          <widget class="QGroupBox" name="speakerFilterBox">
            <property name="title">
             <string>Speaker</string>
            </property>
@@ -133,7 +133,7 @@ QTabBar::tab:!selected {
              <number>4</number>
             </property>
             <item>
-             <widget class="QListView" name="listView">
+             <widget class="QListWidget" name="speakerListWidget">
               <property name="viewMode">
                <enum>QListView::ListMode</enum>
               </property>
@@ -178,7 +178,7 @@ QTabBar::tab:!selected {
           </widget>
          </item>
          <item row="1" column="4" colspan="2">
-          <widget class="QGroupBox" name="groupBox_3">
+          <widget class="QGroupBox" name="topicFilterBox">
            <property name="title">
             <string>Topic</string>
            </property>
@@ -199,7 +199,7 @@ QTabBar::tab:!selected {
              <number>4</number>
             </property>
             <item>
-             <widget class="QListView" name="listView_3"/>
+             <widget class="QListWidget" name="topicListWidget"/>
             </item>
            </layout>
           </widget>
@@ -233,7 +233,7 @@ QTabBar::tab:!selected {
              <number>4</number>
             </property>
             <item>
-             <widget class="QListView" name="listView_2"/>
+             <widget class="QListWidget" name="listWidget_2"/>
             </item>
            </layout>
           </widget>

@@ -10,16 +10,17 @@ class Transcription
 {
 public:
     Transcription();
+    ~Transcription();
 
     void addTopic(const Topic &t);
-    void addSpeaker(const Speaker &s);
+    void addSpeaker(Speaker *s);
     void addSection(const Section &s);
 
     QList<Topic> getTopics() const;
     void setTopics(const QList<Topic> &value);
 
-    QList<Speaker> getSpeakers() const;
-    void setSpeakers(const QList<Speaker> &value);
+    QList<Speaker*> getSpeakers() const;
+    void setSpeakers(const QList<Speaker*> &value);
 
     QList<Section> getSections() const;
     void setSections(const QList<Section> &value);
@@ -27,7 +28,7 @@ public:
 private:
 
     QList <Topic> topics;
-    QList <Speaker> speakers;
+    QList <Speaker*> speakers;
     QList <Section> sections;
 };
 

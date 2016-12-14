@@ -9,9 +9,10 @@ class Turn
 {
 public:
     Turn();
-    Turn(const QString &startTime, const QString &endTime, const QString &speaker);
+    Turn(const QString &startTime, const QString &endTime, Speaker *speaker);
 
-    void addSpeaker(const Speaker &speaker);
+    void setSpeaker(Speaker *speaker);
+    Speaker *getSpeaker() const;
 
     QString getStartTime() const;
     void setStartTime(const QString &value);
@@ -19,13 +20,12 @@ public:
     QString getEndTime() const;
     void setEndTime(const QString &value);
 
-    QList<Speaker> getSpeakers() const;
-    void setSpeakers(const QList<Speaker> &value);
 
 private:
     QString startTime;
     QString endTime;
-    QList <Speaker> speakers;
+
+    Speaker *speaker;
 };
 
 #endif // TURN_H

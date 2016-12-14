@@ -10,20 +10,20 @@ Helpers::Helpers()
 
 }
 
-Transcription Helpers::parseTranscript(const QString &fileName)
+Transcription* Helpers::parseTranscript(const QString &fileName)
 {
     QFile *file = new QFile(fileName);
     QXmlStreamReader xml(file);
 
-    Transcription result;
+    Transcription *result = new Transcription();
     Section currentSection;
 
-    QMap<QString, Topic> topicMap;
-    QMap<QString, Speaker> speakerMap;
+    QMap<QString, Topic> topicMap; // TODO: Topic*
+    QMap<QString, Speaker*> speakerMap;
 
-    Speaker none("", "None");
-    speakerMap.insert(none.getId(), none);
-    result.addSpeaker(none);
+    Speaker *none = new Speaker("", "None");
+    speakerMap.insert(none->getId(), none);
+    result->addSpeaker(none);
 
     if (file->open(QIODevice::ReadOnly)) {
         while (!xml.atEnd() && !xml.hasError()) {
@@ -32,20 +32,24 @@ Transcription Helpers::parseTranscript(const QString &fileName)
             if (xml.isStartElement()) {
                 if (tag == "Turn") {
                     // <Turn endTime="5.056" speaker="spk5" startTime="4.094">
-                    Turn t;
+                    QString endTime, startTime;
+                    QList<Speaker*> speakers;
                     for (int i = 0; i < xml.attributes().length(); i++) {
                         QString key = xml.attributes()[i].name().toString();
                         QString val = xml.attributes()[i].value().toString();
 
                         if (key == "speaker") {
                             foreach (const QString &spkr, val.split(" ")) {
-                                t.addSpeaker(speakerMap.find(spkr).value());
+                                speakers.append(speakerMap.find(spkr).value());
                             }
                         }
-                        else if (key == "startTime") t.setStartTime(val);
-                        else if (key == "endTime") t.setEndTime(val);
+                        else if (key == "startTime") startTime = val;
+                        else if (key == "endTime") endTime = val;
                     }
-                    currentSection.addTurn(t);
+                    // If there are multiple speakers - create separate turns for them
+                    foreach (Speaker *s, speakers) {
+                        currentSection.addTurn(Turn(startTime, endTime, s));
+                    }
                 }
                 else if (tag == "Section") {
                     // <Section endTime="1269.188" startTime="1266.844" topic="to14" type="report">
@@ -70,24 +74,24 @@ Transcription Helpers::parseTranscript(const QString &fileName)
                         else if (key == "id") t.setId(val);
                     }
                     topicMap.insert(t.getId(), t);
-                    result.addTopic(t);
+                    result->addTopic(t);
                 } else if (tag == "Speaker") {
                     // <Speaker accent="" check="no" dialect="native" id="spk7" name="filler_r" scope="local" type="unknown" />
-                    Speaker s;
+                    Speaker *s = new Speaker();
                     for (int i = 0; i < xml.attributes().length(); i++) {
                         QString key = xml.attributes()[i].name().toString();
                         QString val = xml.attributes()[i].value().toString();
 
-                        if (key == "name") s.setName(val);
-                        else if (key == "id") s.setId(val);
+                        if (key == "name") s->setName(val);
+                        else if (key == "id") s->setId(val);
                     }
-                    speakerMap.insert(s.getId(), s);
-                    result.addSpeaker(s);
+                    speakerMap.insert(s->getId(), s);
+                    result->addSpeaker(s);
                 }
             } else if (xml.isEndElement()) {
                 if (tag == "Section") {
                     qInfo() << "This section had" << currentSection.getTurns().size() << "turns";
-                    result.addSection(currentSection);
+                    result->addSection(currentSection);
                     //currentSection = NULL;
                 }
             }
@@ -99,9 +103,9 @@ Transcription Helpers::parseTranscript(const QString &fileName)
             }
         }
     }
-    qInfo() << "No of topics: " << result.getTopics().size();
-    qInfo() << "No of speakers: " << result.getSpeakers().size();
-    qInfo() << "No of sections: " << result.getSections().size();
+    qInfo() << "No of topics: " << result->getTopics().size();
+    qInfo() << "No of speakers: " << result->getSpeakers().size();
+    qInfo() << "No of sections: " << result->getSections().size();
 
     file->close();
     delete file;

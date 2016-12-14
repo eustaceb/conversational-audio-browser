@@ -8,6 +8,7 @@
 #include <QString>
 #include <QFile>
 #include <QXmlStreamReader>
+#include <QListView>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,9 +17,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     delete ui->timelineView;
 
-    Transcription trs = Helpers::parseTranscript("/home/justas/Dissertation/F01.trs");
+    Transcription *trs = Helpers::parseTranscript("/home/justas/Dissertation/F01.trs");
 
     timeline = new TimelineWidget(trs, this);
+    reloadWidgets(trs);
 
     // Trigger the Hand Tool by default
     on_actionHand_Tool_triggered();
@@ -27,6 +29,19 @@ MainWindow::MainWindow(QWidget *parent) :
     player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/loomer.wav"));
     player->setVolume(50);
+}
+
+void MainWindow::reloadWidgets(Transcription *transc)
+{
+    ui->speakerListWidget->clear();
+    ui->topicListWidget->clear();
+    // TODO: Replace with models / ListView
+    foreach(Speaker* s, transc->getSpeakers()) {
+        ui->speakerListWidget->addItem(s->getName());
+    }
+    foreach(const Topic &t, transc->getTopics()) {
+        ui->topicListWidget->addItem(t.getDesc());
+    }
 }
 
 MainWindow::~MainWindow()
@@ -47,8 +62,9 @@ void MainWindow::on_actionParticipant_manager_triggered()
 
 void MainWindow::when_transcription_loaded(const QString &filename)
 {
-    Transcription trs = Helpers::parseTranscript(filename);
+    Transcription *trs = Helpers::parseTranscript(filename);
 
+    reloadWidgets(trs);
     timeline->setTranscription(trs);
     timeline->reloadScene();
 }

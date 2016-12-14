@@ -7,7 +7,7 @@ class Helpers
 {
 public:
     Helpers();
-    static Transcription parseTranscript(const QString &fileName);
+    static Transcription* parseTranscript(const QString &fileName);
 };
 
 #endif // HELPERS_H

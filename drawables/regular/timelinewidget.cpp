@@ -6,7 +6,7 @@
 #include <QKeyEvent>
 #include <QDebug>
 
-TimelineWidget::TimelineWidget(const Transcription &t, QWidget *parent)
+TimelineWidget::TimelineWidget(Transcription *t, QWidget *parent)
     : QGraphicsView(parent), transcription(t), zoomScale(1), cursor(0, 0)
 {
     scene = new QGraphicsScene(this);
@@ -32,7 +32,13 @@ TimelineWidget::TimelineWidget(const Transcription &t, QWidget *parent)
     reloadScene();
 }
 
-void TimelineWidget::setTranscription(const Transcription &t)
+TimelineWidget::~TimelineWidget()
+{
+    qDeleteAll(speakerGraphics);
+
+}
+
+void TimelineWidget::setTranscription(Transcription *t)
 {
     transcription = t;
 }
@@ -45,8 +51,8 @@ void TimelineWidget::reloadScene()
     // Ruler start point, the top-left point of the first section
     QRectF sectionsRect(0, 0, 0, 0);
 
-    for (int i = 0; i < transcription.getSections().size(); i++) {
-        Section s = transcription.getSections().at(i);
+    for (int i = 0; i < transcription->getSections().size(); i++) {
+        Section s = transcription->getSections().at(i);
         SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
 
         // Calculate the biggest rect that surrounds sections
@@ -55,9 +61,11 @@ void TimelineWidget::reloadScene()
         scene->addItem(sectionItem);
     }
 
-    for (int i = 0; i < transcription.getSpeakers().size(); i++) {
-        Speaker s = transcription.getSpeakers().at(i);
-        scene->addItem(new SpeakerGraphicsItem(s, this));
+    for (int i = 0; i < transcription->getSpeakers().size(); i++) {
+        Speaker *s = transcription->getSpeakers().at(i);
+        SpeakerGraphicsItem *sg = new SpeakerGraphicsItem(s, this);
+        speakerGraphics.insert(s, sg);
+        scene->addItem(sg);
     }
 
     // Calculate scene rect
@@ -110,6 +118,12 @@ void TimelineWidget::mouseReleaseEvent(QMouseEvent *event)
         selectArea->hide();
     // determine selection, for example using QRect::intersects()
     // and QRect::contains().
+}
+
+
+QMap<Speaker *, SpeakerGraphicsItem *> TimelineWidget::getSpeakerGraphics() const
+{
+    return speakerGraphics;
 }
 
 TimelineWidget::Tool TimelineWidget::getTool() const

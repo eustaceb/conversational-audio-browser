@@ -58,19 +58,6 @@ void SectionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawStaticText(rect.x(), rect.y() + rect.height() - 25, label);
 }
 
-QVariant SectionGraphicsItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
-{
-    switch (change) {
-    case ItemPositionHasChanged:
-        timelineWidget->itemMoved();
-           break;
-    default:
-        break;
-    };
-
-    return QGraphicsItem::itemChange(change, value);
-}
-
 void SectionGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     update();

@@ -18,7 +18,6 @@ class Section;
 class SectionGraphicsItem : public QGraphicsItem
 {
 public:
-    //SectionGraphicsItem(TimelineWidget *timelineWidget);
     SectionGraphicsItem(const Section &s, TimelineWidget *timelineWidget);
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
@@ -29,8 +28,6 @@ public:
     Section getSection() const;
 
 protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) Q_DECL_OVERRIDE;
-
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
