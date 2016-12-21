@@ -12,24 +12,24 @@ public:
     Transcription();
     ~Transcription();
 
-    void addTopic(const Topic &t);
+    void addTopic(Topic *t);
     void addSpeaker(Speaker *s);
-    void addSection(const Section &s);
+    void addSection(Section *s);
 
-    QList<Topic> getTopics() const;
-    void setTopics(const QList<Topic> &value);
+    QList<Topic*> getTopics() const;
+    void setTopics(const QList<Topic*> &value);
 
     QList<Speaker*> getSpeakers() const;
     void setSpeakers(const QList<Speaker*> &value);
 
-    QList<Section> getSections() const;
-    void setSections(const QList<Section> &value);
+    QList<Section*> getSections() const;
+    void setSections(const QList<Section*> &value);
 
 private:
 
-    QList <Topic> topics;
+    QList <Topic*> topics;
     QList <Speaker*> speakers;
-    QList <Section> sections;
+    QList <Section*> sections;
 };
 
 #endif // TRANSCRIPTION_H

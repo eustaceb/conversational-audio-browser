@@ -34,7 +34,7 @@ private slots:
 
     void on_actionHand_Tool_triggered();
 
-    void on_actionInterval_Select_triggered();
+    void on_actionInspect_triggered();
 
 private:
     Ui::MainWindow *ui;

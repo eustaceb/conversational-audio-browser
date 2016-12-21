@@ -19,12 +19,10 @@ SpeakerGraphicsItem::SpeakerGraphicsItem(Speaker *s, TimelineWidget *timelineWid
 
     this->rect = QRectF(0 + adjust, // x
                 heightCounter + adjust + 150, // y
-                150, // w
+                timelineWidget->getMaxSpeakerNameW() * 15, // w
                 30); // h;
 
     heightCounter += 30 + 10;
-
-    label = QStaticText(speaker->getName());
 
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -40,7 +38,8 @@ void SpeakerGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
     painter->setFont(font);
     painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));
-    painter->drawStaticText(rect.x(), rect.y(), label);
+
+    painter->drawText(rect, Qt::AlignCenter, speaker->getName());
 }
 
 QRectF SpeakerGraphicsItem::boundingRect() const

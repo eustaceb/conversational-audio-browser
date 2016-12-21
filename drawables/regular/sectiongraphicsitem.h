@@ -18,14 +18,14 @@ class Section;
 class SectionGraphicsItem : public QGraphicsItem
 {
 public:
-    SectionGraphicsItem(const Section &s, TimelineWidget *timelineWidget);
+    SectionGraphicsItem(Section *s, TimelineWidget *timelineWidget);
 
     QRectF boundingRect() const Q_DECL_OVERRIDE;
     QPainterPath shape() const Q_DECL_OVERRIDE;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) Q_DECL_OVERRIDE;
 
-    Section getSection() const;
+    Section* getSection() const;
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
@@ -33,8 +33,9 @@ protected:
 
 private:
     TimelineWidget *timelineWidget;
+
     QRectF rect;
-    Section section;
+    Section *section;
     QColor color;
     QStaticText label;
     static QFont font;

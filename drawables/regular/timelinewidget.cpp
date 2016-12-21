@@ -5,7 +5,10 @@
 
 #include <math.h>
 #include <QKeyEvent>
-#include <QDebug>
+#include <QDebug>\
+
+#include <QApplication>
+#include <QGraphicsSceneEvent>
 
 TimelineWidget::TimelineWidget(Transcription *t, QWidget *parent)
     : QGraphicsView(parent), transcription(t), zoomScale(1), cursor(0, 0)
@@ -49,6 +52,13 @@ void TimelineWidget::reloadScene()
     SpeakerGraphicsItem::setHeightCounter(0);
     scene->clear();
 
+    // Find the max speaker name width for appropriate rendering
+    maxSpeakerNameW = 0;
+    foreach (Speaker *s, transcription->getSpeakers()) {
+        if (s->getName().length() > maxSpeakerNameW)
+            maxSpeakerNameW = s->getName().length();
+    }
+
     for (int i = 0; i < transcription->getSpeakers().size(); i++) {
         Speaker *s = transcription->getSpeakers().at(i);
         SpeakerGraphicsItem *sg = new SpeakerGraphicsItem(s, this);
@@ -60,12 +70,12 @@ void TimelineWidget::reloadScene()
     QRectF sectionsRect(0, 0, 0, 0);
 
     for (int i = 0; i < transcription->getSections().size(); i++) {
-        Section s = transcription->getSections().at(i);
+        Section *s = transcription->getSections().at(i);
         // TODO: Move those to fields for memory management
         SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
 
-        for (int i = 0; i < s.getTurns().size(); i++) {
-            Turn t = s.getTurns().at(i);
+        for (int i = 0; i < s->getTurns().size(); i++) {
+            Turn *t = s->getTurns().at(i);
             TurnGraphicsItem *turnItem = new TurnGraphicsItem(t, this);
             scene->addItem(turnItem);
         }
@@ -89,7 +99,7 @@ void TimelineWidget::reloadScene()
 }
 
 void TimelineWidget::mousePressEvent(QMouseEvent* event)
-{
+{    //p->show();
     if (event->button() == Qt::LeftButton)
     {
         origin = event->pos();
@@ -102,6 +112,8 @@ void TimelineWidget::mousePressEvent(QMouseEvent* event)
 
 void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
 {
+    QGraphicsView::mouseMoveEvent(event);
+
     cursor = mapToScene(event->pos());
     if (tool == SelectTool) {
         selectArea->setGeometry(QRect(origin.toPoint(), event->pos()).normalized());
@@ -112,7 +124,7 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
         QPointF newp = mapToScene(event->pos());
         QPointF translation = newp - oldp;
 
-        translate(translation.x() / zoomScale, translation.y() / zoomScale);
+        translate(translation.x(), translation.y());
 
         origin = event->pos();
     }
@@ -178,18 +190,14 @@ void TimelineWidget::keyPressEvent(QKeyEvent *event)
 #ifndef QT_NO_WHEELEVENT
 void TimelineWidget::wheelEvent(QWheelEvent *event)
 {
+    zoomScale *= pow((double)2, event->delta() / 240.0);
     scaleView(pow((double)2, event->delta() / 240.0));
 }
 #endif
 
 void TimelineWidget::drawForeground(QPainter *painter, const QRectF &rect)
 {
-    if (tool == IntervalSelectTool) {
-        // Draw mouse tracker
-        QPoint from(cursor.x(), scene->sceneRect().y());
-        QPoint to(cursor.x(), scene->sceneRect().y() + scene->sceneRect().height());
-        painter->drawLine(from, to);
-    }
+
 }
 
 
@@ -205,4 +213,19 @@ void TimelineWidget::scaleView(qreal scaleFactor)
         return;
 
     scale(scaleFactor, scaleFactor);
+}
+
+qint16 TimelineWidget::getMaxSpeakerNameW() const
+{
+    return maxSpeakerNameW;
+}
+
+qreal TimelineWidget::getZoomScale() const
+{
+    return zoomScale;
+}
+
+QPointF TimelineWidget::getCursor() const
+{
+    return cursor;
 }

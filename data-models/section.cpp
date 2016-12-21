@@ -6,7 +6,12 @@ Section::Section()
 
 }
 
-void Section::addTurn(const Turn &turn)
+Section::~Section()
+{
+    qDeleteAll(turns);
+}
+
+void Section::addTurn(Turn *turn)
 {
     turns.append(turn);
 }
@@ -31,22 +36,22 @@ void Section::setEndTime(const double &value)
     endTime = value;
 }
 
-Topic Section::getTopic() const
+Topic* Section::getTopic() const
 {
     return topic;
 }
 
-void Section::setTopic(const Topic &value)
+void Section::setTopic(Topic *value)
 {
     topic = value;
 }
 
-QList<Turn> Section::getTurns() const
+QList<Turn*> Section::getTurns() const
 {
     return turns;
 }
 
-void Section::setTurns(const QList<Turn> &value)
+void Section::setTurns(const QList<Turn *> &value)
 {
     turns = value;
 }

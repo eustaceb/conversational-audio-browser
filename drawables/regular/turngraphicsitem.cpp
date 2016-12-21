@@ -1,16 +1,23 @@
 #include "turngraphicsitem.h"
+#include <QDebug>
 
+QFont TurnGraphicsItem::font = QFont("arial", 16);
 
-TurnGraphicsItem::TurnGraphicsItem(const Turn &t, TimelineWidget *timelineWidget)
-    :turn(t), timelineWidget(timelineWidget)
+TurnGraphicsItem::TurnGraphicsItem(Turn *t, TimelineWidget *timelineWidget)
+    :turn(t), timelineWidget(timelineWidget), hovered(false)
 {
-    SpeakerGraphicsItem *sg = timelineWidget->getSpeakerGraphics().find(turn.getSpeaker()).value();
+    setAcceptHoverEvents(true);
+
+    SpeakerGraphicsItem *sg = timelineWidget->getSpeakerGraphics().find(turn->getSpeaker()).value();
     color = sg->getColor();
 
-    qreal width = (t.getEndTime() - t.getStartTime()) * 10;
+    qreal width = (t->getEndTime() - t->getStartTime()) * 10;
 
     // TODO: Fix the hardcoded 200
-    rect = QRectF(t.getStartTime() * 10 - 200, sg->boundingRect().y(), width, sg->boundingRect().height());
+    rect = QRectF(t->getStartTime() * 10 - 200, sg->boundingRect().y(), width, sg->boundingRect().height());
+
+    hoverLabel = turn->getSpeaker()->getName()
+            + " from " + QString::number(turn->getStartTime()) + " to "   + QString::number(turn->getEndTime());
 }
 
 QRectF TurnGraphicsItem::boundingRect() const
@@ -29,15 +36,51 @@ void TurnGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 {
     QBrush brush = QBrush(color);
     brush.setStyle(Qt::SolidPattern);
+
+    QPen pen = QPen(QColor(0, 0, 0));
+    pen.setWidth(0);
+
+    painter->setPen(pen);
     painter->setBrush(brush);
     painter->drawRect(rect);
 
-    //painter->setFont(font);
-    //painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));
-    //painter->drawStaticText(rect.x(), rect.y(), label);
+    if (hovered) {
+        // TODO: Minor bug when zoom > 8
+        qreal scale = timelineWidget->getZoomScale() < 8 ? timelineWidget->getZoomScale() : 8;
+
+        font.setPixelSize(ceil(16 / scale));
+        QRectF hoverRect = QRectF(timelineWidget->getCursor().x() + 8 / scale,
+                                  timelineWidget->getCursor().y() - (36 / scale),
+                                  hoverLabel.length() * 8 / scale, 26 / scale);
+
+        brush = QBrush(QColor(255, 255, 255));
+
+        painter->setBrush(brush);
+        painter->drawRect(hoverRect);
+
+        painter->setFont(font);
+        painter->drawText(hoverRect, Qt::AlignCenter, hoverLabel);
+    }
 }
 
-Turn TurnGraphicsItem::getTurn() const
+void TurnGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    setZValue(1);
+    hovered = true;
+    color = color.lighter(120);
+    this->update();
+}
+
+void TurnGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    setZValue(0);
+    hovered = false;
+    color = color.darker(120);
+    this->update();
+}
+
+
+Turn* TurnGraphicsItem::getTurn() const
 {
     return turn;
 }

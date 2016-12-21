@@ -77,7 +77,7 @@ QTabBar::tab:!selected {
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="elideMode">
         <enum>Qt::ElideMiddle</enum>
@@ -240,17 +240,6 @@ QTabBar::tab:!selected {
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="markersTab">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <attribute name="title">
-         <string>Markers</string>
-        </attribute>
-       </widget>
        <widget class="QWidget" name="statisticsTab">
         <attribute name="title">
          <string>Statistics</string>
@@ -363,7 +352,7 @@ QTabBar::tab:!selected {
    </attribute>
    <addaction name="actionSelect_Tool"/>
    <addaction name="actionHand_Tool"/>
-   <addaction name="actionInterval_Select"/>
+   <addaction name="actionInspect"/>
    <addaction name="separator"/>
    <addaction name="actionBeginning"/>
    <addaction name="actionPlay"/>
@@ -533,7 +522,7 @@ QTabBar::tab:!selected {
     <string>H</string>
    </property>
   </action>
-  <action name="actionInterval_Select">
+  <action name="actionInspect">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -542,10 +531,10 @@ QTabBar::tab:!selected {
      <normaloff>:/toolbar/icons/interval</normaloff>:/toolbar/icons/interval</iconset>
    </property>
    <property name="text">
-    <string>Interval Select</string>
+    <string>Inspect</string>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Interval Select&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Allows you to select a specific time interval.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Inspect&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Allows you to inspect an element on the timeline.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="shortcut">
     <string>I</string>

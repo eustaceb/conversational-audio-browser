@@ -12,13 +12,14 @@ Helpers::Helpers()
 
 Transcription* Helpers::parseTranscript(const QString &fileName)
 {
+    // TODO: Exceptions in case of ill-formatted XML
     QFile *file = new QFile(fileName);
     QXmlStreamReader xml(file);
 
     Transcription *result = new Transcription();
-    Section currentSection;
+    Section *currentSection;
 
-    QMap<QString, Topic> topicMap; // TODO: Topic*
+    QMap<QString, Topic*> topicMap;
     QMap<QString, Speaker*> speakerMap;
 
     Speaker *none = new Speaker("", "None");
@@ -48,32 +49,32 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
                     }
                     // If there are multiple speakers - create separate turns for them
                     foreach (Speaker *s, speakers) {
-                        currentSection.addTurn(Turn(startTime, endTime, s));
+                        currentSection->addTurn(new Turn(startTime, endTime, s));
                     }
                 }
                 else if (tag == "Section") {
                     // <Section endTime="1269.188" startTime="1266.844" topic="to14" type="report">
-                    currentSection = Section();
+                    currentSection = new Section();
                     for (int i = 0; i < xml.attributes().length(); i++) {
                         QString key = xml.attributes()[i].name().toString();
                         QString val = xml.attributes()[i].value().toString();
 
-                        if (key == "topic") currentSection.setTopic(topicMap.find(val).value());
-                        else if (key == "startTime") currentSection.setStartTime(val.toDouble());
-                        else if (key == "endTime") currentSection.setEndTime(val.toDouble());
+                        if (key == "topic") currentSection->setTopic(topicMap.find(val).value());
+                        else if (key == "startTime") currentSection->setStartTime(val.toDouble());
+                        else if (key == "endTime") currentSection->setEndTime(val.toDouble());
                     }
                 }
                 else if (tag == "Topic") {
                     // <Topic desc="chocolate" id="to13" />
-                    Topic t;
+                    Topic *t = new Topic();
                     for (int i = 0; i < xml.attributes().length(); i++) {
                         QString key = xml.attributes()[i].name().toString();
                         QString val = xml.attributes()[i].value().toString();
 
-                        if (key == "desc") t.setDesc(val);
-                        else if (key == "id") t.setId(val);
+                        if (key == "desc") t->setDesc(val);
+                        else if (key == "id") t->setId(val);
                     }
-                    topicMap.insert(t.getId(), t);
+                    topicMap.insert(t->getId(), t);
                     result->addTopic(t);
                 } else if (tag == "Speaker") {
                     // <Speaker accent="" check="no" dialect="native" id="spk7" name="filler_r" scope="local" type="unknown" />
@@ -90,7 +91,7 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
                 }
             } else if (xml.isEndElement()) {
                 if (tag == "Section") {
-                    qInfo() << "This section had" << currentSection.getTurns().size() << "turns";
+                    qInfo() << "This section had" << currentSection->getTurns().size() << "turns";
                     result->addSection(currentSection);
                     //currentSection = NULL;
                 }

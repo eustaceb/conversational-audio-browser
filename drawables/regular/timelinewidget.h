@@ -19,7 +19,7 @@ class TimelineWidget : public QGraphicsView
     Q_OBJECT
 
 public:
-    enum Tool { SelectTool, HandTool, IntervalSelectTool };
+    enum Tool { SelectTool, HandTool, InspectTool };
 
     TimelineWidget(Transcription *t, QWidget *parent = 0);
     ~TimelineWidget();
@@ -36,11 +36,21 @@ public:
     // @TODO: Think whether this is a good idea - consider having a ptr to SpeakerGraphicsItem in Speaker
     QMap<Speaker*, SpeakerGraphicsItem*> getSpeakerGraphics() const;
 
+    QPointF getCursor() const;
+
+    qreal getZoomScale() const;
+
+    qint16 getMaxSpeakerNameW() const;
+
 public slots:
     void zoomIn();
     void zoomOut();
 
 protected:
+    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
@@ -49,16 +59,15 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
 
     void scaleView(qreal scaleFactor);
-
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 private:
     QGraphicsScene *scene;
     QRubberBand *selectArea;
 
     Transcription *transcription;
+
+    // Speaker variables
     QMap<Speaker*, SpeakerGraphicsItem*> speakerGraphics;
+    qint16 maxSpeakerNameW;
 
     Tool tool;
 

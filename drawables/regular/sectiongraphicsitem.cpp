@@ -11,22 +11,22 @@
 
 QFont SectionGraphicsItem::font = QFont("times", 18);
 
-SectionGraphicsItem::SectionGraphicsItem(const Section &s, TimelineWidget *timelineWidget)
+SectionGraphicsItem::SectionGraphicsItem(Section *s, TimelineWidget *timelineWidget)
     : section(s), timelineWidget(timelineWidget)
 {
     color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
     double adjust = -200;
 
     this->rect = QRectF(
-                section.getStartTime() * 10 + adjust, // x
+                section->getStartTime() * 10 + adjust, // x
                 -10 + adjust, // y
-                (section.getEndTime() - section.getStartTime()) * 10, // w
+                (section->getEndTime() - section->getStartTime()) * 10, // w
                 460); // h;
 
     QFontMetrics metrics(font);
-    int repeat = rect.width() / metrics.width(section.getTopic().getDesc());
+    int repeat = rect.width() / metrics.width(section->getTopic()->getDesc());
 
-    label = QStaticText((section.getTopic().getDesc() + " ").repeated(repeat + 1));
+    label = QStaticText((section->getTopic()->getDesc() + " ").repeated(repeat + 1));
 
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -70,7 +70,7 @@ void SectionGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
-Section SectionGraphicsItem::getSection() const
+Section* SectionGraphicsItem::getSection() const
 {
     return section;
 }

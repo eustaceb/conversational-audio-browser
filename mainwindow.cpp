@@ -36,11 +36,11 @@ void MainWindow::reloadWidgets(Transcription *transc)
     ui->speakerListWidget->clear();
     ui->topicListWidget->clear();
     // TODO: Replace with models / ListView
-    foreach(Speaker* s, transc->getSpeakers()) {
+    foreach(Speaker *s, transc->getSpeakers()) {
         ui->speakerListWidget->addItem(s->getName());
     }
-    foreach(const Topic &t, transc->getTopics()) {
-        ui->topicListWidget->addItem(t.getDesc());
+    foreach(Topic *t, transc->getTopics()) {
+        ui->topicListWidget->addItem(t->getDesc());
     }
 }
 
@@ -57,7 +57,6 @@ void MainWindow::on_actionParticipant_manager_triggered()
     connect(p, SIGNAL(notify_mainWindow_transcriptionFile(QString)),
             this, SLOT(when_transcription_loaded(QString)));
     p->exec();
-    //p->show();
 }
 
 void MainWindow::when_transcription_loaded(const QString &filename)
@@ -93,7 +92,7 @@ void MainWindow::on_actionSelect_Tool_triggered()
 
     ui->actionSelect_Tool->setChecked(true);
     ui->actionHand_Tool->setChecked(false);
-    ui->actionInterval_Select->setChecked(false);
+    ui->actionInspect->setChecked(false);
 }
 
 void MainWindow::on_actionHand_Tool_triggered()
@@ -102,16 +101,16 @@ void MainWindow::on_actionHand_Tool_triggered()
     timeline->setCursor(Qt::OpenHandCursor);
 
     ui->actionHand_Tool->setChecked(true);
-    ui->actionInterval_Select->setChecked(false);
+    ui->actionInspect->setChecked(false);
     ui->actionSelect_Tool->setChecked(false);
 }
 
-void MainWindow::on_actionInterval_Select_triggered()
+void MainWindow::on_actionInspect_triggered()
 {
-    timeline->setTool(TimelineWidget::IntervalSelectTool);
+    timeline->setTool(TimelineWidget::InspectTool);
     timeline->setCursor(Qt::IBeamCursor);
 
-    ui->actionInterval_Select->setChecked(true);
+    ui->actionInspect->setChecked(true);
     ui->actionHand_Tool->setChecked(false);
     ui->actionSelect_Tool->setChecked(false);
 }
