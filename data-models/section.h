@@ -5,9 +5,10 @@
 #include <QList>
 #include "turn.h"
 #include "topic.h"
+#include "selectable.h"
 //#include "drawables/regular/sectiongraphicsitem.h"
 
-class Section
+class Section : public Selectable
 {
 public:
     Section();
@@ -26,12 +27,15 @@ public:
 
     QList<Turn*> getTurns() const;
     void setTurns(const QList<Turn*> &value);
-/*
-    SectionGraphicsItem getRegularGraphic() const;
-    void setRegularGraphic(const SectionGraphicsItem &value);
-*/
+
+    // maintain a list of ptrs to objects in timeline and propagate
+    bool getSelected() const Q_DECL_OVERRIDE;
+    void setSelected(bool value) Q_DECL_OVERRIDE;
+
 private:
     // <Section endTime="18.025" startTime="0.0" topic="to2" type="report">
+    bool selected;
+
     double startTime, endTime;
     Topic *topic;
     QList <Turn*> turns;

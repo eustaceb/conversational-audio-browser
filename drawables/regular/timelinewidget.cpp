@@ -133,6 +133,7 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
 
 void TimelineWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     if (tool == SelectTool)
         selectArea->hide();
     // determine selection, for example using QRect::intersects()
@@ -195,16 +196,6 @@ void TimelineWidget::wheelEvent(QWheelEvent *event)
 }
 #endif
 
-void TimelineWidget::drawForeground(QPainter *painter, const QRectF &rect)
-{
-
-}
-
-
-void TimelineWidget::drawBackground(QPainter *painter, const QRectF &rect)
-{
-
-}
 
 void TimelineWidget::scaleView(qreal scaleFactor)
 {

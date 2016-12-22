@@ -2,8 +2,9 @@
 #define TOPIC_H
 
 #include <QString>
+#include "selectable.h"
 
-class Topic
+class Topic : public Selectable
 {
 public:
     Topic();
@@ -15,9 +16,13 @@ public:
     QString getId() const;
     void setId(const QString &value);
 
+    bool getSelected() const Q_DECL_OVERRIDE;
+    void setSelected(bool value) Q_DECL_OVERRIDE;
+
 protected:
 
 private:
+    bool selected;
     // TODO: Should have a list of section objects
     QString desc;
     QString id;

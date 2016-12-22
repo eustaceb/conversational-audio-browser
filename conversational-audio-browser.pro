@@ -41,7 +41,8 @@ HEADERS  += mainwindow.h \
     drawables/regular/timelinewidget.h \
     drawables/regular/speakergraphicsitem.h \
     drawables/ruler.h \
-    drawables/regular/turngraphicsitem.h
+    drawables/regular/turngraphicsitem.h \
+    selectable.h
 
 FORMS    += mainwindow.ui \
     participantmanager.ui

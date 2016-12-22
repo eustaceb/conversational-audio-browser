@@ -34,6 +34,8 @@ QPainterPath TurnGraphicsItem::shape() const
 
 void TurnGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     QBrush brush = QBrush(color);
     brush.setStyle(Qt::SolidPattern);
 
@@ -73,6 +75,7 @@ void TurnGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void TurnGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     setZValue(0);
     hovered = false;
     color = color.darker(120);

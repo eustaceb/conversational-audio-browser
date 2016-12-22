@@ -32,10 +32,10 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
+    Section *section;
     TimelineWidget *timelineWidget;
 
     QRectF rect;
-    Section *section;
     QColor color;
     QStaticText label;
     static QFont font;

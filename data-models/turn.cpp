@@ -41,3 +41,13 @@ void Turn::setEndTime(const double &value)
 {
     endTime = value;
 }
+
+bool Turn::getSelected() const
+{
+    return selected;
+}
+
+void Turn::setSelected(bool value)
+{
+    selected = value;
+}

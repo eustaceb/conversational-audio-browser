@@ -47,6 +47,8 @@ QPainterPath SectionGraphicsItem::shape() const
 
 void SectionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     QBrush brush = QBrush(color);
     brush.setStyle(Qt::SolidPattern);
     painter->setBrush(brush);

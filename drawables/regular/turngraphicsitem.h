@@ -24,8 +24,8 @@ protected:
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) Q_DECL_OVERRIDE;
 
 private:
-    TimelineWidget *timelineWidget;
     Turn *turn;
+    TimelineWidget *timelineWidget;
 
     QRectF rect;
     QColor color;

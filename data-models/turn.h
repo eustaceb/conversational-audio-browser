@@ -5,7 +5,7 @@
 #include <QList>
 #include "speaker.h"
 
-class Turn
+class Turn : public Selectable
 {
 public:
     Turn();
@@ -20,8 +20,12 @@ public:
     double getEndTime() const;
     void setEndTime(const double &value);
 
+    bool getSelected() const Q_DECL_OVERRIDE;
+    void setSelected(bool value) Q_DECL_OVERRIDE;
 
 private:
+    bool selected;
+
     double startTime;
     double endTime;
 

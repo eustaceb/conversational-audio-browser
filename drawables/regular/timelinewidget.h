@@ -17,7 +17,6 @@ class SpeakerGraphicsItem;
 class TimelineWidget : public QGraphicsView
 {
     Q_OBJECT
-
 public:
     enum Tool { SelectTool, HandTool, InspectTool };
 
@@ -55,9 +54,6 @@ protected:
 #ifndef QT_NO_WHEELEVENT
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
-    void drawForeground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
-    void drawBackground(QPainter *painter, const QRectF &rect) Q_DECL_OVERRIDE;
-
     void scaleView(qreal scaleFactor);
 private:
     QGraphicsScene *scene;
@@ -71,8 +67,8 @@ private:
 
     Tool tool;
 
-    QPointF cursor, origin;
     qreal zoomScale;
+    QPointF cursor, origin;
 };
 
 #endif // REGULARTIMELINEWIDGET_H

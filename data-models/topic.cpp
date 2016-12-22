@@ -21,6 +21,16 @@ void Topic::setId(const QString &value)
     id = value;
 }
 
+bool Topic::getSelected() const
+{
+    return selected;
+}
+
+void Topic::setSelected(bool value)
+{
+    selected = value;
+}
+
 QString Topic::getDesc() const
 {
     return desc;

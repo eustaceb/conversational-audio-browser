@@ -40,6 +40,7 @@ private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
     TimelineWidget *timeline;
+    // TODO: Decide between list or some table structure with faster lookups
 };
 
 #endif // MAINWINDOW_H

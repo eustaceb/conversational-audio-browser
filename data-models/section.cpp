@@ -55,6 +55,19 @@ void Section::setTurns(const QList<Turn *> &value)
 {
     turns = value;
 }
+
+bool Section::getSelected() const
+{
+    return selected;
+}
+
+void Section::setSelected(bool value)
+{
+    selected = value;
+    foreach (Turn *t, turns) {
+        t->setSelected(value);
+    }
+}
 /*
 SectionGraphicsItem Section::getRegularGraphic() const
 {
