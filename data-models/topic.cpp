@@ -11,6 +11,11 @@ Topic::Topic(const QString &id, const QString &desc)
     this->desc = desc;
 }
 
+Topic::~Topic()
+{
+    // qDeleteAll(sections);
+}
+
 QString Topic::getId() const
 {
     return id;
@@ -21,14 +26,24 @@ void Topic::setId(const QString &value)
     id = value;
 }
 
-bool Topic::getSelected() const
+void Topic::addSection(Section *s)
 {
-    return selected;
+    sections.append(s);
 }
 
-void Topic::setSelected(bool value)
+QList<Section *> Topic::getSections() const
 {
-    selected = value;
+    return sections;
+}
+
+
+QList<QVariant> Topic::composeTreePayload() const
+{
+    QList<QVariant> payload;
+    payload.append(id + " - " + desc);
+    payload.append("topic");
+    payload.append(QString::number(sections.length()) +" section(s)");
+    return payload;
 }
 
 QString Topic::getDesc() const

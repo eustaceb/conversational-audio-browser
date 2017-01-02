@@ -67,6 +67,7 @@ void TurnGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
 void TurnGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     setZValue(1);
     hovered = true;
     color = color.lighter(120);

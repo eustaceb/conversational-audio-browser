@@ -2,6 +2,7 @@
 #define TRANSCRIPTION_H
 
 #include <QList>
+
 #include "data-models/topic.h"
 #include "data-models/speaker.h"
 #include "data-models/section.h"
@@ -24,9 +25,9 @@ public:
 
     QList<Section*> getSections() const;
     void setSections(const QList<Section*> &value);
-
 private:
-
+    //QStandardItemModel* tpc, spk, sec;
+    // TODO: Topics -> Sections hierarchy
     QList <Topic*> topics;
     QList <Speaker*> speakers;
     QList <Section*> sections;

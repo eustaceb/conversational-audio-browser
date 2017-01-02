@@ -1,9 +1,13 @@
 #include "section.h"
 
 #include <QDebug>
+
+int Section::idCounter = 0;
+
 Section::Section()
 {
-
+    id = idCounter;
+    idCounter++;
 }
 
 Section::~Section()
@@ -24,6 +28,7 @@ double Section::getStartTime() const
 void Section::setStartTime(const double &value)
 {
     startTime = value;
+
 }
 
 double Section::getEndTime() const
@@ -56,26 +61,16 @@ void Section::setTurns(const QList<Turn *> &value)
     turns = value;
 }
 
-bool Section::getSelected() const
+QList<QVariant> Section::composeTreePayload() const
 {
-    return selected;
+    QList<QVariant> payload;
+    payload.append(QString::number(id) + " - " + topic->getDesc());
+    payload.append("section");
+    payload.append("From " + QString::number(startTime) + " to " + QString::number(endTime));
+    return payload;
 }
 
-void Section::setSelected(bool value)
+int Section::getId() const
 {
-    selected = value;
-    foreach (Turn *t, turns) {
-        t->setSelected(value);
-    }
+    return id;
 }
-/*
-SectionGraphicsItem Section::getRegularGraphic() const
-{
-    return regularGraphic;
-}
-
-void Section::setRegularGraphic(const SectionGraphicsItem &value)
-{
-    regularGraphic = value;
-}
-*/

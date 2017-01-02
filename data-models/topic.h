@@ -1,14 +1,17 @@
 #ifndef TOPIC_H
 #define TOPIC_H
 
-#include <QString>
-#include "selectable.h"
+#include "section.h"
+#include "selection/selectable.h"
+
+class Section;
 
 class Topic : public Selectable
 {
 public:
     Topic();
     Topic(const QString &id, const QString &desc);
+    virtual ~Topic();
 
     QString getDesc() const;
     void setDesc(const QString &value);
@@ -16,15 +19,15 @@ public:
     QString getId() const;
     void setId(const QString &value);
 
-    bool getSelected() const Q_DECL_OVERRIDE;
-    void setSelected(bool value) Q_DECL_OVERRIDE;
+    void addSection(Section *s);
+    QList<Section *> getSections() const;
 
-protected:
+    // Selection tree
+    QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
 
 private:
-    bool selected;
-    // TODO: Should have a list of section objects
     QString desc;
     QString id;
+    QList<Section *> sections;
 };
 #endif // TOPIC_H

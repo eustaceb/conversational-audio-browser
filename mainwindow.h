@@ -1,12 +1,21 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QObject>
 #include <QMainWindow>
 #include <QSignalMapper>
-
+#include <QList>
+#include <QString>
+#include <QFile>
+#include <QXmlStreamReader>
+#include <QListView>
 #include <QtMultimedia/QMediaPlayer>
 
-#include <drawables/regular/timelinewidget.h>
+#include "ui_mainwindow.h"
+#include "helpers.h"
+#include "participantmanager.h"
+#include "drawables/regular/timelinewidget.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +30,8 @@ public:
     void reloadWidgets(Transcription *transc);
     ~MainWindow();
 
+    QList<SelectableTreeItem *> getSelection() const;
+
 private slots:
     void on_actionParticipant_manager_triggered();
 
@@ -34,13 +45,14 @@ private slots:
 
     void on_actionHand_Tool_triggered();
 
-    void on_actionInspect_triggered();
-
+//    void add_to_selection(Selectable *item);
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
     TimelineWidget *timeline;
-    // TODO: Decide between list or some table structure with faster lookups
+
+    SelectionTreeModel *selectionTree;
+    QList<SelectableTreeItem*> selection;
 };
 
 #endif // MAINWINDOW_H

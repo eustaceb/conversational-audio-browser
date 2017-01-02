@@ -1,5 +1,5 @@
-#ifndef REGULARTIMELINEWIDGET_H
-#define REGULARTIMELINEWIDGET_H
+#ifndef TIMELINEWIDGET_H
+#define TIMELINEWIDGET_H
 
 #include <QGraphicsView>
 #include <QRubberBand>
@@ -10,7 +10,6 @@
 #include "drawables/ruler.h"
 #include "drawables/regular/speakergraphicsitem.h"
 
-class AudioTrack;
 class Transcription;
 class SpeakerGraphicsItem;
 
@@ -18,7 +17,7 @@ class TimelineWidget : public QGraphicsView
 {
     Q_OBJECT
 public:
-    enum Tool { SelectTool, HandTool, InspectTool };
+    enum Tool { SelectTool, HandTool };
 
     TimelineWidget(Transcription *t, QWidget *parent = 0);
     ~TimelineWidget();
@@ -71,4 +70,4 @@ private:
     QPointF cursor, origin;
 };
 
-#endif // REGULARTIMELINEWIDGET_H
+#endif // TIMELINEWIDGET_H

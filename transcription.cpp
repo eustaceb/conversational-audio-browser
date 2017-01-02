@@ -14,6 +14,7 @@ Transcription::~Transcription()
 
 void Transcription::addTopic(Topic *t)
 {
+
     this->topics.append(t);
 }
 

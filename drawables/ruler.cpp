@@ -31,6 +31,8 @@ QPainterPath Ruler::shape() const
 
 void Ruler::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     painter->setPen(Qt::black);
     painter->setBrush(QColor(0xfaffff));
     // Framing

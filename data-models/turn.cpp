@@ -1,8 +1,11 @@
 #include "turn.h"
 
+int Turn::idCounter = 0;
+
 Turn::Turn()
 {
-
+    id = idCounter;
+    idCounter++;
 }
 
 Turn::Turn(const double &startTime, const double &endTime, Speaker *speaker)
@@ -10,6 +13,11 @@ Turn::Turn(const double &startTime, const double &endTime, Speaker *speaker)
     this->startTime = startTime;
     this->endTime = endTime;
     this->speaker = speaker;
+}
+
+Turn::~Turn()
+{
+
 }
 
 void Turn::setSpeaker(Speaker *speaker)
@@ -42,12 +50,12 @@ void Turn::setEndTime(const double &value)
     endTime = value;
 }
 
-bool Turn::getSelected() const
+QList<QVariant> Turn::composeTreePayload() const
 {
-    return selected;
+    QList<QVariant> payload;
+    payload.append("TU" + QString::number(id) + " - " + speaker->getName());
+    payload.append("turn");
+    payload.append("From " + QString::number(startTime) + " to " + QString::number(endTime));
+    return payload;
 }
 
-void Turn::setSelected(bool value)
-{
-    selected = value;
-}

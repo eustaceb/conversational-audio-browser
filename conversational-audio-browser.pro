@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     participantmanager.cpp \
     transcription.cpp \
     helpers.cpp \
-    data-models/participant.cpp \
     data-models/section.cpp \
     data-models/speaker.cpp \
     data-models/topic.cpp \
@@ -26,13 +25,15 @@ SOURCES += main.cpp\
     drawables/regular/timelinewidget.cpp \
     drawables/regular/speakergraphicsitem.cpp \
     drawables/ruler.cpp \
-    drawables/regular/turngraphicsitem.cpp
+    drawables/regular/turngraphicsitem.cpp \
+    selection/selectiontreemodel.cpp \
+    selection/selectabletreeitem.cpp \
+    selection/selectable.cpp
 
 HEADERS  += mainwindow.h \
     participantmanager.h \
     transcription.h \
     helpers.h \
-    data-models/participant.h \
     data-models/section.h \
     data-models/speaker.h \
     data-models/topic.h \
@@ -42,7 +43,9 @@ HEADERS  += mainwindow.h \
     drawables/regular/speakergraphicsitem.h \
     drawables/ruler.h \
     drawables/regular/turngraphicsitem.h \
-    selectable.h
+    selection/selectabletreeitem.h \
+    selection/selectiontreemodel.h \
+    selection/selectable.h
 
 FORMS    += mainwindow.ui \
     participantmanager.ui

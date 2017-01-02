@@ -11,6 +11,11 @@ Speaker::Speaker(const QString &id, const QString &name)
     this->name = name;
 }
 
+Speaker::~Speaker()
+{
+
+}
+
 QString Speaker::getId() const
 {
     return id;
@@ -34,14 +39,4 @@ void Speaker::setName(const QString &value)
 bool Speaker::operator <(const Speaker& x) const
 {
     return name < x.getName();
-}
-
-bool Speaker::getSelected() const
-{
-    return selected;
-}
-
-void Speaker::setSelected(bool value)
-{
-    selected = value;
 }

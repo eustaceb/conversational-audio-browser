@@ -1,14 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "helpers.h"
-#include "participantmanager.h"
-#include "drawables/regular/timelinewidget.h"
-
-#include <QtMultimedia/QMediaPlayer>
-#include <QString>
-#include <QFile>
-#include <QXmlStreamReader>
-#include <QListView>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -20,6 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
     Transcription *trs = Helpers::parseTranscript("/home/justas/Dissertation/F01.trs");
 
     timeline = new TimelineWidget(trs, this);
+
+    selectionTree = Helpers::generateSelectionTree(trs);
+    ui->selectionTreeView->setModel(selectionTree);
+
     reloadWidgets(trs);
 
     // Trigger the Hand Tool by default
@@ -33,19 +27,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::reloadWidgets(Transcription *transc)
 {
-    ui->speakerListWidget->clear();
     ui->topicListWidget->clear();
-    // TODO: Replace with models / ListView
-    foreach(Speaker *s, transc->getSpeakers()) {
-        ui->speakerListWidget->addItem(s->getName());
-    }
-    foreach(Topic *t, transc->getTopics()) {
-        ui->topicListWidget->addItem(t->getDesc());
+
+    for(int i = 0; i < transc->getSpeakers().size(); i++) {
+        Speaker *s = transc->getSpeakers().value(i);
+        ui->topicListWidget->addItem(s->getName());
+        //ui->topicListWidget->item(i)->setCheckState(s->getSelected() ? Qt::Checked : Qt::Unchecked);
     }
 }
 
 MainWindow::~MainWindow()
 {
+    delete selectionTree;
     delete player;
     delete timeline;
     delete ui;
@@ -62,7 +55,6 @@ void MainWindow::on_actionParticipant_manager_triggered()
 void MainWindow::when_transcription_loaded(const QString &filename)
 {
     Transcription *trs = Helpers::parseTranscript(filename);
-
     reloadWidgets(trs);
     timeline->setTranscription(trs);
     timeline->reloadScene();
@@ -92,7 +84,6 @@ void MainWindow::on_actionSelect_Tool_triggered()
 
     ui->actionSelect_Tool->setChecked(true);
     ui->actionHand_Tool->setChecked(false);
-    ui->actionInspect->setChecked(false);
 }
 
 void MainWindow::on_actionHand_Tool_triggered()
@@ -101,16 +92,11 @@ void MainWindow::on_actionHand_Tool_triggered()
     timeline->setCursor(Qt::OpenHandCursor);
 
     ui->actionHand_Tool->setChecked(true);
-    ui->actionInspect->setChecked(false);
     ui->actionSelect_Tool->setChecked(false);
 }
 
-void MainWindow::on_actionInspect_triggered()
-{
-    timeline->setTool(TimelineWidget::InspectTool);
-    timeline->setCursor(Qt::IBeamCursor);
 
-    ui->actionInspect->setChecked(true);
-    ui->actionHand_Tool->setChecked(false);
-    ui->actionSelect_Tool->setChecked(false);
+QList<SelectableTreeItem *> MainWindow::getSelection() const
+{
+    return selection;
 }

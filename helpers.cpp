@@ -1,13 +1,33 @@
 #include "helpers.h"
 
-#include <QDebug>
-#include <QFile>
-#include <QXmlStreamReader>
-#include <QMap>
-
 Helpers::Helpers()
 {
 
+}
+
+SelectionTreeModel* Helpers::generateSelectionTree(Transcription *t)
+{
+    // Setup headers
+    QList<QVariant> heading;
+    heading.append("Name");
+    heading.append("Type");
+    heading.append("Description");
+
+    SelectableTreeItem *root = new SelectableTreeItem(heading);
+
+    foreach (Topic *topic, t->getTopics()) {
+        SelectableTreeItem *topicItem = new SelectableTreeItem(topic, root);
+        foreach (Section *section, topic->getSections()) {
+            SelectableTreeItem *sectionItem = new SelectableTreeItem(section, topicItem);
+            foreach (Turn *turn, section->getTurns()) {
+                sectionItem->appendChild(new SelectableTreeItem(turn, sectionItem));
+            }
+            topicItem->appendChild(sectionItem);
+        }
+        root->appendChild(topicItem);
+    }
+
+    return new SelectionTreeModel(root);
 }
 
 Transcription* Helpers::parseTranscript(const QString &fileName)
@@ -59,7 +79,11 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
                         QString key = xml.attributes()[i].name().toString();
                         QString val = xml.attributes()[i].value().toString();
 
-                        if (key == "topic") currentSection->setTopic(topicMap.find(val).value());
+                        if (key == "topic") {
+                            Topic *t = topicMap.find(val).value();
+                            currentSection->setTopic(t);
+                            t->addSection(currentSection);
+                        }
                         else if (key == "startTime") currentSection->setStartTime(val.toDouble());
                         else if (key == "endTime") currentSection->setEndTime(val.toDouble());
                     }
@@ -91,16 +115,14 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
                 }
             } else if (xml.isEndElement()) {
                 if (tag == "Section") {
-                    qInfo() << "This section had" << currentSection->getTurns().size() << "turns";
                     result->addSection(currentSection);
-                    //currentSection = NULL;
                 }
             }
             else if (xml.hasError()) {
                 qInfo() << "XML error: " << xml.errorString() << endl;
             }
             else if (xml.atEnd()) {
-                qInfo() << "Parsing complete" << endl;
+                qInfo() << "Parsing complete";
             }
         }
     }
