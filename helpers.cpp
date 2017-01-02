@@ -113,10 +113,6 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
                     speakerMap.insert(s->getId(), s);
                     result->addSpeaker(s);
                 }
-            } else if (xml.isEndElement()) {
-                if (tag == "Section") {
-                    result->addSection(currentSection);
-                }
             }
             else if (xml.hasError()) {
                 qInfo() << "XML error: " << xml.errorString() << endl;
@@ -128,7 +124,6 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
     }
     qInfo() << "No of topics: " << result->getTopics().size();
     qInfo() << "No of speakers: " << result->getSpeakers().size();
-    qInfo() << "No of sections: " << result->getSections().size();
 
     file->close();
     delete file;

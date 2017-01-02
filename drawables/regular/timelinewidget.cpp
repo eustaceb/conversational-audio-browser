@@ -44,6 +44,8 @@ TimelineWidget::~TimelineWidget()
 
 void TimelineWidget::setTranscription(Transcription *t)
 {
+    //TODO: uncomment
+    //delete transcription;
     transcription = t;
 }
 
@@ -69,21 +71,20 @@ void TimelineWidget::reloadScene()
     // Ruler start point, the top-left point of the first section
     QRectF sectionsRect(0, 0, 0, 0);
 
-    for (int i = 0; i < transcription->getSections().size(); i++) {
-        Section *s = transcription->getSections().at(i);
-        // TODO: Move those to fields for memory management
-        SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
+    foreach (Topic *topic, transcription->getTopics()) {
+        foreach (Section *s, topic->getSections()) {
+            SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
 
-        for (int i = 0; i < s->getTurns().size(); i++) {
-            Turn *t = s->getTurns().at(i);
-            TurnGraphicsItem *turnItem = new TurnGraphicsItem(t, this);
-            scene->addItem(turnItem);
+            for (int i = 0; i < s->getTurns().size(); i++) {
+                Turn *t = s->getTurns().at(i);
+                TurnGraphicsItem *turnItem = new TurnGraphicsItem(t, this);
+                scene->addItem(turnItem);
+            }
+            // Calculate the biggest rect that surrounds sections for rulers
+            sectionsRect = sectionsRect.united(sectionItem->boundingRect());
+
+            scene->addItem(sectionItem);
         }
-
-        // Calculate the biggest rect that surrounds sections for rulers
-        sectionsRect = sectionsRect.united(sectionItem->boundingRect());
-
-        scene->addItem(sectionItem);
     }
     // Calculate scene rect
     int margin = 100;
@@ -164,13 +165,11 @@ void TimelineWidget::itemMoved()
 
 void TimelineWidget::zoomIn()
 {
-    zoomScale *= 4;
     scaleView(qreal(1.2));
 }
 
 void TimelineWidget::zoomOut()
 {
-    zoomScale /= 4;
     scaleView(1 / qreal(1.2));
 }
 
@@ -191,7 +190,6 @@ void TimelineWidget::keyPressEvent(QKeyEvent *event)
 #ifndef QT_NO_WHEELEVENT
 void TimelineWidget::wheelEvent(QWheelEvent *event)
 {
-    zoomScale *= pow((double)2, event->delta() / 240.0);
     scaleView(pow((double)2, event->delta() / 240.0));
 }
 #endif
@@ -200,9 +198,10 @@ void TimelineWidget::wheelEvent(QWheelEvent *event)
 void TimelineWidget::scaleView(qreal scaleFactor)
 {
     qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
+    if (factor < 0.05 || factor > 100)
         return;
 
+    zoomScale *= scaleFactor;
     scale(scaleFactor, scaleFactor);
 }
 

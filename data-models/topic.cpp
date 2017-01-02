@@ -13,7 +13,7 @@ Topic::Topic(const QString &id, const QString &desc)
 
 Topic::~Topic()
 {
-    // qDeleteAll(sections);
+    qDeleteAll(sections);
 }
 
 QString Topic::getId() const
