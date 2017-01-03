@@ -45,7 +45,7 @@ private slots:
 
     void on_actionHand_Tool_triggered();
 
-//    void add_to_selection(Selectable *item);
+    void selection_updated();
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;

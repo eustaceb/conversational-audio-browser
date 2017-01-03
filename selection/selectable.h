@@ -7,7 +7,7 @@ class Selectable
 {
 public:
     Selectable();
-    bool getSelected() const;
+    bool isSelected() const;
     void setSelected(bool value);
 
     // Used by SelectableTreeItem

@@ -13,10 +13,17 @@ SelectionTreeModel::~SelectionTreeModel()
 
 QVariant SelectionTreeModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid() || role != Qt::DisplayRole)
+    if (!index.isValid())
         return QVariant();
 
     SelectableTreeItem *item = static_cast<SelectableTreeItem*>(index.internalPointer());
+
+    if (role == Qt::CheckStateRole && index.column() == 0)
+        return static_cast<int>(item->isSelected() ? Qt::Checked : Qt::Unchecked);
+
+    if (role != Qt::DisplayRole)
+        return QVariant();
+
     return item->data(index.column());
 }
 
@@ -24,7 +31,14 @@ Qt::ItemFlags SelectionTreeModel::flags(const QModelIndex &index) const
 {
     if (!index.isValid())
         return 0;
-    return QAbstractItemModel::flags(index);
+
+    Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+    if (index.column() == 0) {
+        flags |= Qt::ItemIsUserCheckable;
+    }
+
+    return flags;
 }
 
 QVariant SelectionTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -87,4 +101,26 @@ int SelectionTreeModel::columnCount(const QModelIndex &parent) const
         return root->columnCount();
     else
         return static_cast<SelectableTreeItem*>(parent.internalPointer())->columnCount();
+}
+
+bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role != Qt::CheckStateRole)
+        return false;
+
+    SelectableTreeItem *item = getItem(index);
+    item->setSelected(value.toBool());
+    emit dataChanged(index, createIndex(index.row() + 5, index.column()));
+
+    return true;
+}
+
+SelectableTreeItem *SelectionTreeModel::getItem(const QModelIndex &index) const
+{
+    if (index.isValid()) {
+        SelectableTreeItem *item = static_cast<SelectableTreeItem*>(index.internalPointer());
+        if (item)
+            return item;
+    }
+    return root;
 }

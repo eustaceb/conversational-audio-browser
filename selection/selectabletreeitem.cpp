@@ -53,6 +53,19 @@ QVariant SelectableTreeItem::data(int column) const
     return payload.value(column);
 }
 
+bool SelectableTreeItem::isSelected() const
+{
+    return dataModel->isSelected();
+}
+
+void SelectableTreeItem::setSelected(bool value)
+{
+    dataModel->setSelected(value);
+    for (int i = 0; i < children.length(); i++) {
+        children.at(i)->setSelected(value);
+    }
+}
+
 QList<SelectableTreeItem *> SelectableTreeItem::getChildren() const
 {
     return children;

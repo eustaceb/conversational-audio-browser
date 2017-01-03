@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     selectionTree = Helpers::generateSelectionTree(trs);
     ui->selectionTreeView->setModel(selectionTree);
+    // Connect the singal tree
+    connect(selectionTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
+            this, SLOT(selection_updated()));
 
     reloadWidgets(trs);
 
@@ -93,6 +96,11 @@ void MainWindow::on_actionHand_Tool_triggered()
 
     ui->actionHand_Tool->setChecked(true);
     ui->actionSelect_Tool->setChecked(false);
+}
+
+void MainWindow::selection_updated()
+{
+    timeline->viewport()->repaint();
 }
 
 

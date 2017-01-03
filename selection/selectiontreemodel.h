@@ -22,7 +22,10 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
+    bool setData(const QModelIndex &index, const QVariant &value, int role) Q_DECL_OVERRIDE;
 private:
+    SelectableTreeItem *getItem(const QModelIndex &index) const;
+
     SelectableTreeItem *root;
 };
 

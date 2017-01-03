@@ -20,6 +20,9 @@ public:
     int columnCount() const;
     QVariant data(int column) const;
 
+    bool isSelected() const;
+    void setSelected(bool value);
+
     QList<SelectableTreeItem *> getChildren() const;
 
 private:

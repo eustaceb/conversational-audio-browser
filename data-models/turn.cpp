@@ -1,14 +1,15 @@
 #include "turn.h"
+#include <QDebug>
 
 int Turn::idCounter = 0;
 
 Turn::Turn()
+    : id(++idCounter)
 {
-    id = idCounter;
-    idCounter++;
 }
 
 Turn::Turn(const double &startTime, const double &endTime, Speaker *speaker)
+    : id(++idCounter)
 {
     this->startTime = startTime;
     this->endTime = endTime;
@@ -55,7 +56,7 @@ QList<QVariant> Turn::composeTreePayload() const
     QList<QVariant> payload;
     payload.append("TU" + QString::number(id) + " - " + speaker->getName());
     payload.append("turn");
-    payload.append("From " + QString::number(startTime) + " to " + QString::number(endTime));
+    payload.append(QString::number(startTime) + " to " + QString::number(endTime));
     return payload;
 }
 

@@ -36,7 +36,13 @@ void TurnGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    QBrush brush = QBrush(color);
+
+    QBrush brush;
+    if (turn->isSelected())
+        brush = QBrush(color.lighter(150));
+    else
+        brush = QBrush(color);
+
     brush.setStyle(Qt::SolidPattern);
 
     QPen pen = QPen(QColor(0, 0, 0));

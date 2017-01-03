@@ -5,7 +5,7 @@ Selectable::Selectable()
     selected = false;
 }
 
-bool Selectable::getSelected() const
+bool Selectable::isSelected() const
 {
     return selected;
 }
