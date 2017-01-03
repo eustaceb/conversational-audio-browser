@@ -9,6 +9,7 @@ SelectionTreeModel* Helpers::generateSelectionTree(Transcription *t)
 {
     // Setup headers
     QList<QVariant> heading;
+    heading.append("ID");
     heading.append("Name");
     heading.append("Type");
     heading.append("Description");
@@ -25,6 +26,25 @@ SelectionTreeModel* Helpers::generateSelectionTree(Transcription *t)
             topicItem->appendChild(sectionItem);
         }
         root->appendChild(topicItem);
+    }
+
+    return new SelectionTreeModel(root);
+}
+
+SelectionTreeModel *Helpers::generateFilterTree(Transcription *t)
+{
+    // Setup headers
+    QList<QVariant> heading;
+    heading.append("ID");
+    heading.append("Name");
+    heading.append("Type");
+    heading.append("Description");
+
+    SelectableTreeItem *root = new SelectableTreeItem(heading);
+
+    foreach (Speaker *speaker, t->getSpeakers()) {
+        SelectableTreeItem *speakerItem = new SelectableTreeItem(speaker, root);
+        root->appendChild(speakerItem);
     }
 
     return new SelectionTreeModel(root);
@@ -69,7 +89,9 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
                     }
                     // If there are multiple speakers - create separate turns for them
                     foreach (Speaker *s, speakers) {
-                        currentSection->addTurn(new Turn(startTime, endTime, s));
+                        Turn *t = new Turn(startTime, endTime, s);
+                        s->addTurn(t);
+                        currentSection->addTurn(t);
                     }
                 }
                 else if (tag == "Section") {

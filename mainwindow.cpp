@@ -11,17 +11,30 @@ MainWindow::MainWindow(QWidget *parent) :
 
     timeline = new TimelineWidget(trs, this);
 
+    // Selection tree
     selectionTree = Helpers::generateSelectionTree(trs);
     ui->selectionTreeView->setModel(selectionTree);
-    // Connect the singal tree
+    // Connect the selection tree
     connect(selectionTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
             this, SLOT(selection_updated()));
+    // Filter tree
+    filterTree = Helpers::generateFilterTree(trs);
+    ui->filterTreeView->setModel(filterTree);
+    // Connect the filter tree
+    connect(filterTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
+            this, SLOT(selection_updated()));
+    // Connect the filter tree with the selection tree
+    /*connect(filterTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
+            selectionTree, SLOT(selection_updated()));
+    connect(selectionTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
+            filterTree, SLOT(selection_updated()));*/
 
     reloadWidgets(trs);
 
     // Trigger the Hand Tool by default
     on_actionHand_Tool_triggered();
 
+    // Audio setup
     ui->splitter->insertWidget(0, timeline);
     player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/loomer.wav"));
@@ -30,13 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::reloadWidgets(Transcription *transc)
 {
-    ui->topicListWidget->clear();
-
-    for(int i = 0; i < transc->getSpeakers().size(); i++) {
-        Speaker *s = transc->getSpeakers().value(i);
-        ui->topicListWidget->addItem(s->getName());
-        //ui->topicListWidget->item(i)->setCheckState(s->getSelected() ? Qt::Checked : Qt::Unchecked);
-    }
+    Q_UNUSED(transc);
 }
 
 MainWindow::~MainWindow()
@@ -101,10 +108,4 @@ void MainWindow::on_actionHand_Tool_triggered()
 void MainWindow::selection_updated()
 {
     timeline->viewport()->repaint();
-}
-
-
-QList<SelectableTreeItem *> MainWindow::getSelection() const
-{
-    return selection;
 }

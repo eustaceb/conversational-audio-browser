@@ -3,8 +3,10 @@
 
 #include <QList>
 
-#include "speaker.h"
+class Speaker;
+
 #include "selection/selectable.h"
+#include "speaker.h"
 
 class Turn : public Selectable
 {

@@ -109,8 +109,10 @@ bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value
         return false;
 
     SelectableTreeItem *item = getItem(index);
-    item->setSelected(value.toBool());
-    emit dataChanged(index, createIndex(index.row() + 5, index.column()));
+
+    item->propagateSelected(value.toBool());
+
+    emit dataChanged(QModelIndex(), QModelIndex());
 
     return true;
 }

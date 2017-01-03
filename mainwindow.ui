@@ -120,13 +120,6 @@ QTabBar::tab:!selected {
             <string>Speaker Filter</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="1" column="0">
-             <widget class="QPushButton" name="pushButton_2">
-              <property name="text">
-               <string>All</string>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
              <widget class="QPushButton" name="pushButton_7">
               <property name="text">
@@ -134,55 +127,27 @@ QTabBar::tab:!selected {
               </property>
              </widget>
             </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="pushButton_2">
+              <property name="text">
+               <string>All</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="0" colspan="2">
-             <widget class="QListWidget" name="topicListWidget">
+             <widget class="QTreeView" name="filterTreeView">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
-              <property name="batchSize">
-               <number>100</number>
-              </property>
-              <item>
-               <property name="text">
-                <string>laughter_r</string>
-               </property>
-               <property name="checkState">
-                <enum>Checked</enum>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>laughter_c</string>
-               </property>
-               <property name="checkState">
-                <enum>Checked</enum>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>caller</string>
-               </property>
-               <property name="checkState">
-                <enum>Checked</enum>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>receiver</string>
-               </property>
-               <property name="checkState">
-                <enum>Checked</enum>
-               </property>
-              </item>
              </widget>
             </item>
            </layout>
           </widget>
          </item>
-         <item row="1" column="0" rowspan="3" colspan="3">
+         <item row="1" column="0" rowspan="3">
           <widget class="QGroupBox" name="groupBox_2">
            <property name="title">
             <string>Selection</string>

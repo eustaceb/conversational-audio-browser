@@ -40,7 +40,8 @@ QList<Section *> Topic::getSections() const
 QList<QVariant> Topic::composeTreePayload() const
 {
     QList<QVariant> payload;
-    payload.append(id + " - " + desc);
+    payload.append(id);
+    payload.append(desc);
     payload.append("topic");
     payload.append(QString::number(sections.length()) +" section(s)");
     return payload;

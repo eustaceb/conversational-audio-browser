@@ -3,6 +3,7 @@
 #include <QString>
 #include <QList>
 #include <QVariant>
+
 #include "selectable.h"
 
 class SelectableTreeItem {
@@ -22,10 +23,14 @@ public:
 
     bool isSelected() const;
     void setSelected(bool value);
+    void propagateSelected(bool value);
 
     QList<SelectableTreeItem *> getChildren() const;
 
 private:
+    void propagateParentSelection(bool value);
+    void propagateChildrenSelection(bool value);
+
     QList<QVariant> payload;
     Selectable *dataModel; // the datamodel that the tree item is bound to
     SelectableTreeItem *parent;

@@ -61,8 +61,43 @@ bool SelectableTreeItem::isSelected() const
 void SelectableTreeItem::setSelected(bool value)
 {
     dataModel->setSelected(value);
+}
+
+void SelectableTreeItem::propagateSelected(bool value)
+{
+    propagateChildrenSelection(value);
+    if (parent)
+        parent->propagateParentSelection(value);
+}
+
+void SelectableTreeItem::propagateParentSelection(bool value)
+{
+    // If parent has a data model - determine its status
+    if (dataModel) {
+        // If propagating a true value - set it to true since at least one child will be checked
+        if (value) {
+            dataModel->setSelected(value);
+        // Otherwise - go through all children to see if at least one child is checked
+        } else {
+            dataModel->setSelected(false);
+            foreach(SelectableTreeItem *c, children) {
+                if (c->isSelected()) {
+                    dataModel->setSelected(true);
+                    break;
+                }
+            }
+        }
+    }
+    // Propagate up
+    if (parent)
+        parent->propagateParentSelection(value);
+}
+
+void SelectableTreeItem::propagateChildrenSelection(bool value)
+{
+    dataModel->setSelected(value);
     for (int i = 0; i < children.length(); i++) {
-        children.at(i)->setSelected(value);
+        children.at(i)->propagateChildrenSelection(value);
     }
 }
 

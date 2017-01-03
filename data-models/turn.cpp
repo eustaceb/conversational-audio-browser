@@ -54,7 +54,8 @@ void Turn::setEndTime(const double &value)
 QList<QVariant> Turn::composeTreePayload() const
 {
     QList<QVariant> payload;
-    payload.append("TU" + QString::number(id) + " - " + speaker->getName());
+    payload.append(id);
+    payload.append(speaker->getName());
     payload.append("turn");
     payload.append(QString::number(startTime) + " to " + QString::number(endTime));
     return payload;

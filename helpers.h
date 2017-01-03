@@ -6,14 +6,19 @@
 #include <QXmlStreamReader>
 #include <QMap>
 
-#include "transcription.h"
+class Transcription;
+
 #include "selection/selectiontreemodel.h"
+#include "transcription.h"
 
 class Helpers
 {
 public:
     Helpers();
+
     static SelectionTreeModel* generateSelectionTree(Transcription *t);
+    static SelectionTreeModel* generateFilterTree(Transcription *t);
+
     static Transcription* parseTranscript(const QString &fileName);
 };
 

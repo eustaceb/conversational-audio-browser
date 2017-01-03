@@ -3,6 +3,7 @@
 
 #include <QAbstractItemModel>
 #include <QObject>
+
 #include "selectabletreeitem.h"
 
 class SelectionTreeModel : public QAbstractItemModel

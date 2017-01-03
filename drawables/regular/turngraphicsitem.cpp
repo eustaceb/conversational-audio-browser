@@ -39,7 +39,7 @@ void TurnGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
     QBrush brush;
     if (turn->isSelected())
-        brush = QBrush(color.lighter(150));
+        brush = QBrush(color.lighter(200));
     else
         brush = QBrush(color);
 

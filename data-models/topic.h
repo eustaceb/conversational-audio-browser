@@ -1,10 +1,10 @@
 #ifndef TOPIC_H
 #define TOPIC_H
 
-#include "section.h"
-#include "selection/selectable.h"
-
 class Section;
+
+#include "selection/selectable.h"
+#include "section.h"
 
 class Topic : public Selectable
 {

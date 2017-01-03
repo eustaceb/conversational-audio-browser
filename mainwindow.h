@@ -30,8 +30,6 @@ public:
     void reloadWidgets(Transcription *transc);
     ~MainWindow();
 
-    QList<SelectableTreeItem *> getSelection() const;
-
 private slots:
     void on_actionParticipant_manager_triggered();
 
@@ -52,7 +50,7 @@ private:
     TimelineWidget *timeline;
 
     SelectionTreeModel *selectionTree;
-    QList<SelectableTreeItem*> selection;
+    SelectionTreeModel *filterTree;
 };
 
 #endif // MAINWINDOW_H
