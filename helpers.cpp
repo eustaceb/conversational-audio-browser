@@ -7,50 +7,6 @@ Helpers::Helpers()
 
 }
 
-SelectionTreeModel* Helpers::generateSelectionTree(Transcription *t)
-{
-    // Setup headers
-    QList<QVariant> heading;
-    heading.append("ID");
-    heading.append("Name");
-    heading.append("Type");
-    heading.append("Description");
-
-    SelectionTreeItem *root = new SelectionTreeItem(heading);
-
-    foreach (Topic *topic, t->getTopics()) {
-        SelectionTreeItem *topicItem = new SelectionTreeItem(topic, root);
-        foreach (Section *section, topic->getSections()) {
-            SelectionTreeItem *sectionItem = new SelectionTreeItem(section, topicItem);
-            foreach (Turn *turn, section->getTurns()) {
-                sectionItem->appendChild(new SelectionTreeItem(turn, sectionItem));
-            }
-            topicItem->appendChild(sectionItem);
-        }
-        root->appendChild(topicItem);
-    }
-
-    return new SelectionTreeModel(root);
-}
-
-FilterTreeModel *Helpers::generateFilterTree(Transcription *t)
-{
-    // Setup headers
-    QList<QVariant> heading;
-    heading.append("ID");
-    heading.append("Name");
-    heading.append("Type");
-    heading.append("Description");
-
-    FilterTreeItem *root = new FilterTreeItem(heading);
-
-    foreach (Speaker *speaker, t->getSpeakers()) {
-        FilterTreeItem *speakerItem = new FilterTreeItem(speaker, root);
-        root->appendChild(speakerItem);
-    }
-
-    return new FilterTreeModel(root);
-}
 
 Transcription* Helpers::parseTranscript(const QString &fileName)
 {
@@ -146,8 +102,8 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
             }
         }
     }
-    qInfo() << "No of topics: " << result->getTopics().size();
-    qInfo() << "No of speakers: " << result->getSpeakers().size();
+    QStringList splitFilename = fileName.split("/");
+    qInfo() << "Transcription" << splitFilename.at(splitFilename.length() - 1) << "loaded.";
 
     file->close();
     delete file;

@@ -109,7 +109,7 @@ QTabBar::tab:!selected {
         </attribute>
         <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0,0,0" columnstretch="0,0,0,0">
          <item row="1" column="3" rowspan="3">
-          <widget class="QGroupBox" name="topicFilterBox">
+          <widget class="QGroupBox" name="filterGroupBox">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -121,14 +121,14 @@ QTabBar::tab:!selected {
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="1" column="1">
-             <widget class="QPushButton" name="pushButton_7">
+             <widget class="QPushButton" name="filterNoneButton">
               <property name="text">
                <string>None</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QPushButton" name="pushButton_2">
+             <widget class="QPushButton" name="filterAllButton">
               <property name="text">
                <string>All</string>
               </property>
@@ -148,20 +148,20 @@ QTabBar::tab:!selected {
           </widget>
          </item>
          <item row="1" column="0" rowspan="3">
-          <widget class="QGroupBox" name="groupBox_2">
+          <widget class="QGroupBox" name="selectionGroupBox">
            <property name="title">
             <string>Selection</string>
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="1" column="0">
-             <widget class="QPushButton" name="pushButton_3">
+             <widget class="QPushButton" name="selectAllButton">
               <property name="text">
                <string>All</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QPushButton" name="pushButton_6">
+             <widget class="QPushButton" name="selectNoneButton">
               <property name="text">
                <string>None</string>
               </property>

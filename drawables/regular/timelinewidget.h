@@ -19,7 +19,7 @@ class TimelineWidget : public QGraphicsView
 public:
     enum Tool { SelectTool, HandTool };
 
-    TimelineWidget(Transcription *t, QWidget *parent = 0);
+    TimelineWidget(QWidget *parent = 0);
     ~TimelineWidget();
 
     void setTranscription(Transcription *t);

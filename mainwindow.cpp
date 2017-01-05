@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -7,48 +8,44 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     delete ui->timelineView;
 
-    Transcription *trs = Helpers::parseTranscript("/home/justas/Dissertation/F01.trs");
-
-    timeline = new TimelineWidget(trs, this);
-
     // Selection tree
-    selectionTree = Helpers::generateSelectionTree(trs);
+    selectionTree = new SelectionTreeModel;
     ui->selectionTreeView->setModel(selectionTree);
     // Connect the selection tree
     connect(selectionTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
             this, SLOT(selection_updated()));
     // Filter tree
-    filterTree = Helpers::generateFilterTree(trs);
+    filterTree = new FilterTreeModel;
     ui->filterTreeView->setModel(filterTree);
     // Connect the filter tree
     connect(filterTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
             this, SLOT(selection_updated()));
-    // Connect the selection tree with the filter tree
-    connect(filterTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
-            selectionTree, SLOT(refresh()));
+    // Connect the two trees with each other
+    connect(filterTree, SIGNAL(treeUpdated()), selectionTree, SLOT(refresh()));
+    connect(selectionTree, SIGNAL(treeUpdated()), filterTree, SLOT(refresh()));
 
-    reloadWidgets(trs);
-
-    // Trigger the Hand Tool by default
-    on_actionHand_Tool_triggered();
+    // Timeline setup
+    timeline = new TimelineWidget(this);
+    when_transcription_loaded("/home/justas/Dissertation/F01.trs");
+    ui->splitter->insertWidget(0, timeline);
 
     // Audio setup
-    ui->splitter->insertWidget(0, timeline);
     player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/loomer.wav"));
     player->setVolume(50);
+
+    // Trigger the Hand Tool by default
+    on_actionHand_Tool_triggered();
 }
 
-void MainWindow::reloadWidgets(Transcription *transc)
-{
-    Q_UNUSED(transc);
-}
 
 MainWindow::~MainWindow()
 {
     delete selectionTree;
-    delete player;
+    delete filterTree;
+    qDeleteAll(transcriptions);
     delete timeline;
+    delete player;
     delete ui;
 }
 
@@ -63,7 +60,11 @@ void MainWindow::on_actionParticipant_manager_triggered()
 void MainWindow::when_transcription_loaded(const QString &filename)
 {
     Transcription *trs = Helpers::parseTranscript(filename);
-    reloadWidgets(trs);
+    transcriptions.append(trs);
+
+    selectionTree->appendTranscription(trs);
+    filterTree->appendTranscription(trs);
+
     timeline->setTranscription(trs);
     timeline->reloadScene();
 }
@@ -106,4 +107,29 @@ void MainWindow::on_actionHand_Tool_triggered()
 void MainWindow::selection_updated()
 {
     timeline->viewport()->repaint();
+}
+
+QList<Transcription *> MainWindow::getTranscriptions() const
+{
+    return transcriptions;
+}
+
+void MainWindow::on_selectAllButton_clicked()
+{
+    selectionTree->selectAll();
+}
+
+void MainWindow::on_selectNoneButton_clicked()
+{
+    selectionTree->selectNone();
+}
+
+void MainWindow::on_filterAllButton_clicked()
+{
+    filterTree->selectAll();
+}
+
+void MainWindow::on_filterNoneButton_clicked()
+{
+    filterTree->selectNone();
 }

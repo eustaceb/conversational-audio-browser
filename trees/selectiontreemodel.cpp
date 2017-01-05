@@ -1,12 +1,23 @@
 #include "selectiontreemodel.h"
+#include "data-models/topic.h"
+#include "data-models/section.h"
 #include "data-models/turn.h"
 #include "data-models/speaker.h"
+#include "transcription.h"
+
 #include <QColor>
 
-SelectionTreeModel::SelectionTreeModel(SelectionTreeItem *root, QObject *parent)
-    : root(root), QAbstractItemModel(parent)
+SelectionTreeModel::SelectionTreeModel(QObject *parent)
+    : QAbstractItemModel(parent)
 {
+    // Setup headers
+    QList<QVariant> heading;
+    heading.append("ID");
+    heading.append("Name");
+    heading.append("Type");
+    heading.append("Description");
 
+    root = new SelectionTreeItem(heading);
 }
 
 SelectionTreeModel::~SelectionTreeModel()
@@ -126,8 +137,44 @@ bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value
     item->propagateSelected(value.toBool());
 
     emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
 
     return true;
+}
+
+void SelectionTreeModel::selectAll()
+{
+    root->propagateSelected(true);
+    emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
+}
+
+void SelectionTreeModel::selectNone()
+{
+    root->propagateSelected(false);
+    emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
+}
+
+void SelectionTreeModel::appendTranscription(Transcription *trs)
+{
+    SelectionTreeItem *transcriptionItem = new SelectionTreeItem(trs, root);
+
+    foreach (Topic *topic, trs->getTopics()) {
+        SelectionTreeItem *topicItem = new SelectionTreeItem(topic, transcriptionItem);
+        foreach (Section *section, topic->getSections()) {
+            SelectionTreeItem *sectionItem = new SelectionTreeItem(section, topicItem);
+            foreach (Turn *turn, section->getTurns()) {
+                sectionItem->appendChild(new SelectionTreeItem(turn, sectionItem));
+            }
+            topicItem->appendChild(sectionItem);
+        }
+        transcriptionItem->appendChild(topicItem);
+    }
+    root->appendChild(transcriptionItem);
+
+    emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
 }
 
 void SelectionTreeModel::refresh()

@@ -6,11 +6,13 @@
 
 #include "selectiontreeitem.h"
 
+class Transcription;
+
 class SelectionTreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    SelectionTreeModel(SelectionTreeItem *root, QObject *parent = 0);
+    SelectionTreeModel(QObject *parent = 0);
     ~SelectionTreeModel();
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
@@ -24,6 +26,13 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
 
     bool setData(const QModelIndex &index, const QVariant &value, int role) Q_DECL_OVERRIDE;
+
+    void selectAll();
+    void selectNone();
+    void appendTranscription(Transcription *trs);
+
+signals:
+    void treeUpdated();
 
 public slots:
     void refresh();

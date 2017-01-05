@@ -1,10 +1,18 @@
 #include "filtertreemodel.h"
+#include "data-models/speaker.h"
+#include "transcription.h"
 
-
-FilterTreeModel::FilterTreeModel(FilterTreeItem *root, QObject *parent)
-    : root(root), QAbstractItemModel(parent)
+FilterTreeModel::FilterTreeModel(QObject *parent)
+    : QAbstractItemModel(parent)
 {
+    // Setup headers
+    QList<QVariant> heading;
+    heading.append("ID");
+    heading.append("Name");
+    heading.append("Type");
+    heading.append("Description");
 
+    root = new FilterTreeItem(heading);
 }
 
 FilterTreeModel::~FilterTreeModel()
@@ -111,11 +119,44 @@ bool FilterTreeModel::setData(const QModelIndex &index, const QVariant &value, i
 
     FilterTreeItem *item = getItem(index);
 
-    item->setFiltered(value.toBool());
+    item->propagateFiltered(value.toBool());
 
     emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
 
     return true;
+}
+
+void FilterTreeModel::selectAll()
+{
+    root->propagateFiltered(true);
+    emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
+}
+
+void FilterTreeModel::selectNone()
+{
+    root->propagateFiltered(false);
+    emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
+}
+
+void FilterTreeModel::appendTranscription(Transcription *trs)
+{
+    FilterTreeItem *transcriptionItem = new FilterTreeItem(trs, root);
+    foreach (Speaker *speaker, trs->getSpeakers()) {
+        FilterTreeItem *speakerItem = new FilterTreeItem(speaker, transcriptionItem);
+        transcriptionItem->appendChild(speakerItem);
+    }
+    root->appendChild(transcriptionItem);
+
+    emit dataChanged(QModelIndex(), QModelIndex());
+    emit treeUpdated();
+}
+
+void FilterTreeModel::refresh()
+{
+    emit dataChanged(QModelIndex(), QModelIndex());
 }
 
 FilterTreeItem *FilterTreeModel::getItem(const QModelIndex &index) const

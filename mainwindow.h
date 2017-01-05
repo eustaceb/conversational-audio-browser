@@ -30,6 +30,8 @@ public:
     void reloadWidgets(Transcription *transc);
     ~MainWindow();
 
+    QList<Transcription *> getTranscriptions() const;
+
 private slots:
     void on_actionParticipant_manager_triggered();
 
@@ -44,9 +46,20 @@ private slots:
     void on_actionHand_Tool_triggered();
 
     void selection_updated();
+    void on_selectAllButton_clicked();
+
+    void on_selectNoneButton_clicked();
+
+    void on_filterAllButton_clicked();
+
+    void on_filterNoneButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
+
+    QList<Transcription *> transcriptions;
+
     TimelineWidget *timeline;
 
     SelectionTreeModel *selectionTree;

@@ -6,11 +6,13 @@
 
 #include "filtertreeitem.h"
 
+class Transcription;
+
 class FilterTreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    FilterTreeModel(FilterTreeItem *root, QObject *parent = 0);
+    FilterTreeModel(QObject *parent = 0);
     ~FilterTreeModel();
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
@@ -25,6 +27,15 @@ public:
 
     bool setData(const QModelIndex &index, const QVariant &value, int role) Q_DECL_OVERRIDE;
 
+    void selectAll();
+    void selectNone();
+    void appendTranscription(Transcription *trs);
+
+signals:
+    void treeUpdated();
+
+public slots:
+    void refresh();
 
 private:
     FilterTreeItem *getItem(const QModelIndex &index) const;

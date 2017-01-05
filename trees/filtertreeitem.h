@@ -21,6 +21,7 @@ public:
 
     bool isFiltered() const;
     void setFiltered(bool value);
+    void propagateFiltered(bool value);
 
     QList<FilterTreeItem *> getChildren() const;
 

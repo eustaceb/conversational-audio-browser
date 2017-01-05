@@ -10,8 +10,8 @@
 #include <QApplication>
 #include <QGraphicsSceneEvent>
 
-TimelineWidget::TimelineWidget(Transcription *t, QWidget *parent)
-    : QGraphicsView(parent), transcription(t), zoomScale(1), cursor(0, 0)
+TimelineWidget::TimelineWidget(QWidget *parent)
+    : QGraphicsView(parent), zoomScale(1), cursor(0, 0)
 {
     scene = new QGraphicsScene(this);
     // TODO: Change to some indexing for possible optimisation
@@ -19,7 +19,7 @@ TimelineWidget::TimelineWidget(Transcription *t, QWidget *parent)
     //scene->setSceneRect(-200, -200, 1600, 1600);
     setScene(scene);
     setCacheMode(CacheNone);
-    this->setViewportUpdateMode(BoundingRectViewportUpdate);
+    setViewportUpdateMode(BoundingRectViewportUpdate);
 
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(NoAnchor);
@@ -33,7 +33,7 @@ TimelineWidget::TimelineWidget(Transcription *t, QWidget *parent)
     this->setCursor(Qt::ArrowCursor);
     selectArea = new QRubberBand(QRubberBand::Rectangle, this);
 
-    reloadScene();
+    //reloadScene();
 }
 
 TimelineWidget::~TimelineWidget()
@@ -44,15 +44,14 @@ TimelineWidget::~TimelineWidget()
 
 void TimelineWidget::setTranscription(Transcription *t)
 {
-    //TODO: uncomment
-    //delete transcription;
     transcription = t;
 }
 
 void TimelineWidget::reloadScene()
 {
-    SpeakerGraphicsItem::setHeightCounter(0);
     scene->clear();
+
+    SpeakerGraphicsItem::setHeightCounter(0);
 
     // Find the max speaker name width for appropriate rendering
     maxSpeakerNameW = 0;

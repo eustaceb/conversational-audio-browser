@@ -96,7 +96,9 @@ void SelectionTreeItem::propagateParentSelection(bool value)
 
 void SelectionTreeItem::propagateChildrenSelection(bool value)
 {
-    dataModel->setSelected(value);
+    if (dataModel)
+        dataModel->setSelected(value);
+
     for (int i = 0; i < children.length(); i++) {
         children.at(i)->propagateChildrenSelection(value);
     }

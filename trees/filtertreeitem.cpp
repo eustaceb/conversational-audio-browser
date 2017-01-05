@@ -61,6 +61,11 @@ bool FilterTreeItem::isFiltered() const
 
 void FilterTreeItem::setFiltered(bool value)
 {
+    dataModel->setFiltered(value);
+}
+
+void FilterTreeItem::propagateFiltered(bool value)
+{
     propagateChildrenFiltering(value);
     if (parent)
         parent->propagateParentFiltering(value);
@@ -91,7 +96,9 @@ void FilterTreeItem::propagateParentFiltering(bool value)
 
 void FilterTreeItem::propagateChildrenFiltering(bool value)
 {
-    dataModel->setFiltered(value);
+    if (dataModel)
+        dataModel->setFiltered(value);
+
     for (int i = 0; i < children.length(); i++) {
         children.at(i)->propagateChildrenFiltering(value);
     }
