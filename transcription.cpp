@@ -41,3 +41,13 @@ void Transcription::setSpeakers(const QList<Speaker*> &value)
 {
     speakers = value;
 }
+
+QList<QVariant> Transcription::composeTreePayload() const
+{
+    QList<QVariant> payload;
+    payload.append("IDX");
+    payload.append("some_file.trs");
+    payload.append("transcription");
+    payload.append(QString::number(speakers.length()) + " speakers");
+    return payload;
+}

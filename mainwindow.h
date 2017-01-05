@@ -50,7 +50,7 @@ private:
     TimelineWidget *timeline;
 
     SelectionTreeModel *selectionTree;
-    SelectionTreeModel *filterTree;
+    FilterTreeModel *filterTree;
 };
 
 #endif // MAINWINDOW_H

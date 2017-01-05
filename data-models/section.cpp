@@ -1,6 +1,6 @@
 #include "section.h"
-
-#include <QDebug>
+#include "topic.h"
+#include "turn.h"
 
 int Section::idCounter = 0;
 

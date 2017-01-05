@@ -2,6 +2,8 @@
 #define SELECTABLE_H
 
 #include <QVariant>
+#include <QList>
+
 
 class Selectable
 {
@@ -10,7 +12,7 @@ public:
     bool isSelected() const;
     void setSelected(bool value);
 
-    // Used by SelectableTreeItem
+    // Used by SelectionTreeItem
     virtual QList<QVariant> composeTreePayload() const = 0;
 
 protected:

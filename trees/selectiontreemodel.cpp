@@ -1,6 +1,9 @@
 #include "selectiontreemodel.h"
+#include "data-models/turn.h"
+#include "data-models/speaker.h"
+#include <QColor>
 
-SelectionTreeModel::SelectionTreeModel(SelectableTreeItem *root, QObject *parent)
+SelectionTreeModel::SelectionTreeModel(SelectionTreeItem *root, QObject *parent)
     : root(root), QAbstractItemModel(parent)
 {
 
@@ -16,7 +19,17 @@ QVariant SelectionTreeModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    SelectableTreeItem *item = static_cast<SelectableTreeItem*>(index.internalPointer());
+    SelectionTreeItem *item = static_cast<SelectionTreeItem*>(index.internalPointer());
+
+    if (role == Qt::BackgroundRole) {
+       if (item->data(2).toString() == "turn") {
+           Turn *t = static_cast<Turn*>(item->getDataModel());
+           if (t->getSpeaker()->isFiltered())
+               return QColor(Qt::green);
+           else
+               return QColor(Qt::red);
+       }
+   }
 
     if (role == Qt::CheckStateRole && index.column() == 0)
         return static_cast<int>(item->isSelected() ? Qt::Checked : Qt::Unchecked);
@@ -53,14 +66,14 @@ QModelIndex SelectionTreeModel::index(int row, int column, const QModelIndex &pa
     if (!hasIndex(row, column, parent))
         return QModelIndex();
 
-    SelectableTreeItem *parentItem;
+    SelectionTreeItem *parentItem;
 
     if (!parent.isValid())
         parentItem = root;
     else
-        parentItem = static_cast<SelectableTreeItem*>(parent.internalPointer());
+        parentItem = static_cast<SelectionTreeItem*>(parent.internalPointer());
 
-    SelectableTreeItem *childItem = parentItem->child(row);
+    SelectionTreeItem *childItem = parentItem->child(row);
     if (childItem)
         return createIndex(row, column, childItem);
     else
@@ -72,8 +85,8 @@ QModelIndex SelectionTreeModel::parent(const QModelIndex &index) const
     if (!index.isValid())
         return QModelIndex();
 
-    SelectableTreeItem *childItem = static_cast<SelectableTreeItem*>(index.internalPointer());
-    SelectableTreeItem *parentItem = childItem->getParent();
+    SelectionTreeItem *childItem = static_cast<SelectionTreeItem*>(index.internalPointer());
+    SelectionTreeItem *parentItem = childItem->getParent();
 
     if (parentItem == root)
         return QModelIndex();
@@ -83,14 +96,14 @@ QModelIndex SelectionTreeModel::parent(const QModelIndex &index) const
 
 int SelectionTreeModel::rowCount(const QModelIndex &parent) const
 {
-    SelectableTreeItem *parentItem;
+    SelectionTreeItem *parentItem;
     if (parent.column() > 0)
         return 0;
 
     if (!parent.isValid())
         parentItem = root;
     else
-        parentItem = static_cast<SelectableTreeItem*>(parent.internalPointer());
+        parentItem = static_cast<SelectionTreeItem*>(parent.internalPointer());
 
     return parentItem->childCount();
 }
@@ -100,7 +113,7 @@ int SelectionTreeModel::columnCount(const QModelIndex &parent) const
     if (!parent.isValid())
         return root->columnCount();
     else
-        return static_cast<SelectableTreeItem*>(parent.internalPointer())->columnCount();
+        return static_cast<SelectionTreeItem*>(parent.internalPointer())->columnCount();
 }
 
 bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -108,7 +121,7 @@ bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value
     if (role != Qt::CheckStateRole)
         return false;
 
-    SelectableTreeItem *item = getItem(index);
+    SelectionTreeItem *item = getItem(index);
 
     item->propagateSelected(value.toBool());
 
@@ -117,10 +130,15 @@ bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value
     return true;
 }
 
-SelectableTreeItem *SelectionTreeModel::getItem(const QModelIndex &index) const
+void SelectionTreeModel::refresh()
+{
+    emit dataChanged(QModelIndex(), QModelIndex());
+}
+
+SelectionTreeItem *SelectionTreeModel::getItem(const QModelIndex &index) const
 {
     if (index.isValid()) {
-        SelectableTreeItem *item = static_cast<SelectableTreeItem*>(index.internalPointer());
+        SelectionTreeItem *item = static_cast<SelectionTreeItem*>(index.internalPointer());
         if (item)
             return item;
     }

@@ -3,10 +3,12 @@
 
 #include <QList>
 
+#include "data-models/selectable.h"
+#include "data-models/filterable.h"
 #include "data-models/topic.h"
 #include "data-models/speaker.h"
 
-class Transcription
+class Transcription : public Selectable, public Filterable
 {
 public:
     Transcription();
@@ -21,6 +23,7 @@ public:
     QList<Speaker*> getSpeakers() const;
     void setSpeakers(const QList<Speaker*> &value);
 
+    QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
 private:
     QList <Topic*> topics;
     QList <Speaker*> speakers;

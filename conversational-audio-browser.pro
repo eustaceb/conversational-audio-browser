@@ -26,9 +26,12 @@ SOURCES += main.cpp\
     drawables/regular/speakergraphicsitem.cpp \
     drawables/ruler.cpp \
     drawables/regular/turngraphicsitem.cpp \
-    selection/selectiontreemodel.cpp \
-    selection/selectabletreeitem.cpp \
-    selection/selectable.cpp
+    trees/selectiontreemodel.cpp \
+    trees/selectiontreeitem.cpp \
+    data-models/selectable.cpp \
+    data-models/filterable.cpp \
+    trees/filtertreeitem.cpp \
+    trees/filtertreemodel.cpp
 
 HEADERS  += mainwindow.h \
     participantmanager.h \
@@ -43,9 +46,12 @@ HEADERS  += mainwindow.h \
     drawables/regular/speakergraphicsitem.h \
     drawables/ruler.h \
     drawables/regular/turngraphicsitem.h \
-    selection/selectabletreeitem.h \
-    selection/selectiontreemodel.h \
-    selection/selectable.h
+    trees/selectiontreeitem.h \
+    trees/selectiontreemodel.h \
+    data-models/selectable.h \
+    data-models/filterable.h \
+    trees/filtertreeitem.h \
+    trees/filtertreemodel.h
 
 FORMS    += mainwindow.ui \
     participantmanager.ui

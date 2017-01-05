@@ -1,5 +1,5 @@
 #include "turn.h"
-#include <QDebug>
+#include "speaker.h"
 
 int Turn::idCounter = 0;
 

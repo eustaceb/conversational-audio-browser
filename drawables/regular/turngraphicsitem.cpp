@@ -38,7 +38,7 @@ void TurnGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(widget);
 
     QBrush brush;
-    if (turn->isSelected())
+    if (turn->isSelected() && turn->getSpeaker()->isFiltered())
         brush = QBrush(color.lighter(200));
     else
         brush = QBrush(color);

@@ -4,11 +4,10 @@
 #include <QString>
 #include <QList>
 
-class Topic;
+#include "selectable.h"
 
-#include "selection/selectable.h"
-#include "turn.h"
-#include "topic.h"
+class Topic;
+class Turn;
 
 class Section : public Selectable
 {

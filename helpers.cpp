@@ -1,4 +1,6 @@
 #include "helpers.h"
+#include "data-models/section.h"
+#include "data-models/turn.h"
 
 Helpers::Helpers()
 {
@@ -14,14 +16,14 @@ SelectionTreeModel* Helpers::generateSelectionTree(Transcription *t)
     heading.append("Type");
     heading.append("Description");
 
-    SelectableTreeItem *root = new SelectableTreeItem(heading);
+    SelectionTreeItem *root = new SelectionTreeItem(heading);
 
     foreach (Topic *topic, t->getTopics()) {
-        SelectableTreeItem *topicItem = new SelectableTreeItem(topic, root);
+        SelectionTreeItem *topicItem = new SelectionTreeItem(topic, root);
         foreach (Section *section, topic->getSections()) {
-            SelectableTreeItem *sectionItem = new SelectableTreeItem(section, topicItem);
+            SelectionTreeItem *sectionItem = new SelectionTreeItem(section, topicItem);
             foreach (Turn *turn, section->getTurns()) {
-                sectionItem->appendChild(new SelectableTreeItem(turn, sectionItem));
+                sectionItem->appendChild(new SelectionTreeItem(turn, sectionItem));
             }
             topicItem->appendChild(sectionItem);
         }
@@ -31,7 +33,7 @@ SelectionTreeModel* Helpers::generateSelectionTree(Transcription *t)
     return new SelectionTreeModel(root);
 }
 
-SelectionTreeModel *Helpers::generateFilterTree(Transcription *t)
+FilterTreeModel *Helpers::generateFilterTree(Transcription *t)
 {
     // Setup headers
     QList<QVariant> heading;
@@ -40,14 +42,14 @@ SelectionTreeModel *Helpers::generateFilterTree(Transcription *t)
     heading.append("Type");
     heading.append("Description");
 
-    SelectableTreeItem *root = new SelectableTreeItem(heading);
+    FilterTreeItem *root = new FilterTreeItem(heading);
 
     foreach (Speaker *speaker, t->getSpeakers()) {
-        SelectableTreeItem *speakerItem = new SelectableTreeItem(speaker, root);
+        FilterTreeItem *speakerItem = new FilterTreeItem(speaker, root);
         root->appendChild(speakerItem);
     }
 
-    return new SelectionTreeModel(root);
+    return new FilterTreeModel(root);
 }
 
 Transcription* Helpers::parseTranscript(const QString &fileName)

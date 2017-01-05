@@ -40,14 +40,14 @@ bool Speaker::operator <(const Speaker& x) const
 {
     return name < x.getName();
 }
-
+#include <QDebug>
 QList<QVariant> Speaker::composeTreePayload() const
 {
     QList<QVariant> payload;
     payload.append(id);
     payload.append(name);
     payload.append("speaker");
-    payload.append(turns.size() + "turn(s)");
+    payload.append(QString::number(turns.size()) + (turns.size() == 1 ? " turn" : " turns"));
     return payload;
 }
 

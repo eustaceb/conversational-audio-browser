@@ -1,12 +1,12 @@
 #ifndef TURN_H
 #define TURN_H
 
+#include <QVariant>
 #include <QList>
 
-class Speaker;
+#include "selectable.h"
 
-#include "selection/selectable.h"
-#include "speaker.h"
+class Speaker;
 
 class Turn : public Selectable
 {
@@ -33,7 +33,7 @@ private:
 
     double startTime;
     double endTime;
-
+    // Filter
     Speaker *speaker;
 };
 

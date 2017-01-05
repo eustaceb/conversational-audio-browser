@@ -1,10 +1,11 @@
 #ifndef TOPIC_H
 #define TOPIC_H
 
-class Section;
+#include "selectable.h"
+#include <QString>
+#include <QList>
 
-#include "selection/selectable.h"
-#include "section.h"
+class Section;
 
 class Topic : public Selectable
 {

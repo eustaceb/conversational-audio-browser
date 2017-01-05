@@ -1,76 +1,77 @@
-#include "selectabletreeitem.h"
-SelectableTreeItem::SelectableTreeItem(Selectable *dataModel, SelectableTreeItem *parent)
+#include "selectiontreeitem.h"
+
+SelectionTreeItem::SelectionTreeItem(Selectable *dataModel, SelectionTreeItem *parent)
     : dataModel(dataModel), parent(parent)
 {
     payload = dataModel->composeTreePayload();
 }
 
-SelectableTreeItem::SelectableTreeItem(const QList<QVariant> &data, SelectableTreeItem *parent)
+SelectionTreeItem::SelectionTreeItem(const QList<QVariant> &data, SelectionTreeItem *parent)
     : dataModel(0), parent(parent)
 {
     payload = data;
 }
 
-SelectableTreeItem::~SelectableTreeItem()
+SelectionTreeItem::~SelectionTreeItem()
 {
     qDeleteAll(children);
 }
 
-void SelectableTreeItem::appendChild(SelectableTreeItem *item)
+void SelectionTreeItem::appendChild(SelectionTreeItem *item)
 {
     children.append(item);
 }
 
-SelectableTreeItem *SelectableTreeItem::child(int index)
+SelectionTreeItem *SelectionTreeItem::child(int index)
 {
     return children.value(index);
 }
 
-int SelectableTreeItem::childCount() const
+int SelectionTreeItem::childCount() const
 {
     return children.length();
 }
 
-int SelectableTreeItem::row() const
+int SelectionTreeItem::row() const
 {
     if (parent)
-        return parent->getChildren().indexOf(const_cast<SelectableTreeItem*>(this));
+        return parent->getChildren().indexOf(const_cast<SelectionTreeItem*>(this));
     return 0;
 }
 
-SelectableTreeItem *SelectableTreeItem::getParent()
+SelectionTreeItem *SelectionTreeItem::getParent()
 {
     return parent;
 }
 
-int SelectableTreeItem::columnCount() const
+int SelectionTreeItem::columnCount() const
 {
     return payload.length();
 }
 
-QVariant SelectableTreeItem::data(int column) const
+QVariant SelectionTreeItem::data(int column) const
 {
     return payload.value(column);
 }
 
-bool SelectableTreeItem::isSelected() const
+bool SelectionTreeItem::isSelected() const
 {
     return dataModel->isSelected();
 }
 
-void SelectableTreeItem::setSelected(bool value)
+void SelectionTreeItem::setSelected(bool value)
 {
     dataModel->setSelected(value);
 }
 
-void SelectableTreeItem::propagateSelected(bool value)
+void SelectionTreeItem::propagateSelected(bool value)
 {
     propagateChildrenSelection(value);
     if (parent)
         parent->propagateParentSelection(value);
 }
 
-void SelectableTreeItem::propagateParentSelection(bool value)
+void SelectionTreeItem::propagateParentSelection(bool value)
 {
     // If parent has a data model - determine its status
     if (dataModel) {
@@ -80,7 +81,7 @@ void SelectableTreeItem::propagateParentSelection(bool value)
         // Otherwise - go through all children to see if at least one child is checked
         } else {
             dataModel->setSelected(false);
-            foreach(SelectableTreeItem *c, children) {
+            foreach(SelectionTreeItem *c, children) {
                 if (c->isSelected()) {
                     dataModel->setSelected(true);
                     break;
@@ -93,7 +94,7 @@ void SelectableTreeItem::propagateParentSelection(bool value)
         parent->propagateParentSelection(value);
 }
 
-void SelectableTreeItem::propagateChildrenSelection(bool value)
+void SelectionTreeItem::propagateChildrenSelection(bool value)
 {
     dataModel->setSelected(value);
     for (int i = 0; i < children.length(); i++) {
@@ -101,7 +102,12 @@ void SelectableTreeItem::propagateChildrenSelection(bool value)
     }
 }
 
-QList<SelectableTreeItem *> SelectableTreeItem::getChildren() const
+Selectable *SelectionTreeItem::getDataModel() const
+{
+    return dataModel;
+}
+
+QList<SelectionTreeItem *> SelectionTreeItem::getChildren() const
 {
     return children;
 }

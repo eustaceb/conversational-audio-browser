@@ -23,11 +23,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Connect the filter tree
     connect(filterTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
             this, SLOT(selection_updated()));
-    // Connect the filter tree with the selection tree
-    /*connect(filterTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
-            selectionTree, SLOT(selection_updated()));
-    connect(selectionTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
-            filterTree, SLOT(selection_updated()));*/
+    // Connect the selection tree with the filter tree
+    connect(filterTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
+            selectionTree, SLOT(refresh()));
 
     reloadWidgets(trs);
 

@@ -1,13 +1,13 @@
 #ifndef SPEAKER_H
 #define SPEAKER_H
 
+#include "filterable.h"
 #include <QString>
+#include <QList>
 
 class Turn;
 
-#include "selection/selectable.h"
-
-class Speaker : public Selectable
+class Speaker : public Filterable
 {
 public:
     Speaker();
@@ -25,7 +25,7 @@ public:
 
     bool operator <(const Speaker &x) const;
 
-    // Selection tree
+    // Filter tree
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
 
 private:
