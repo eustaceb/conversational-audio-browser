@@ -1,6 +1,9 @@
 #include "helpers.h"
+#include "data-models/transcription.h"
 #include "data-models/section.h"
 #include "data-models/turn.h"
+#include "data-models/speaker.h"
+#include "data-models/topic.h"
 
 Helpers::Helpers()
 {

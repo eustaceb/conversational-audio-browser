@@ -6,11 +6,8 @@
 #include <QRect>
 #include <QMap>
 
-#include "transcription.h"
-#include "drawables/ruler.h"
-#include "drawables/regular/speakergraphicsitem.h"
-
 class Transcription;
+class Speaker;
 class SpeakerGraphicsItem;
 
 class TimelineWidget : public QGraphicsView

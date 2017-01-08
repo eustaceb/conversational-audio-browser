@@ -266,7 +266,7 @@ QTabBar::tab:!selected {
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionAnnotation_manager"/>
+    <addaction name="actionFile_manager"/>
     <addaction name="actionParticipant_manager"/>
    </widget>
    <addaction name="menuFile"/>
@@ -317,9 +317,12 @@ QTabBar::tab:!selected {
     <string>Multifile timeline</string>
    </property>
   </action>
-  <action name="actionAnnotation_manager">
+  <action name="actionFile_manager">
    <property name="text">
-    <string>Annotation / file manager</string>
+    <string>File Manager</string>
+   </property>
+   <property name="toolTip">
+    <string>File Manager - load annotation and audio files</string>
    </property>
   </action>
   <action name="actionTrack_1">

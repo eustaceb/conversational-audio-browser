@@ -1,4 +1,7 @@
-#include "transcription.h"
+#include "data-models/transcription.h"
+#include "data-models/topic.h"
+#include "data-models/speaker.h"
+#include "data-models/recording.h"
 
 int Transcription::idCounter = 0;
 
@@ -12,11 +15,11 @@ Transcription::~Transcription()
 {
     qDeleteAll(speakers);
     qDeleteAll(topics);
+    delete recording;
 }
 
 void Transcription::addTopic(Topic *t)
 {
-
     this->topics.append(t);
 }
 
@@ -59,4 +62,14 @@ QList<QVariant> Transcription::composeTreePayload() const
 QString Transcription::getFilename() const
 {
     return filename;
+}
+
+Recording *Transcription::getRecording() const
+{
+    return recording;
+}
+
+void Transcription::setRecording(Recording *rec)
+{
+    recording = rec;
 }

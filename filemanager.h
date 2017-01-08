@@ -4,16 +4,16 @@
 #include <QDialog>
 
 namespace Ui {
-class ParticipantManager;
+class FileManager;
 }
 
-class ParticipantManager : public QDialog
+class FileManager : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit ParticipantManager(QWidget *parent = 0);
-    ~ParticipantManager();
+    explicit FileManager(QWidget *parent = 0);
+    ~FileManager();
 
 private slots:
     void on_annotationFileLookupButton_clicked();
@@ -24,11 +24,13 @@ private slots:
 
     void on_loadFilesButton_clicked();
 
+    void on_audioFileLookupButton_clicked();
+
 signals:
-    void notify_mainWindow_transcriptionFile(const QString &filename);
+    void notify_mainWindow_filesLoaded(const QString &annotationsFile, const QString &audioFile);
 
 private:
-    Ui::ParticipantManager *ui;
+    Ui::FileManager *ui;
 };
 
 #endif // PARTICIPANTMANAGER_H

@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    participantmanager.cpp \
     transcription.cpp \
     helpers.cpp \
     data-models/section.cpp \
@@ -31,11 +30,11 @@ SOURCES += main.cpp\
     data-models/selectable.cpp \
     data-models/filterable.cpp \
     trees/filtertreeitem.cpp \
-    trees/filtertreemodel.cpp
+    trees/filtertreemodel.cpp \
+    filemanager.cpp \
+    data-models/recording.cpp
 
 HEADERS  += mainwindow.h \
-    participantmanager.h \
-    transcription.h \
     helpers.h \
     data-models/section.h \
     data-models/speaker.h \
@@ -51,10 +50,13 @@ HEADERS  += mainwindow.h \
     data-models/selectable.h \
     data-models/filterable.h \
     trees/filtertreeitem.h \
-    trees/filtertreemodel.h
+    trees/filtertreemodel.h \
+    filemanager.h \
+    data-models/transcription.h \
+    data-models/recording.h
 
 FORMS    += mainwindow.ui \
-    participantmanager.ui
+    filemanager.ui
 
 DISTFILES += \
     ../rand.wav

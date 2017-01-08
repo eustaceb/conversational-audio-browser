@@ -3,10 +3,12 @@
 
 #include <QList>
 
-#include "data-models/selectable.h"
-#include "data-models/filterable.h"
-#include "data-models/topic.h"
-#include "data-models/speaker.h"
+#include "selectable.h"
+#include "filterable.h"
+
+class Topic;
+class Speaker;
+class Recording;
 
 class Transcription : public Selectable, public Filterable
 {
@@ -26,10 +28,14 @@ public:
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
     QString getFilename() const;
 
+    Recording *getRecording() const;
+    void setRecording(Recording *rec);
+
 private:
     static int idCounter;
     int id;
     QString filename;
+    Recording *recording;
     QList <Topic*> topics;
     QList <Speaker*> speakers;
 };

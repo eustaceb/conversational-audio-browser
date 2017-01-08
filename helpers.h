@@ -11,8 +11,6 @@ class Transcription;
 #include "trees/selectiontreemodel.h"
 #include "trees/filtertreemodel.h"
 
-#include "transcription.h"
-
 class Helpers
 {
 public:

@@ -1,7 +1,12 @@
 #include "timelinewidget.h"
+#include "data-models/transcription.h"
+#include "data-models/speaker.h"
+#include "data-models/topic.h"
+
 #include "drawables/regular/sectiongraphicsitem.h"
 #include "drawables/regular/speakergraphicsitem.h"
 #include "drawables/regular/turngraphicsitem.h"
+#include "drawables/ruler.h"
 
 #include <math.h>
 #include <QKeyEvent>

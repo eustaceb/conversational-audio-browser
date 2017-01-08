@@ -1,4 +1,5 @@
 #include "sectiongraphicsitem.h"
+#include "data-models/topic.h"
 
 // TODO: Move these out of here?
 #include <QGraphicsScene>

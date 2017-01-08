@@ -12,6 +12,7 @@ QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE
 
+class Topic;
 class TimelineWidget;
 class Section;
 

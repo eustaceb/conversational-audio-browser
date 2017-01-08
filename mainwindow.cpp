@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "data-models/transcription.h"
+#include "data-models/recording.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -26,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Timeline setup
     timeline = new TimelineWidget(this);
-    when_transcription_loaded("/home/justas/Dissertation/F01.trs");
+    when_transcription_loaded("/home/justas/Dissertation/F01.trs", "");
     ui->splitter->insertWidget(0, timeline);
 
     // Audio setup
@@ -51,22 +53,24 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_actionParticipant_manager_triggered()
 {
-    ParticipantManager *p = new ParticipantManager;
-    connect(p, SIGNAL(notify_mainWindow_transcriptionFile(QString)),
-            this, SLOT(when_transcription_loaded(QString)));
+    FileManager *p = new FileManager;
+    connect(p, SIGNAL(notify_mainWindow_filesLoaded(QString, QString)),
+            this, SLOT(when_transcription_loaded(QString, QString)));
     p->exec();
 }
 
-void MainWindow::when_transcription_loaded(const QString &filename)
+void MainWindow::when_transcription_loaded(const QString &annotationsFile, const QString &audioFile)
 {
     foreach(Transcription *t, transcriptions) {
-        if (t->getFilename() == filename) {
+        if (t->getFilename() == annotationsFile) {
             qInfo() << "Transcription already loaded.";
             return;
         }
     }
 
-    Transcription *trs = Helpers::parseTranscript(filename);
+    Transcription *trs = Helpers::parseTranscript(annotationsFile);
+    if (audioFile != "")
+        trs->setRecording(new Recording(audioFile));
     transcriptions.append(trs);
 
     selectionTree->appendTranscription(trs);

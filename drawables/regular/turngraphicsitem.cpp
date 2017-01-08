@@ -1,5 +1,9 @@
 #include "turngraphicsitem.h"
-#include <QDebug>
+
+#include "speakergraphicsitem.h"
+
+#include "data-models/turn.h"
+#include "drawables/regular/timelinewidget.h"
 
 QFont TurnGraphicsItem::font = QFont("arial", 16);
 

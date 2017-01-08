@@ -2,10 +2,9 @@
 #define TURNGRAPHICSITEM_H
 
 #include <QGraphicsItem>
-#include "data-models/turn.h"
-#include "drawables/regular/timelinewidget.h"
 
 class TimelineWidget;
+class Turn;
 
 class TurnGraphicsItem : public QGraphicsItem
 {

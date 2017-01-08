@@ -13,9 +13,10 @@
 
 #include "ui_mainwindow.h"
 #include "helpers.h"
-#include "participantmanager.h"
+#include "filemanager.h"
 #include "drawables/regular/timelinewidget.h"
 
+class Transcription;
 
 namespace Ui {
 class MainWindow;
@@ -35,7 +36,7 @@ public:
 private slots:
     void on_actionParticipant_manager_triggered();
 
-    void when_transcription_loaded(const QString &filename);
+    void when_transcription_loaded(const QString &annotationsFile, const QString &audioFile);
 
     void on_actionOpen_triggered();
 
