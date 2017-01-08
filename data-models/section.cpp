@@ -64,7 +64,7 @@ void Section::setTurns(const QList<Turn *> &value)
 QList<QVariant> Section::composeTreePayload() const
 {
     QList<QVariant> payload;
-    payload.append(QString::number(id));
+    payload.append("sct" + QString::number(id));
     payload.append(topic->getDesc());
     payload.append("section");
     payload.append(QString::number(startTime) + " to " + QString::number(endTime));

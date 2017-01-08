@@ -36,6 +36,6 @@ private:
     QList<QVariant> payload;
     Selectable *dataModel; // the datamodel that the tree item is bound to
     SelectionTreeItem *parent;
-    QList<SelectionTreeItem*> children;
+    QList<SelectionTreeItem *> children;
 };
 #endif // SELECTIONTREEITEM_H

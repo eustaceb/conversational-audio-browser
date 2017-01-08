@@ -171,10 +171,10 @@ void SelectionTreeModel::appendTranscription(Transcription *trs)
         }
         transcriptionItem->appendChild(topicItem);
     }
+
     root->appendChild(transcriptionItem);
 
-    emit dataChanged(QModelIndex(), QModelIndex());
-    emit treeUpdated();
+    emit layoutChanged();
 }
 
 void SelectionTreeModel::refresh()

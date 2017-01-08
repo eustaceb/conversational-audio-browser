@@ -8,13 +8,13 @@ Helpers::Helpers()
 }
 
 
-Transcription* Helpers::parseTranscript(const QString &fileName)
+Transcription* Helpers::parseTranscript(const QString &filename)
 {
     // TODO: Exceptions in case of ill-formatted XML
-    QFile *file = new QFile(fileName);
+    QFile *file = new QFile(filename);
     QXmlStreamReader xml(file);
 
-    Transcription *result = new Transcription();
+    Transcription *result = new Transcription(filename);
     Section *currentSection;
 
     QMap<QString, Topic*> topicMap;
@@ -102,7 +102,7 @@ Transcription* Helpers::parseTranscript(const QString &fileName)
             }
         }
     }
-    QStringList splitFilename = fileName.split("/");
+    QStringList splitFilename = filename.split("/");
     qInfo() << "Transcription" << splitFilename.at(splitFilename.length() - 1) << "loaded.";
 
     file->close();

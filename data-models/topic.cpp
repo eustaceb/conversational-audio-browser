@@ -44,7 +44,7 @@ QList<QVariant> Topic::composeTreePayload() const
     payload.append(id);
     payload.append(desc);
     payload.append("topic");
-    payload.append(QString::number(sections.length()) + (sections.length() == 1 ? "section" : " sections"));
+    payload.append(QString::number(sections.length()) + (sections.length() == 1 ? " section" : " sections"));
     return payload;
 }
 

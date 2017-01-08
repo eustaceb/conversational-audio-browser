@@ -21,7 +21,7 @@ public:
     static SelectionTreeModel* generateSelectionTree(Transcription *t);
     static FilterTreeModel* generateFilterTree(Transcription *t);
 
-    static Transcription* parseTranscript(const QString &fileName);
+    static Transcription* parseTranscript(const QString &filename);
 };
 
 #endif // HELPERS_H

@@ -11,8 +11,8 @@
 class Transcription : public Selectable, public Filterable
 {
 public:
-    Transcription();
-    ~Transcription();
+    Transcription(const QString &filename);
+    virtual ~Transcription();
 
     void addTopic(Topic *t);
     void addSpeaker(Speaker *s);
@@ -24,7 +24,12 @@ public:
     void setSpeakers(const QList<Speaker*> &value);
 
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
+    QString getFilename() const;
+
 private:
+    static int idCounter;
+    int id;
+    QString filename;
     QList <Topic*> topics;
     QList <Speaker*> speakers;
 };

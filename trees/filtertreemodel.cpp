@@ -150,7 +150,7 @@ void FilterTreeModel::appendTranscription(Transcription *trs)
     }
     root->appendChild(transcriptionItem);
 
-    emit dataChanged(QModelIndex(), QModelIndex());
+    emit layoutChanged();
     emit treeUpdated();
 }
 

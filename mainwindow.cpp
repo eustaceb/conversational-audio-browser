@@ -59,6 +59,13 @@ void MainWindow::on_actionParticipant_manager_triggered()
 
 void MainWindow::when_transcription_loaded(const QString &filename)
 {
+    foreach(Transcription *t, transcriptions) {
+        if (t->getFilename() == filename) {
+            qInfo() << "Transcription already loaded.";
+            return;
+        }
+    }
+
     Transcription *trs = Helpers::parseTranscript(filename);
     transcriptions.append(trs);
 
