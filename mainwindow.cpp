@@ -82,7 +82,10 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
 
 void MainWindow::on_actionOpen_triggered()
 {
-
+    FileManager *p = new FileManager;
+    connect(p, SIGNAL(notify_mainWindow_filesLoaded(QString, QString)),
+            this, SLOT(when_transcription_loaded(QString, QString)));
+    p->exec();
 }
 
 void MainWindow::on_actionPlay_triggered()
