@@ -2,6 +2,7 @@
 #include "data-models/transcription.h"
 #include "data-models/recording.h"
 #include <QDebug>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,6 +10,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     delete ui->timelineView;
+
+    // Toolbar setup
+    ui->toolBar->addWidget(ui->trackSlider);
+    ui->toolBar->addSeparator();
+    ui->toolBar->addWidget(ui->controlsWidget);
 
     // Selection tree
     selectionTree = new SelectionTreeModel;
@@ -62,8 +68,11 @@ void MainWindow::on_actionParticipant_manager_triggered()
 void MainWindow::when_transcription_loaded(const QString &annotationsFile, const QString &audioFile)
 {
     foreach(Transcription *t, transcriptions) {
-        if (t->getFilename() == annotationsFile) {
-            qInfo() << "Transcription already loaded.";
+        if (t->getFilepath() == annotationsFile) {
+            QMessageBox messageBox;
+            messageBox.setText("Unable to load " + annotationsFile + " - it is already loaded.");
+            messageBox.setIcon(QMessageBox::Critical);
+            messageBox.exec();
             return;
         }
     }
@@ -71,13 +80,31 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
     Transcription *trs = Helpers::parseTranscript(annotationsFile);
     if (audioFile != "")
         trs->setRecording(new Recording(audioFile));
-    transcriptions.append(trs);
+    transcriptions.insert(trs->getId(), trs);
 
+    // Update selection/filter trees
     selectionTree->appendTranscription(trs);
     filterTree->appendTranscription(trs);
 
+    // Update toolbar
+    ui->transcriptionComboBox->clear();
+    foreach (Transcription *t, transcriptions) {
+        ui->transcriptionComboBox->addItem(t->getFilename(), t->getId());
+    }
+    int comboBoxIndex = ui->transcriptionComboBox->findData(trs->getId());
+    if (comboBoxIndex != -1)
+            ui->transcriptionComboBox->setCurrentIndex(comboBoxIndex);
+
+    // Reload timeline
     timeline->setTranscription(trs);
     timeline->reloadScene();
+
+    // Alert success
+    QMessageBox messageBox;
+    messageBox.setText("File(s) have been successfully loaded.");
+    messageBox.setIcon(QMessageBox::Information);
+    messageBox.exec();
+
 }
 
 void MainWindow::on_actionOpen_triggered()
@@ -123,7 +150,7 @@ void MainWindow::selection_updated()
     timeline->viewport()->repaint();
 }
 
-QList<Transcription *> MainWindow::getTranscriptions() const
+QMap<int, Transcription *> MainWindow::getTranscriptions() const
 {
     return transcriptions;
 }

@@ -4,6 +4,7 @@
 
 #include <QFileDialog>
 #include <QDebug>
+#include <QMessageBox>
 
 FileManager::FileManager(QWidget *parent) :
     QDialog(parent),
@@ -39,8 +40,17 @@ void FileManager::on_loadFilesButton_clicked()
 {
     QString annotationsFile = ui->annotationsFileLineEdit->text();
     QString audioFile = ui->audioFileLineEdit->text();
-    if (annotationsFile != "")
+    if (annotationsFile != "") {
         emit notify_mainWindow_filesLoaded(annotationsFile, audioFile);
+        ui->annotationsFileLineEdit->clear();
+        ui->audioFileLineEdit->clear();
+    }
+    else {
+        QMessageBox msgBox;
+        msgBox.setText("Please select an annotations file.");
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.exec();
+    }
 }
 
 

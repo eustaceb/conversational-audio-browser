@@ -5,10 +5,12 @@
 
 int Transcription::idCounter = 0;
 
-Transcription::Transcription(const QString &filename)
+Transcription::Transcription(const QString &filepath)
 {
     this->id = idCounter++;
-    this->filename = filename;
+    this->filepath = filepath;
+    QStringList splitFilepath = filepath.split("/");
+    this->filename = splitFilepath.at(splitFilepath.length() - 1);
 }
 
 Transcription::~Transcription()
@@ -52,16 +54,15 @@ QList<QVariant> Transcription::composeTreePayload() const
 {
     QList<QVariant> payload;
     payload.append("trs" + QString::number(id));\
-    QStringList splitFilename = filename.split("/");
-    payload.append(splitFilename.at(splitFilename.length() - 1));
+    payload.append(filename);
     payload.append("transcription");
     payload.append(QString::number(speakers.length()) + " speakers");
     return payload;
 }
 
-QString Transcription::getFilename() const
+QString Transcription::getFilepath() const
 {
-    return filename;
+    return filepath;
 }
 
 Recording *Transcription::getRecording() const
@@ -72,4 +73,14 @@ Recording *Transcription::getRecording() const
 void Transcription::setRecording(Recording *rec)
 {
     recording = rec;
+}
+
+QString Transcription::getFilename() const
+{
+    return filename;
+}
+
+int Transcription::getId() const
+{
+    return id;
 }

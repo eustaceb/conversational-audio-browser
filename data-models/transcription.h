@@ -13,7 +13,7 @@ class Recording;
 class Transcription : public Selectable, public Filterable
 {
 public:
-    Transcription(const QString &filename);
+    Transcription(const QString &filepath);
     virtual ~Transcription();
 
     void addTopic(Topic *t);
@@ -26,15 +26,19 @@ public:
     void setSpeakers(const QList<Speaker*> &value);
 
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
-    QString getFilename() const;
+    QString getFilepath() const;
 
     Recording *getRecording() const;
     void setRecording(Recording *rec);
 
+    QString getFilename() const;
+
+    int getId() const;
+
 private:
     static int idCounter;
     int id;
-    QString filename;
+    QString filepath, filename;
     Recording *recording;
     QList <Topic*> topics;
     QList <Speaker*> speakers;

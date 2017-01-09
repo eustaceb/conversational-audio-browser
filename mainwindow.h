@@ -31,7 +31,7 @@ public:
     void reloadWidgets(Transcription *transc);
     ~MainWindow();
 
-    QList<Transcription *> getTranscriptions() const;
+    QMap<int, Transcription *> getTranscriptions() const;
 
 private slots:
     void on_actionParticipant_manager_triggered();
@@ -59,7 +59,7 @@ private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
 
-    QList<Transcription *> transcriptions;
+    QMap<int, Transcription *> transcriptions;
 
     TimelineWidget *timeline;
 

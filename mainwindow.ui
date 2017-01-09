@@ -96,55 +96,30 @@
      <widget class="QWidget" name="controlsWidget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Pause</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>Play</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSlider" name="horizontalSlider">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QRadioButton" name="radioButton_2">
+        <widget class="QRadioButton" name="multifileRadioButton">
          <property name="text">
           <string>Multifile</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QRadioButton" name="radioButton">
+        <widget class="QRadioButton" name="simpleRadioButton">
          <property name="text">
           <string>Simple</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox">
-         <item>
-          <property name="text">
-           <string>201502.trs</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>160616.trs</string>
-          </property>
-         </item>
-        </widget>
+        <widget class="QComboBox" name="transcriptionComboBox"/>
        </item>
       </layout>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QSlider" name="trackSlider">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
      </widget>
     </item>
    </layout>
@@ -244,6 +219,7 @@
    <addaction name="actionBeginning"/>
    <addaction name="actionPlay"/>
    <addaction name="actionEnding"/>
+   <addaction name="separator"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
