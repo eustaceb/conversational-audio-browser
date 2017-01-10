@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolBar->addWidget(ui->trackSlider);
     ui->toolBar->addSeparator();
     ui->toolBar->addWidget(ui->controlsWidget);
+    ui->simpleRadioButton->click();
 
     // Selection tree
     selectionTree = new SelectionTreeModel;
@@ -95,10 +96,6 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
     if (comboBoxIndex != -1)
             ui->transcriptionComboBox->setCurrentIndex(comboBoxIndex);
 
-    // Reload timeline
-    timeline->setTranscription(trs);
-    timeline->reloadScene();
-
     // Alert success
     QMessageBox messageBox;
     messageBox.setText("File(s) have been successfully loaded.");
@@ -173,4 +170,22 @@ void MainWindow::on_filterAllButton_clicked()
 void MainWindow::on_filterNoneButton_clicked()
 {
     filterTree->selectNone();
+}
+
+void MainWindow::on_multifileRadioButton_clicked()
+{
+    ui->transcriptionComboBox->setEnabled(false);
+}
+
+void MainWindow::on_simpleRadioButton_clicked()
+{
+    ui->transcriptionComboBox->setEnabled(true);
+}
+
+void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
+{
+    int id = ui->transcriptionComboBox->itemData(index).toInt();
+    Transcription *trs = transcriptions.find(id).value();
+    timeline->setTranscription(trs);
+    timeline->reloadScene();
 }

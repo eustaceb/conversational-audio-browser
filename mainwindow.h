@@ -55,6 +55,12 @@ private slots:
 
     void on_filterNoneButton_clicked();
 
+    void on_multifileRadioButton_clicked();
+
+    void on_simpleRadioButton_clicked();
+
+    void on_transcriptionComboBox_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;

@@ -37,8 +37,6 @@ TimelineWidget::TimelineWidget(QWidget *parent)
     tool = SelectTool;
     this->setCursor(Qt::ArrowCursor);
     selectArea = new QRubberBand(QRubberBand::Rectangle, this);
-
-    //reloadScene();
 }
 
 TimelineWidget::~TimelineWidget()
@@ -206,7 +204,10 @@ void TimelineWidget::scaleView(qreal scaleFactor)
         return;
 
     zoomScale *= scaleFactor;
+
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     scale(scaleFactor, scaleFactor);
+    setTransformationAnchor(QGraphicsView::NoAnchor);
 }
 
 qint16 TimelineWidget::getMaxSpeakerNameW() const
