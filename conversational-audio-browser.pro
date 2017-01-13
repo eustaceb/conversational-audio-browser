@@ -35,7 +35,9 @@ SOURCES += main.cpp\
     data-models/recording.cpp \
     drawables/multifile/multitimelinewidget.cpp \
     drawables/multifile/transcriptiongraphicsitem.cpp \
-    statistics.cpp
+    statistics.cpp \
+    drawables/multifile/mspeakergraphicsitem.cpp \
+    drawables/multifile/mspeakercountgraphicsitem.cpp
 
 HEADERS  += mainwindow.h \
     helpers.h \
@@ -59,7 +61,9 @@ HEADERS  += mainwindow.h \
     data-models/recording.h \
     drawables/multifile/multitimelinewidget.h \
     drawables/multifile/transcriptiongraphicsitem.h \
-    statistics.h
+    statistics.h \
+    drawables/multifile/mspeakergraphicsitem.h \
+    drawables/multifile/mspeakercountgraphicsitem.h
 
 FORMS    += mainwindow.ui \
     filemanager.ui \

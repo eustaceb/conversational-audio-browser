@@ -5,9 +5,6 @@
 #include <QStaticText>
 #include <QFont>
 
-#include "timelinewidget.h"
-#include "data-models/speaker.h"
-
 QT_BEGIN_NAMESPACE
 class QGraphicsSceneMouseEvent;
 QT_END_NAMESPACE

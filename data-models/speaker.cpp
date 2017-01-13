@@ -1,4 +1,5 @@
 #include "speaker.h"
+#include "turn.h"
 
 Speaker::Speaker()
 {
@@ -9,6 +10,7 @@ Speaker::Speaker(const QString &id, const QString &name)
 {
     this->id = id;
     this->name = name;
+    totalTurnLength = 0;
 }
 
 Speaker::~Speaker()
@@ -40,7 +42,7 @@ bool Speaker::operator <(const Speaker& x) const
 {
     return name < x.getName();
 }
-#include <QDebug>
+
 QList<QVariant> Speaker::composeTreePayload() const
 {
     QList<QVariant> payload;
@@ -51,6 +53,11 @@ QList<QVariant> Speaker::composeTreePayload() const
     return payload;
 }
 
+double Speaker::getTotalTurnLength() const
+{
+    return totalTurnLength;
+}
+
 QList<Turn *> Speaker::getTurns() const
 {
     return turns;
@@ -59,4 +66,5 @@ QList<Turn *> Speaker::getTurns() const
 void Speaker::addTurn(Turn *t)
 {
     turns.append(t);
+    totalTurnLength += t->getEndTime() - t->getStartTime();
 }

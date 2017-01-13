@@ -1,4 +1,6 @@
 #include "speakergraphicsitem.h"
+#include "timelinewidget.h"
+#include "data-models/speaker.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>

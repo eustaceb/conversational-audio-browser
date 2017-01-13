@@ -28,6 +28,8 @@ public:
     // Filter tree
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
 
+    double getTotalTurnLength() const;
+
 private:
     //TODO: Add more fields for
     // accent="" check="no" dialect="native" id="spk4" name="filler_c" scope="local" type="unknown"
@@ -35,6 +37,7 @@ private:
     QString name;
 
     QList <Turn*> turns;
+    double totalTurnLength;
 };
 
 #endif // SPEAKER_H

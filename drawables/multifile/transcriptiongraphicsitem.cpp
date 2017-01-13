@@ -3,36 +3,36 @@
 #include "multitimelinewidget.h"
 #include "data-models/transcription.h"
 
-int MultiFile::TranscriptionGraphicsItem::yCounter = 0;
-QFont MultiFile::TranscriptionGraphicsItem::font = QFont("times", 18);
+QFont TranscriptionGraphicsItem::font = QFont("times", 18);
 
 namespace {
-   unsigned const short absoluteMargin = 800;
+   unsigned const short lMargin = 800;
+   unsigned const short elementW = 300;
+   unsigned const short elementH = 380;
+   unsigned const short vSpacing = 30;
 }
 
-MultiFile::TranscriptionGraphicsItem::TranscriptionGraphicsItem(Transcription *t, MultiTimelineWidget *mtw)
+TranscriptionGraphicsItem::TranscriptionGraphicsItem(Transcription *t, const QRectF &prevRect, MultiTimelineWidget *mtw)
     : transcription(t), multiTimelineWidget(mtw)
 {
     color = QColor(200, 200, 200);
 
-    this->rect = QRectF(-absoluteMargin, yCounter, 300, 100);
-
-    yCounter += 150 + 30;
+    rect = QRectF(-lMargin, prevRect.bottom() + vSpacing, elementW, elementH);
 }
 
-QRectF MultiFile::TranscriptionGraphicsItem::boundingRect() const
+QRectF TranscriptionGraphicsItem::boundingRect() const
 {
     return rect;
 }
 
-QPainterPath MultiFile::TranscriptionGraphicsItem::shape() const
+QPainterPath TranscriptionGraphicsItem::shape() const
 {
     QPainterPath path;
     path.addRect(rect);
     return path;
 }
 
-void MultiFile::TranscriptionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void TranscriptionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
@@ -48,7 +48,7 @@ void MultiFile::TranscriptionGraphicsItem::paint(QPainter *painter, const QStyle
     painter->drawText(rect, Qt::AlignCenter, transcription->getFilename());
 }
 
-Transcription *MultiFile::TranscriptionGraphicsItem::getTranscription() const
+Transcription *TranscriptionGraphicsItem::getTranscription() const
 {
     return transcription;
 }

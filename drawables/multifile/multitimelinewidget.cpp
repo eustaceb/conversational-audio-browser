@@ -7,6 +7,8 @@
 #include "data-models/turn.h"
 
 #include "transcriptiongraphicsitem.h"
+#include "mspeakergraphicsitem.h"
+#include "mspeakercountgraphicsitem.h"
 
 #include <QMouseEvent>
 #include <QWheelEvent>
@@ -44,8 +46,18 @@ void MultiTimelineWidget::reloadScene()
 {
     scene->clear();
 
+    QRectF previousRect(0, 0, 0, 0);
+
     foreach (Transcription *t, (*transcriptions)) {
-        scene->addItem(new MultiFile::TranscriptionGraphicsItem(t, this));
+        TranscriptionGraphicsItem *tgi = new TranscriptionGraphicsItem(t, previousRect, this);
+        scene->addItem(tgi);
+        MSpeakerGraphicsItem::setYCounter(0); // TODO: Get rid of this hack
+        MSpeakerCountGraphicsItem::setYCounter(0);
+        foreach (Speaker *s, t->getSpeakers()) {
+            scene->addItem(new MSpeakerGraphicsItem(s, tgi->boundingRect(), this));
+            scene->addItem(new MSpeakerCountGraphicsItem(s, tgi->boundingRect(), this));
+        }
+        previousRect = tgi->boundingRect();
         /*foreach (Topic *to, t->getTopics()) {
             foreach (Section *s, to->getSections()) {
                 scene->addItem(new Tra(s, this));
