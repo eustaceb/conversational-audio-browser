@@ -16,7 +16,7 @@ QFont SpeakerGraphicsItem::font = QFont("times", 18);
 SpeakerGraphicsItem::SpeakerGraphicsItem(Speaker *s, TimelineWidget *timelineWidget)
     : speaker(s), timelineWidget(timelineWidget)
 {
-    color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
+    color = s->getColor();
     double adjust = -350;
 
     this->rect = QRectF(0 + adjust, // x

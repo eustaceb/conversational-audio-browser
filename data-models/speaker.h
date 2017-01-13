@@ -4,6 +4,7 @@
 #include "filterable.h"
 #include <QString>
 #include <QList>
+#include <QColor>
 
 class Turn;
 
@@ -30,11 +31,15 @@ public:
 
     double getTotalTurnLength() const;
 
+    QColor getColor() const;
+    void setColor(const QColor &value);
+
 private:
     //TODO: Add more fields for
     // accent="" check="no" dialect="native" id="spk4" name="filler_c" scope="local" type="unknown"
     QString id;
     QString name;
+    QColor color;
 
     QList <Turn*> turns;
     double totalTurnLength;

@@ -7,8 +7,6 @@ int MSpeakerCountGraphicsItem::yCounter = 0;
 QFont MSpeakerCountGraphicsItem::font = QFont("times", 14);
 
 namespace {
-   unsigned const short lMargin = 300;
-   unsigned const short elementW = 100;
    unsigned const short elementH = 25;
    unsigned const short vSpacing = 10;
 }
@@ -16,10 +14,10 @@ namespace {
 MSpeakerCountGraphicsItem::MSpeakerCountGraphicsItem(Speaker *s, const QRectF &trsRect, MultiTimelineWidget *timelineWidget)
     : speaker(s), timelineWidget(timelineWidget)
 {
-    color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
+    color = s->getColor();
 
     int width = speaker->getTurns().length() * 10;
-    rect = QRectF(-lMargin - trsRect.width() - width, trsRect.y() + yCounter, width, elementH);
+    rect = QRectF(trsRect.left() - width, trsRect.y() + yCounter, width, elementH);
 
     yCounter += elementH + vSpacing;
 

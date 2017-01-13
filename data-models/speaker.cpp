@@ -3,7 +3,8 @@
 
 Speaker::Speaker()
 {
-
+    totalTurnLength = 0;
+    color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
 }
 
 Speaker::Speaker(const QString &id, const QString &name)
@@ -11,6 +12,7 @@ Speaker::Speaker(const QString &id, const QString &name)
     this->id = id;
     this->name = name;
     totalTurnLength = 0;
+    color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
 }
 
 Speaker::~Speaker()
@@ -56,6 +58,16 @@ QList<QVariant> Speaker::composeTreePayload() const
 double Speaker::getTotalTurnLength() const
 {
     return totalTurnLength;
+}
+
+QColor Speaker::getColor() const
+{
+    return color;
+}
+
+void Speaker::setColor(const QColor &value)
+{
+    color = value;
 }
 
 QList<Turn *> Speaker::getTurns() const
