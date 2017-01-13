@@ -1,6 +1,6 @@
 #include "filtertreemodel.h"
 #include "data-models/speaker.h"
-#include "transcription.h"
+#include "data-models/transcription.h"
 
 FilterTreeModel::FilterTreeModel(QObject *parent)
     : QAbstractItemModel(parent)

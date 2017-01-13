@@ -13,9 +13,9 @@
 
 #include "ui_mainwindow.h"
 #include "helpers.h"
-#include "filemanager.h"
-#include "drawables/regular/timelinewidget.h"
 
+class TimelineWidget;
+class MultiTimelineWidget;
 class Transcription;
 
 namespace Ui {
@@ -31,7 +31,7 @@ public:
     void reloadWidgets(Transcription *transc);
     ~MainWindow();
 
-    QMap<int, Transcription *> getTranscriptions() const;
+    QMap<int, Transcription *> *getTranscriptions() const;
 
 private slots:
     void on_actionParticipant_manager_triggered();
@@ -61,13 +61,16 @@ private slots:
 
     void on_transcriptionComboBox_currentIndexChanged(int index);
 
+    void on_actionStatistics_triggered();
+
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
 
-    QMap<int, Transcription *> transcriptions;
+    QMap<int, Transcription *> *transcriptions;
 
     TimelineWidget *timeline;
+    MultiTimelineWidget *multiTimeline;
 
     SelectionTreeModel *selectionTree;
     FilterTreeModel *filterTree;

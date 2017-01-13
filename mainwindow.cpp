@@ -1,6 +1,13 @@
 #include "mainwindow.h"
+#include "filemanager.h"
+#include "statistics.h"
+
+#include "drawables/regular/timelinewidget.h"
+#include "drawables/multifile/multitimelinewidget.h"
+
 #include "data-models/transcription.h"
 #include "data-models/recording.h"
+
 #include <QDebug>
 #include <QMessageBox>
 
@@ -11,11 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     delete ui->timelineView;
 
+    transcriptions = new QMap<int, Transcription*>();
+
     // Toolbar setup
     ui->toolBar->addWidget(ui->trackSlider);
     ui->toolBar->addSeparator();
     ui->toolBar->addWidget(ui->controlsWidget);
-    ui->simpleRadioButton->click();
 
     // Selection tree
     selectionTree = new SelectionTreeModel;
@@ -35,16 +43,21 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Timeline setup
     timeline = new TimelineWidget(this);
+    multiTimeline = new MultiTimelineWidget(transcriptions, this);
     when_transcription_loaded("/home/justas/Dissertation/F01.trs", "");
     ui->splitter->insertWidget(0, timeline);
+    ui->splitter->insertWidget(1, multiTimeline);
+
+    //multiTimeline->setVisible(false);
 
     // Audio setup
     player = new QMediaPlayer;
     player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/loomer.wav"));
     player->setVolume(50);
 
-    // Trigger the Hand Tool by default
+    // Trigger the Hand Tool and Simple Timeline by default
     on_actionHand_Tool_triggered();
+    ui->simpleRadioButton->click();
 }
 
 
@@ -52,7 +65,8 @@ MainWindow::~MainWindow()
 {
     delete selectionTree;
     delete filterTree;
-    qDeleteAll(transcriptions);
+    qDeleteAll((*transcriptions));
+    delete transcriptions;
     delete timeline;
     delete player;
     delete ui;
@@ -68,7 +82,7 @@ void MainWindow::on_actionParticipant_manager_triggered()
 
 void MainWindow::when_transcription_loaded(const QString &annotationsFile, const QString &audioFile)
 {
-    foreach(Transcription *t, transcriptions) {
+    foreach(Transcription *t, (*transcriptions)) {
         if (t->getFilepath() == annotationsFile) {
             QMessageBox messageBox;
             messageBox.setText("Unable to load " + annotationsFile + " - it is already loaded.");
@@ -81,7 +95,7 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
     Transcription *trs = Helpers::parseTranscript(annotationsFile);
     if (audioFile != "")
         trs->setRecording(new Recording(audioFile));
-    transcriptions.insert(trs->getId(), trs);
+    transcriptions->insert(trs->getId(), trs);
 
     // Update selection/filter trees
     selectionTree->appendTranscription(trs);
@@ -89,12 +103,14 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
 
     // Update toolbar
     ui->transcriptionComboBox->clear();
-    foreach (Transcription *t, transcriptions) {
+    foreach (Transcription *t, (*transcriptions)) {
         ui->transcriptionComboBox->addItem(t->getFilename(), t->getId());
     }
     int comboBoxIndex = ui->transcriptionComboBox->findData(trs->getId());
     if (comboBoxIndex != -1)
             ui->transcriptionComboBox->setCurrentIndex(comboBoxIndex);
+
+    multiTimeline->reloadScene();
 
     // Alert success
     QMessageBox messageBox;
@@ -110,6 +126,7 @@ void MainWindow::on_actionOpen_triggered()
     connect(p, SIGNAL(notify_mainWindow_filesLoaded(QString, QString)),
             this, SLOT(when_transcription_loaded(QString, QString)));
     p->exec();
+    // TODO: Leak, Qt::WDestructiveClose ?
 }
 
 void MainWindow::on_actionPlay_triggered()
@@ -147,7 +164,7 @@ void MainWindow::selection_updated()
     timeline->viewport()->repaint();
 }
 
-QMap<int, Transcription *> MainWindow::getTranscriptions() const
+QMap<int, Transcription *> *MainWindow::getTranscriptions() const
 {
     return transcriptions;
 }
@@ -174,18 +191,30 @@ void MainWindow::on_filterNoneButton_clicked()
 
 void MainWindow::on_multifileRadioButton_clicked()
 {
+    multiTimeline->reloadScene();
     ui->transcriptionComboBox->setEnabled(false);
+    timeline->setVisible(false);
+    multiTimeline->setVisible(true);
 }
 
 void MainWindow::on_simpleRadioButton_clicked()
 {
     ui->transcriptionComboBox->setEnabled(true);
+    multiTimeline->setVisible(false);
+    timeline->setVisible(true);
 }
 
 void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
 {
     int id = ui->transcriptionComboBox->itemData(index).toInt();
-    Transcription *trs = transcriptions.find(id).value();
+    Transcription *trs = transcriptions->find(id).value();
     timeline->setTranscription(trs);
     timeline->reloadScene();
+}
+
+void MainWindow::on_actionStatistics_triggered()
+{
+    Statistics *s = new Statistics;
+    s->show();
+    // TODO: Leak, Qt::WDestructiveClose ?
 }

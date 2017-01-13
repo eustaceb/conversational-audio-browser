@@ -32,7 +32,10 @@ SOURCES += main.cpp\
     trees/filtertreeitem.cpp \
     trees/filtertreemodel.cpp \
     filemanager.cpp \
-    data-models/recording.cpp
+    data-models/recording.cpp \
+    drawables/multifile/multitimelinewidget.cpp \
+    drawables/multifile/transcriptiongraphicsitem.cpp \
+    statistics.cpp
 
 HEADERS  += mainwindow.h \
     helpers.h \
@@ -53,10 +56,14 @@ HEADERS  += mainwindow.h \
     trees/filtertreemodel.h \
     filemanager.h \
     data-models/transcription.h \
-    data-models/recording.h
+    data-models/recording.h \
+    drawables/multifile/multitimelinewidget.h \
+    drawables/multifile/transcriptiongraphicsitem.h \
+    statistics.h
 
 FORMS    += mainwindow.ui \
-    filemanager.ui
+    filemanager.ui \
+    statistics.ui
 
 DISTFILES += \
     ../rand.wav

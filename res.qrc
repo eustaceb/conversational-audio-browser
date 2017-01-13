@@ -8,5 +8,6 @@
         <file alias="play">res/play1.png</file>
         <file alias="interval">res/interval-select.png</file>
         <file alias="open">res/folder_open.png</file>
+        <file alias="stats">res/stats.png</file>
     </qresource>
 </RCC>

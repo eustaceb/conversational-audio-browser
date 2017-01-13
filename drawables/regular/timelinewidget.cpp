@@ -42,6 +42,7 @@ TimelineWidget::TimelineWidget(QWidget *parent)
 TimelineWidget::~TimelineWidget()
 {
     qDeleteAll(speakerGraphics);
+    delete scene;
 
 }
 
@@ -103,8 +104,7 @@ void TimelineWidget::reloadScene()
 
 void TimelineWidget::mousePressEvent(QMouseEvent* event)
 {    //p->show();
-    if (event->button() == Qt::LeftButton)
-    {
+    if (event->button() == Qt::LeftButton) {
         origin = event->pos();
         if (tool == SelectTool) {
             selectArea->setGeometry(QRect(event->pos(), QSize(0, 0)));
@@ -131,16 +131,18 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
 
         origin = event->pos();
     }
+    // TODO: Do we really need to repaint every time?
     viewport()->repaint();
 }
 
 void TimelineWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    if (tool == SelectTool)
+    if (tool == SelectTool) {
+        // TODO: Figure out whether this is necessary
+        // foreach(QGraphicsItem *item, scene->items(selectArea->geometry())) {}
         selectArea->hide();
-    // determine selection, for example using QRect::intersects()
-    // and QRect::contains().
+    }
 }
 
 

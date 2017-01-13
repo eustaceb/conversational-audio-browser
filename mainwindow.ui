@@ -141,62 +141,32 @@
      <property name="title">
       <string>Active file</string>
      </property>
-     <addaction name="actionSome_trs"/>
-     <addaction name="actionOther_trs"/>
     </widget>
     <addaction name="actionOpen"/>
-    <addaction name="actionAttach_annotations"/>
-    <addaction name="actionLoad_from_state"/>
     <addaction name="menuActive_file"/>
-   </widget>
-   <widget class="QMenu" name="menuSelect">
-    <property name="title">
-     <string>Select</string>
-    </property>
-    <widget class="QMenu" name="menuTrack">
-     <property name="title">
-      <string>Track</string>
-     </property>
-     <addaction name="actionTrack_1"/>
-     <addaction name="actionTrack_2"/>
-     <addaction name="actionTrack_3"/>
-    </widget>
-    <widget class="QMenu" name="menuSpeaker">
-     <property name="title">
-      <string>Participant</string>
-     </property>
-     <addaction name="actionSpeaker_1"/>
-     <addaction name="actionParticipant_2"/>
-    </widget>
-    <widget class="QMenu" name="menuSpeaker_2">
-     <property name="title">
-      <string>Speaker</string>
-     </property>
-     <addaction name="actionSpeaker_3"/>
-     <addaction name="actionLaughter_c"/>
-     <addaction name="actionOverlap_r"/>
-     <addaction name="actionOverlap_c"/>
-    </widget>
-    <addaction name="menuTrack"/>
-    <addaction name="menuSpeaker"/>
-    <addaction name="menuSpeaker_2"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
-    <addaction name="actionTraditional_timeline"/>
-    <addaction name="actionMultifile_timeline"/>
+    <widget class="QMenu" name="menuSingle_file">
+     <property name="title">
+      <string>Single file</string>
+     </property>
+     <addaction name="actionTrs01"/>
+    </widget>
+    <addaction name="menuSingle_file"/>
+    <addaction name="actionMultifile"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionFile_manager"/>
     <addaction name="actionParticipant_manager"/>
+    <addaction name="actionStatistics"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuSelect"/>
    <addaction name="menuView"/>
    <addaction name="menuTools"/>
   </widget>
@@ -212,6 +182,8 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionOpen"/>
+   <addaction name="separator"/>
+   <addaction name="actionStatistics"/>
    <addaction name="separator"/>
    <addaction name="actionSelect_Tool"/>
    <addaction name="actionHand_Tool"/>
@@ -233,77 +205,9 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionAttach_annotations">
+  <action name="actionMultifile">
    <property name="text">
-    <string>Load annotations</string>
-   </property>
-  </action>
-  <action name="actionLoad_from_state">
-   <property name="text">
-    <string>Load from state</string>
-   </property>
-  </action>
-  <action name="actionTraditional_timeline">
-   <property name="text">
-    <string>Traditional timeline</string>
-   </property>
-  </action>
-  <action name="actionMultifile_timeline">
-   <property name="text">
-    <string>Multifile timeline</string>
-   </property>
-  </action>
-  <action name="actionFile_manager">
-   <property name="text">
-    <string>File Manager</string>
-   </property>
-   <property name="toolTip">
-    <string>File Manager - load annotation and audio files</string>
-   </property>
-  </action>
-  <action name="actionTrack_1">
-   <property name="text">
-    <string>2015-05-14-02.wav</string>
-   </property>
-  </action>
-  <action name="actionTrack_2">
-   <property name="text">
-    <string>2015-05-14-03.wav</string>
-   </property>
-  </action>
-  <action name="actionTrack_3">
-   <property name="text">
-    <string>named track</string>
-   </property>
-  </action>
-  <action name="actionSpeaker_1">
-   <property name="text">
-    <string>Tom the Caller</string>
-   </property>
-  </action>
-  <action name="actionParticipant_2">
-   <property name="text">
-    <string>Richard the Receiver</string>
-   </property>
-  </action>
-  <action name="actionSpeaker_3">
-   <property name="text">
-    <string>laugher_r</string>
-   </property>
-  </action>
-  <action name="actionLaughter_c">
-   <property name="text">
-    <string>laughter_c</string>
-   </property>
-  </action>
-  <action name="actionOverlap_r">
-   <property name="text">
-    <string>overlap_r</string>
-   </property>
-  </action>
-  <action name="actionOverlap_c">
-   <property name="text">
-    <string>overlap_c</string>
+    <string>Multifile</string>
    </property>
   </action>
   <action name="actionParticipant_manager">
@@ -367,16 +271,6 @@
     <string>Go to the ending of the track</string>
    </property>
   </action>
-  <action name="actionSome_trs">
-   <property name="text">
-    <string>some.trs</string>
-   </property>
-  </action>
-  <action name="actionOther_trs">
-   <property name="text">
-    <string>other.trs</string>
-   </property>
-  </action>
   <action name="actionHand_Tool">
    <property name="checkable">
     <bool>true</bool>
@@ -393,6 +287,28 @@
    </property>
    <property name="shortcut">
     <string>H</string>
+   </property>
+  </action>
+  <action name="actionTrs01">
+   <property name="text">
+    <string>trs01</string>
+   </property>
+  </action>
+  <action name="actionStatistics">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/toolbar/icons/stats</normaloff>:/toolbar/icons/stats</iconset>
+   </property>
+   <property name="text">
+    <string>Statistics</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="toolTip">
+    <string>Quit program</string>
    </property>
   </action>
  </widget>
