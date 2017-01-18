@@ -8,16 +8,10 @@
 
 class Transcription;
 
-#include "trees/selectiontreemodel.h"
-#include "trees/filtertreemodel.h"
-
 class Helpers
 {
 public:
     Helpers();
-
-    static SelectionTreeModel* generateSelectionTree(Transcription *t);
-    static FilterTreeModel* generateFilterTree(Transcription *t);
 
     static Transcription* parseTranscript(const QString &filename);
 };

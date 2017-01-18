@@ -27,9 +27,9 @@ class MSpeakerGraphicsItem : public QGraphicsItem
     private:
         Speaker *speaker;
         MultiTimelineWidget *timelineWidget;
-        QRectF rect;
+        QRectF rect, barRect;
         QColor color;
-        QStaticText label;
+        QString label;
         static QFont font;
         static int yCounter;
 };

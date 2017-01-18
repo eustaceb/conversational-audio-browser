@@ -15,9 +15,12 @@ MSpeakerCountGraphicsItem::MSpeakerCountGraphicsItem(Speaker *s, const QRectF &t
     : speaker(s), timelineWidget(timelineWidget)
 {
     color = s->getColor();
+    label = speaker->getName() + " " + QString::number(speaker->getTurns().length()) + " occurences ";
+    QFontMetrics fm(font);
 
     int width = speaker->getTurns().length() * 10;
-    rect = QRectF(trsRect.left() - width, trsRect.y() + yCounter, width, elementH);
+    barRect = QRectF(trsRect.left() - width, trsRect.y() + yCounter, width, elementH);
+    rect = barRect.united(QRectF(QPointF(barRect.right() - fm.width(label), barRect.y()), QSizeF(fm.width(label), 0)));
 
     yCounter += elementH + vSpacing;
 
@@ -50,7 +53,7 @@ void MSpeakerCountGraphicsItem::paint(QPainter *painter, const QStyleOptionGraph
     painter->setFont(font);
     painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));
 
-    painter->drawText(rect, Qt::AlignCenter, speaker->getName() + " " + QString::number(speaker->getTurns().length()) + " occurences total");
+    painter->drawText(rect, Qt::AlignRight, label);
 
 }
 

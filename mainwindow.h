@@ -17,6 +17,8 @@
 class TimelineWidget;
 class MultiTimelineWidget;
 class Transcription;
+class SelectionTreeModel;
+class FilterTreeModel;
 
 namespace Ui {
 class MainWindow;

@@ -8,7 +8,8 @@ QFont TranscriptionGraphicsItem::font = QFont("times", 18);
 namespace {
    unsigned const short lMargin = 800;
    unsigned const short elementW = 300;
-   unsigned const short elementH = 380;
+   unsigned const short speakerH = 25;
+   unsigned const short speakerSpacing = 10;
    unsigned const short vSpacing = 30;
 }
 
@@ -17,6 +18,7 @@ TranscriptionGraphicsItem::TranscriptionGraphicsItem(Transcription *t, const QRe
 {
     color = QColor(200, 200, 200);
 
+    int elementH = transcription->getSpeakers().length() * (speakerH + speakerSpacing) - speakerSpacing;
     rect = QRectF(-lMargin, prevRect.bottom() + vSpacing, elementW, elementH);
 }
 

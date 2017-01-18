@@ -9,13 +9,16 @@ namespace {
    unsigned const short elementH = 25;
    unsigned const short vSpacing = 10;
 }
-
+#include <QDebug>
 MSpeakerGraphicsItem::MSpeakerGraphicsItem(Speaker *s, const QRectF &trsRect, MultiTimelineWidget *timelineWidget)
     : speaker(s), timelineWidget(timelineWidget)
 {
     color = s->getColor();
+    label = " " + speaker->getName() + " " + QString::number(speaker->getTotalTurnLength()) + " seconds";
+    QFontMetrics fm(font);
 
-    rect = QRectF(trsRect.right(), trsRect.y() + yCounter, speaker->getTotalTurnLength() * 10, elementH);
+    barRect = QRectF(trsRect.right(), trsRect.y() + yCounter, speaker->getTotalTurnLength() * 10, elementH);
+    rect = barRect.united(QRectF(barRect.topLeft(), QSizeF(fm.width(label), 0)));
 
     yCounter += elementH + vSpacing;
 
@@ -43,12 +46,12 @@ void MSpeakerGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsIt
     QBrush brush = QBrush(color);
     brush.setStyle(Qt::SolidPattern);
     painter->setBrush(brush);
-    painter->drawRect(rect);
+    painter->drawRect(barRect);
 
     painter->setFont(font);
     painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));
 
-    painter->drawText(rect, Qt::AlignCenter, speaker->getName() + " " + QString::number(speaker->getTotalTurnLength()) + "s total");
+    painter->drawText(rect, Qt::AlignLeft, label);
 
 }
 

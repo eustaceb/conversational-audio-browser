@@ -8,6 +8,9 @@
 #include "data-models/transcription.h"
 #include "data-models/recording.h"
 
+#include "trees/filtertreemodel.h"
+#include "trees/selectiontreemodel.h"
+
 #include <QDebug>
 #include <QMessageBox>
 
@@ -214,7 +217,7 @@ void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
 
 void MainWindow::on_actionStatistics_triggered()
 {
-    Statistics *s = new Statistics;
+    Statistics *s = new Statistics(transcriptions, selectionTree, filterTree);
     s->show();
     // TODO: Leak, Qt::WDestructiveClose ?
 }
