@@ -6,11 +6,16 @@
 #include "data-models/transcription.h"
 #include "data-models/speaker.h"
 #include "data-models/turn.h"
+#include "data-models/topic.h"
+#include "data-models/section.h"
 
 #include "trees/filtertreemodel.h"
 #include "trees/filtertreeitem.h"
 #include "trees/selectiontreemodel.h"
 #include "trees/selectiontreeitem.h"
+
+#include <QVBoxLayout>
+#include <QLabel>
 
 #include <QDebug>
 
@@ -27,18 +32,11 @@ Statistics::Statistics(QMap<int, Transcription *> *transcriptions,
     //ui->tabWidget->addTab()
 
     generalModel = new QStandardItemModel;
-    generalModel->setHorizontalHeaderItem(0, new QStandardItem(QString("From")));
-    generalModel->setHorizontalHeaderItem(1, new QStandardItem(QString("Turn count")));
-    generalModel->setHorizontalHeaderItem(2, new QStandardItem(QString("Turn length")));
-    generalModel->setHorizontalHeaderItem(3, new QStandardItem(QString("Mean turn length")));
-    generalModel->setHorizontalHeaderItem(4, new QStandardItem(QString("Turn len median")));
-    generalModel->setHorizontalHeaderItem(5, new QStandardItem(QString("Turn len variance")));
-    generalModel->setHorizontalHeaderItem(6, new QStandardItem(QString("Turn len stdev")));
-    generalModel->setHorizontalHeaderItem(7, new QStandardItem(QString("Turn len range")));
-    generalModel->setHorizontalHeaderItem(8, new QStandardItem(QString("Turn len skewness")));
-    generalModel->setHorizontalHeaderItem(9, new QStandardItem(QString("No of overlaps")));
-    generalModel->setHorizontalHeaderItem(10, new QStandardItem(QString("Len of overlaps")));
-    generalModel->setHorizontalHeaderItem(11, new QStandardItem(QString("Overlap %")));
+    QStringList labels(QList<QString>() << "From" << "Turn Count" << "Turn length" <<
+                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
+                       "Turn len stdev" << "Turn len range" << "Turn len skewness" <<
+                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+    generalModel->setHorizontalHeaderLabels(labels);
 
     generateGeneralModel();
 
@@ -83,6 +81,11 @@ void Statistics::generateGeneralModel()
     // For each file
     int i = 2;
     foreach (Transcription *t, (*transcriptions)) {
+        // Create UI elements and models if a new transcription has been added
+        if (!speakerModels.contains(t->getId())) addTranscription(t);
+
+        generateTranscriptionModels(t);
+
         generalModel->setItem(i, 0, new QStandardItem(t->getFilename()));
         generalModel->setItem(i, 1, new QStandardItem(QString::number(turnCount(t))));
         generalModel->setItem(i, 2, new QStandardItem(QString::number(turnLength(t))));
@@ -94,6 +97,105 @@ void Statistics::generateGeneralModel()
         range = turnLengthRange(t);
         rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
         generalModel->setItem(i, 7, new QStandardItem(rangeStr));
+        i++;
+    }
+}
+
+void Statistics::addTranscription(Transcription *t)
+{
+    QStandardItemModel *speakerModel = new QStandardItemModel;
+    QStringList labels(QList<QString>() << "Speaker" << "Turn Count" << "Turn length" <<
+                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
+                       "Turn len stdev" << "Turn len range" << "Turn len skewness" <<
+                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+    speakerModel->setHorizontalHeaderLabels(labels);
+    speakerModels.insert(t->getId(), speakerModel);
+
+    QStandardItemModel *topicModel = new QStandardItemModel;
+    labels = QStringList(QList<QString>() << "Topic" << "Turn Count" << "Turn length" <<
+                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
+                       "Turn len stdev" << "Turn len range" << "Turn len skewness" <<
+                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+    topicModel->setHorizontalHeaderLabels(labels);
+    topicModels.insert(t->getId(), topicModel);
+
+    QStandardItemModel *sectionModel = new QStandardItemModel;
+    labels = QStringList(QList<QString>() << "Section" << "Turn Count" << "Turn length" <<
+                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
+                       "Turn len stdev" << "Turn len range" << "Turn len skewness" <<
+                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+    sectionModel->setHorizontalHeaderLabels(labels);
+    sectionModels.insert(t->getId(), sectionModel);
+
+    QWidget *w = new QWidget;
+    QVBoxLayout *verticalLayout = new QVBoxLayout;
+    verticalLayout->addWidget(new QLabel("Speakers"));
+    QTableView *speakerTable = new QTableView;
+    speakerTable->setModel(speakerModel);
+    verticalLayout->addWidget(speakerTable);
+    verticalLayout->addWidget(new QLabel("Topics"));
+    QTableView *topicTable = new QTableView;
+    topicTable->setModel(topicModel);
+    verticalLayout->addWidget(topicTable);
+    verticalLayout->addWidget(new QLabel("Sections"));
+    QTableView *sectionTable = new QTableView;
+    sectionTable->setModel(sectionModel);
+    verticalLayout->addWidget(sectionTable);
+
+    w->setLayout(verticalLayout);
+    ui->tabWidget->addTab(w, t->getFilename());
+}
+
+void Statistics::generateTranscriptionModels(Transcription *t)
+{
+    // Speaker model
+    QStandardItemModel *speakerModel = speakerModels.find(t->getId()).value();
+    int i = 0;
+    foreach (Speaker *s, t->getSpeakers()) {
+        speakerModel->setItem(i, 0, new QStandardItem(s->getName()));
+        speakerModel->setItem(i, 1, new QStandardItem(QString::number(turnCount(s))));
+        speakerModel->setItem(i, 2, new QStandardItem(QString::number(turnLength(s))));
+        speakerModel->setItem(i, 3, new QStandardItem(QString::number(turnCount(s) == 0 ? 0 : turnLength(s) / turnCount(s))));
+        speakerModel->setItem(i, 4, new QStandardItem(QString::number(medianTurnLength(s))));
+        double variance = turnLengthVariance(s);
+        speakerModel->setItem(i, 5, new QStandardItem(QString::number(variance)));
+        speakerModel->setItem(i, 6, new QStandardItem(QString::number(sqrt(variance))));
+        QPair<double, double> range = turnLengthRange(s);
+        QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
+        speakerModel->setItem(i, 7, new QStandardItem(rangeStr));
+        i++;
+    }
+    // Topic and section models
+    QStandardItemModel *topicModel = topicModels.find(t->getId()).value();
+    QStandardItemModel *sectionModel = sectionModels.find(t->getId()).value();
+    i = 0;
+    int j = 0;
+    foreach (Topic *to, t->getTopics()) {
+        foreach (Section *s, to->getSections()) {
+            sectionModel->setItem(j, 0, new QStandardItem(QString::number(s->getId()) + " - " + to->getDesc()));
+            sectionModel->setItem(j, 1, new QStandardItem(QString::number(turnCount(s))));
+            sectionModel->setItem(j, 2, new QStandardItem(QString::number(turnLength(s))));
+            sectionModel->setItem(j, 3, new QStandardItem(QString::number(turnCount(s) == 0 ? 0 : turnLength(s) / turnCount(s))));
+            sectionModel->setItem(j, 4, new QStandardItem(QString::number(medianTurnLength(s))));
+            double variance = turnLengthVariance(s);
+            sectionModel->setItem(j, 5, new QStandardItem(QString::number(variance)));
+            sectionModel->setItem(j, 6, new QStandardItem(QString::number(sqrt(variance))));
+            QPair<double, double> range = turnLengthRange(s);
+            QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
+            sectionModel->setItem(j, 7, new QStandardItem(rangeStr));
+            j++;
+        }
+        topicModel->setItem(i, 0, new QStandardItem(to->getDesc()));
+        topicModel->setItem(i, 1, new QStandardItem(QString::number(turnCount(to))));
+        topicModel->setItem(i, 2, new QStandardItem(QString::number(turnLength(to))));
+        topicModel->setItem(i, 3, new QStandardItem(QString::number(turnCount(to) == 0 ? 0 : turnLength(to) / turnCount(to))));
+        topicModel->setItem(i, 4, new QStandardItem(QString::number(medianTurnLength(to))));
+        double variance = turnLengthVariance(to);
+        topicModel->setItem(i, 5, new QStandardItem(QString::number(variance)));
+        topicModel->setItem(i, 6, new QStandardItem(QString::number(sqrt(variance))));
+        QPair<double, double> range = turnLengthRange(to);
+        QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
+        topicModel->setItem(i, 7, new QStandardItem(rangeStr));
         i++;
     }
 }
@@ -143,6 +245,19 @@ int Statistics::turnCount(Speaker *s, bool selected) const
     return count;
 }
 
+int Statistics::turnCount(Topic *t) const
+{
+    int count = 0;
+    foreach (Section *s, t->getSections())
+        count += turnCount(s);
+    return count;
+}
+
+int Statistics::turnCount(Section *s) const
+{
+    return s->getTurns().length();
+}
+
 double Statistics::turnLength(bool selected) const
 {
     double len = 0;
@@ -173,6 +288,20 @@ double Statistics::turnLength(Speaker *s, bool selected) const
     return len;
 }
 
+double Statistics::turnLength(Topic *t) const
+{
+    double len = 0;
+    foreach (Section *s, t->getSections())
+        len += turnLength(s);
+    return len;
+}
+
+double Statistics::turnLength(Section *s) const
+{
+    double len = 0;
+    foreach (Turn *t, s->getTurns())
+        len += t->getDuration();
+}
 
 double Statistics::medianTurnLength(bool selected) const
 {
@@ -201,6 +330,27 @@ double Statistics::medianTurnLength(Transcription *t) const
 }
 
 double Statistics::medianTurnLength(Speaker *s) const
+{
+    QMultiMap<double, bool> turnLengths;
+
+    foreach (Turn *trn, s->getTurns())
+        turnLengths.insert(trn->getDuration(), true);
+
+    return median(turnLengths.keys());
+}
+
+double Statistics::medianTurnLength(Topic *t) const
+{
+    QMultiMap<double, bool> turnLengths;
+
+    foreach (Section *s, t->getSections())
+        foreach (Turn *trn, s->getTurns())
+            turnLengths.insert(trn->getDuration(), true);
+
+    return median(turnLengths.keys());
+}
+
+double Statistics::medianTurnLength(Section *s) const
 {
     QMultiMap<double, bool> turnLengths;
 
@@ -254,6 +404,31 @@ double Statistics::turnLengthVariance(Speaker *s) const
     return squaredDiff / count;
 }
 
+double Statistics::turnLengthVariance(Topic *t) const
+{
+    int count = turnCount(t);
+    double squaredDiff = 0;
+    double mean = turnLength(t) / count;
+
+    foreach (Section *s, t->getSections())
+        foreach (Turn *trn, s->getTurns())
+            squaredDiff += pow((trn->getDuration() - mean), 2);
+
+    return squaredDiff / count;
+}
+
+double Statistics::turnLengthVariance(Section *s) const
+{
+    int count = turnCount(s);
+    double squaredDiff = 0;
+    double mean = turnLength(s) / count;
+
+    foreach (Turn *trn, s->getTurns())
+        squaredDiff += pow((trn->getDuration() - mean), 2);
+
+    return squaredDiff / count;
+}
+
 QPair<double, double> Statistics::turnLengthRange(bool selected) const
 {
     double min = 0, max = 0;
@@ -291,6 +466,31 @@ QPair<double, double> Statistics::turnLengthRange(Speaker *s, bool selected) con
             if (t->getDuration() > max)
                 max = t->getDuration();
         }
+    }
+    return QPair<double, double>(min, max);
+}
+
+QPair<double, double> Statistics::turnLengthRange(Topic *t) const
+{
+    double min = 0, max = 0;
+    foreach (Section *s, t->getSections()) {
+        QPair<double, double> p = turnLengthRange(s);
+        if (min == 0 || p.first < min)
+            min = p.first;
+        if (p.second > max)
+            max = p.second;
+    }
+    return QPair<double, double>(min, max);
+}
+
+QPair<double, double> Statistics::turnLengthRange(Section *s) const
+{
+    double min = 0, max = 0;
+    foreach (Turn *t, s->getTurns()) {
+            if (min == 0 || t->getDuration() < min)
+                min = t->getDuration();
+            if (t->getDuration() > max)
+                max = t->getDuration();
     }
     return QPair<double, double>(min, max);
 }

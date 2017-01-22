@@ -37,6 +37,9 @@ public:
 
     qint16 getMaxSpeakerNameW() const;
 
+signals:
+    void mouseMoved();
+
 public slots:
     void zoomIn();
     void zoomOut();

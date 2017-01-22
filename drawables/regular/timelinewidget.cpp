@@ -133,6 +133,7 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
     }
     // TODO: Do we really need to repaint every time?
     viewport()->repaint();
+    emit mouseMoved();
 }
 
 void TimelineWidget::mouseReleaseEvent(QMouseEvent *event)

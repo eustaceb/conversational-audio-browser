@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QListView>
+#include <QLabel>
 #include <QtMultimedia/QMediaPlayer>
 
 #include "ui_mainwindow.h"
@@ -38,6 +39,8 @@ public:
     QMap<int, Transcription *> *getTranscriptions() const;
 
 private slots:
+
+    void when_mouse_moved();
 
     void when_transcription_loaded(const QString &annotationsFile, const QString &audioFile);
 
@@ -80,6 +83,8 @@ private:
 
     SelectionTreeModel *selectionTree;
     FilterTreeModel *filterTree;
+
+    QLabel *cursorPosLabel;
 };
 
 #endif // MAINWINDOW_H

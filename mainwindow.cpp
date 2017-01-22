@@ -16,6 +16,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -53,6 +54,11 @@ MainWindow::MainWindow(QWidget *parent) :
     when_transcription_loaded("/home/justas/Dissertation/F01.trs", "");
     ui->splitter->insertWidget(0, timeline);
     ui->splitter->insertWidget(1, multiTimeline);
+
+    // Status bar
+    cursorPosLabel = new QLabel(QString::number(timeline->getCursor().x()));
+    ui->statusBar->addPermanentWidget(cursorPosLabel);
+    connect(timeline, SIGNAL(mouseMoved()), this, SLOT(when_mouse_moved()));
 
     // Filemanager setup
     fileManager = new FileManager;
@@ -174,6 +180,12 @@ QMap<int, Transcription *> *MainWindow::getTranscriptions() const
     return transcriptions;
 }
 
+void MainWindow::when_mouse_moved()
+{
+    cursorPosLabel->setText("Cursor at " + QString::number(timeline->getCursor().x()/10 + 20) + "s");
+    ui->statusBar->update();
+}
+
 void MainWindow::on_selectAllButton_clicked()
 {
     selectionTree->selectAll();
@@ -200,6 +212,7 @@ void MainWindow::on_multifileRadioButton_clicked()
     ui->transcriptionComboBox->setEnabled(false);
     timeline->setVisible(false);
     multiTimeline->setVisible(true);
+    cursorPosLabel->setText("");
 }
 
 void MainWindow::on_simpleRadioButton_clicked()

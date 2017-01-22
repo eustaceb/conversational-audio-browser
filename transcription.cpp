@@ -59,7 +59,7 @@ QList<QVariant> Transcription::composeTreePayload() const
     payload.append("trs" + QString::number(id));\
     payload.append(filename);
     payload.append("transcription");
-    payload.append(QString::number(speakers.length()) + " speakers");
+    payload.append(QString::number(topics.length()) + " topics, " + QString::number(speakers.length()) + " speakers");
     return payload;
 }
 
