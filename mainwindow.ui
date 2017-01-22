@@ -163,7 +163,6 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionParticipant_manager"/>
     <addaction name="actionStatistics"/>
    </widget>
    <addaction name="menuFile"/>
@@ -208,11 +207,6 @@
   <action name="actionMultifile">
    <property name="text">
     <string>Multifile</string>
-   </property>
-  </action>
-  <action name="actionParticipant_manager">
-   <property name="text">
-    <string>Participant manager</string>
    </property>
   </action>
   <action name="actionSelect_Tool">

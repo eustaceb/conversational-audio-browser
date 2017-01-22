@@ -16,7 +16,7 @@ TurnGraphicsItem::TurnGraphicsItem(Turn *t, TimelineWidget *timelineWidget)
     SpeakerGraphicsItem *sg = timelineWidget->getSpeakerGraphics().find(turn->getSpeaker()).value();
     color = sg->getColor();
 
-    qreal width = (t->getEndTime() - t->getStartTime()) * 10;
+    qreal width = t->getDuration() * 10;
 
     // TODO: Fix the hardcoded 200
     rect = QRectF(t->getStartTime() * 10 - 200, sg->boundingRect().y(), width, sg->boundingRect().height());

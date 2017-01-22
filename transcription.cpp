@@ -2,6 +2,9 @@
 #include "data-models/topic.h"
 #include "data-models/speaker.h"
 #include "data-models/recording.h"
+#include "data-models/turn.h"
+
+#include "helpers.h"
 
 int Transcription::idCounter = 0;
 

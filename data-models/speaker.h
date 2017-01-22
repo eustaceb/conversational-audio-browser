@@ -29,10 +29,10 @@ public:
     // Filter tree
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
 
-    double getTotalTurnLength() const;
-
     QColor getColor() const;
     void setColor(const QColor &value);
+
+    double getTotalTurnLength() const;
 
 private:
     //TODO: Add more fields for
@@ -42,7 +42,7 @@ private:
     QColor color;
 
     QList <Turn*> turns;
-    double totalTurnLength;
+    double totalTurnLen;
 };
 
 #endif // SPEAKER_H

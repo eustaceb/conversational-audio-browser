@@ -24,6 +24,8 @@ public:
     double getEndTime() const;
     void setEndTime(const double &value);
 
+    double getDuration() const;
+
     // Selection tree
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
 

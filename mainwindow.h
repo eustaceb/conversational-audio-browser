@@ -19,6 +19,8 @@ class MultiTimelineWidget;
 class Transcription;
 class SelectionTreeModel;
 class FilterTreeModel;
+class Statistics;
+class FileManager;
 
 namespace Ui {
 class MainWindow;
@@ -36,7 +38,6 @@ public:
     QMap<int, Transcription *> *getTranscriptions() const;
 
 private slots:
-    void on_actionParticipant_manager_triggered();
 
     void when_transcription_loaded(const QString &annotationsFile, const QString &audioFile);
 
@@ -67,6 +68,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    Statistics *statistics;
+    FileManager *fileManager;
+
     QMediaPlayer *player;
 
     QMap<int, Transcription *> *transcriptions;

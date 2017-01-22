@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QXmlStreamReader>
 #include <QMap>
+#include <QMultiMap>
 
 class Transcription;
 

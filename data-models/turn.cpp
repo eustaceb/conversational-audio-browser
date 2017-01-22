@@ -51,6 +51,11 @@ void Turn::setEndTime(const double &value)
     endTime = value;
 }
 
+double Turn::getDuration() const
+{
+    return endTime - startTime;
+}
+
 QList<QVariant> Turn::composeTreePayload() const
 {
     QList<QVariant> payload;

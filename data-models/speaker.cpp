@@ -1,9 +1,12 @@
 #include "speaker.h"
 #include "turn.h"
 
+#include "helpers.h"
+#include "math.h"
+
 Speaker::Speaker()
 {
-    totalTurnLength = 0;
+    totalTurnLen = 0;
     color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
 }
 
@@ -11,7 +14,7 @@ Speaker::Speaker(const QString &id, const QString &name)
 {
     this->id = id;
     this->name = name;
-    totalTurnLength = 0;
+    totalTurnLen = 0;
     color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
 }
 
@@ -55,11 +58,6 @@ QList<QVariant> Speaker::composeTreePayload() const
     return payload;
 }
 
-double Speaker::getTotalTurnLength() const
-{
-    return totalTurnLength;
-}
-
 QColor Speaker::getColor() const
 {
     return color;
@@ -70,6 +68,11 @@ void Speaker::setColor(const QColor &value)
     color = value;
 }
 
+double Speaker::getTotalTurnLength() const
+{
+    return totalTurnLen;
+}
+
 QList<Turn *> Speaker::getTurns() const
 {
     return turns;
@@ -78,5 +81,5 @@ QList<Turn *> Speaker::getTurns() const
 void Speaker::addTurn(Turn *t)
 {
     turns.append(t);
-    totalTurnLength += t->getEndTime() - t->getStartTime();
+    totalTurnLen += t->getDuration();
 }

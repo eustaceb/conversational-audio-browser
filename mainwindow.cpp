@@ -11,6 +11,9 @@
 #include "trees/filtertreemodel.h"
 #include "trees/selectiontreemodel.h"
 
+#include "statistics.h"
+#include "filemanager.h"
+
 #include <QDebug>
 #include <QMessageBox>
 
@@ -51,7 +54,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->insertWidget(0, timeline);
     ui->splitter->insertWidget(1, multiTimeline);
 
-    //multiTimeline->setVisible(false);
+    // Filemanager setup
+    fileManager = new FileManager;
+    connect(fileManager, SIGNAL(notify_mainWindow_filesLoaded(QString, QString)),
+            this, SLOT(when_transcription_loaded(QString, QString)));
+
+    // Statistics setup
+    statistics = new Statistics(transcriptions, selectionTree, filterTree);
+    connect(filterTree, SIGNAL(treeUpdated()), statistics, SLOT(generateGeneralModel()));
+    connect(selectionTree, SIGNAL(treeUpdated()), statistics, SLOT(generateGeneralModel()));
+
 
     // Audio setup
     player = new QMediaPlayer;
@@ -66,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete statistics;
+    delete fileManager;
     delete selectionTree;
     delete filterTree;
     qDeleteAll((*transcriptions));
@@ -73,14 +87,6 @@ MainWindow::~MainWindow()
     delete timeline;
     delete player;
     delete ui;
-}
-
-void MainWindow::on_actionParticipant_manager_triggered()
-{
-    FileManager *p = new FileManager;
-    connect(p, SIGNAL(notify_mainWindow_filesLoaded(QString, QString)),
-            this, SLOT(when_transcription_loaded(QString, QString)));
-    p->exec();
 }
 
 void MainWindow::when_transcription_loaded(const QString &annotationsFile, const QString &audioFile)
@@ -125,11 +131,7 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
 
 void MainWindow::on_actionOpen_triggered()
 {
-    FileManager *p = new FileManager;
-    connect(p, SIGNAL(notify_mainWindow_filesLoaded(QString, QString)),
-            this, SLOT(when_transcription_loaded(QString, QString)));
-    p->exec();
-    // TODO: Leak, Qt::WDestructiveClose ?
+    fileManager->show();
 }
 
 void MainWindow::on_actionPlay_triggered()
@@ -217,7 +219,6 @@ void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
 
 void MainWindow::on_actionStatistics_triggered()
 {
-    Statistics *s = new Statistics(transcriptions, selectionTree, filterTree);
-    s->show();
+    statistics->show();
     // TODO: Leak, Qt::WDestructiveClose ?
 }
