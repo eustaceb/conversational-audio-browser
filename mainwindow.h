@@ -22,6 +22,7 @@ class SelectionTreeModel;
 class FilterTreeModel;
 class Statistics;
 class FileManager;
+class Slicer;
 
 namespace Ui {
 class MainWindow;
@@ -40,13 +41,19 @@ public:
 
 private slots:
 
+    void mediaErrorMessage();
+
+    void durationChanged(qint64 d);
+
+    void positionChanged(qint64 pos);
+
+    void seek(int where);
+
     void when_mouse_moved();
 
     void when_transcription_loaded(const QString &annotationsFile, const QString &audioFile);
 
     void on_actionOpen_triggered();
-
-    void on_actionPlay_triggered();
 
     void on_actionSelect_Tool_triggered();
 
@@ -69,12 +76,18 @@ private slots:
 
     void on_actionStatistics_triggered();
 
+    void on_playButton_clicked();
+
+    void on_actionSlicer_triggered();
+
 private:
     Ui::MainWindow *ui;
     Statistics *statistics;
     FileManager *fileManager;
+    Slicer *slicer;
 
     QMediaPlayer *player;
+    int duration;
 
     QMap<int, Transcription *> *transcriptions;
 

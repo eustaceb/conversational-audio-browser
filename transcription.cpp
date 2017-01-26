@@ -9,9 +9,9 @@
 int Transcription::idCounter = 0;
 
 Transcription::Transcription(const QString &filepath)
+    : filepath(filepath), recording(0)
 {
     this->id = idCounter++;
-    this->filepath = filepath;
     QStringList splitFilepath = filepath.split("/");
     this->filename = splitFilepath.at(splitFilepath.length() - 1);
 }
@@ -75,6 +75,7 @@ Recording *Transcription::getRecording() const
 
 void Transcription::setRecording(Recording *rec)
 {
+    delete recording;
     recording = rec;
 }
 

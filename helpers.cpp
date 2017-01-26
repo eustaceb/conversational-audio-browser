@@ -109,6 +109,7 @@ Transcription* Helpers::parseTranscript(const QString &filename)
     qInfo() << "Transcription" << splitFilename.at(splitFilename.length() - 1) << "loaded.";
 
     file->close();
+
     delete file;
     return result;
 }

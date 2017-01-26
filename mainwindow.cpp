@@ -13,10 +13,12 @@
 
 #include "statistics.h"
 #include "filemanager.h"
+#include "slicer.h"
 
 #include <QDebug>
 #include <QMessageBox>
 #include <QLabel>
+#include <QTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -28,8 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
     transcriptions = new QMap<int, Transcription*>();
 
     // Toolbar setup
-    ui->toolBar->addWidget(ui->trackSlider);
-    ui->toolBar->addSeparator();
+    ui->audioControls->hide();
+    QWidget* spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    ui->toolBar->addWidget(spacer);
     ui->toolBar->addWidget(ui->controlsWidget);
 
     // Selection tree
@@ -70,11 +74,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(filterTree, SIGNAL(treeUpdated()), statistics, SLOT(generateGeneralModel()));
     connect(selectionTree, SIGNAL(treeUpdated()), statistics, SLOT(generateGeneralModel()));
 
+    // Slicer setup
+    slicer = new Slicer;
 
     // Audio setup
     player = new QMediaPlayer;
-    player->setMedia(QUrl::fromLocalFile("/home/justas/Dissertation/loomer.wav"));
+    duration = 0;
     player->setVolume(50);
+
+    connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
+    connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
+    connect(player, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(mediaErrorMessage()));
 
     // Trigger the Hand Tool and Simple Timeline by default
     on_actionHand_Tool_triggered();
@@ -85,6 +96,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete statistics;
+    delete slicer;
     delete fileManager;
     delete selectionTree;
     delete filterTree;
@@ -118,10 +130,13 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
 
     // Update toolbar
     ui->transcriptionComboBox->clear();
+
     foreach (Transcription *t, (*transcriptions)) {
-        ui->transcriptionComboBox->addItem(t->getFilename(), t->getId());
+        ui->transcriptionComboBox->addItem(t->getFilename(), QVariant(t->getId()));
     }
-    int comboBoxIndex = ui->transcriptionComboBox->findData(trs->getId());
+
+    int comboBoxIndex = ui->transcriptionComboBox->findData(QVariant(trs->getId()));
+
     if (comboBoxIndex != -1)
             ui->transcriptionComboBox->setCurrentIndex(comboBoxIndex);
 
@@ -138,18 +153,6 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
 void MainWindow::on_actionOpen_triggered()
 {
     fileManager->show();
-}
-
-void MainWindow::on_actionPlay_triggered()
-{
-    QString duration = QString::number(player->duration()/1000);
-    QString current = QString::number(player->position()/1000);
-    // TODO: Set the play marker to the sound position
-    if (player->state() == QMediaPlayer::PlayingState) {
-        player->pause();
-    } else {
-        player->play();
-    }
 }
 
 void MainWindow::on_actionSelect_Tool_triggered()
@@ -178,6 +181,44 @@ void MainWindow::selection_updated()
 QMap<int, Transcription *> *MainWindow::getTranscriptions() const
 {
     return transcriptions;
+}
+
+void MainWindow::mediaErrorMessage()
+{
+    QMessageBox messageBox;
+    messageBox.setText(player->errorString());
+    messageBox.setIcon(QMessageBox::Critical);
+    messageBox.exec();
+}
+
+void MainWindow::durationChanged(qint64 d)
+{
+    duration = d;
+    ui->trackSlider->setMaximum(duration / 1000);
+}
+
+void MainWindow::positionChanged(qint64 pos)
+{
+    if (!ui->trackSlider->isSliderDown())
+        ui->trackSlider->setValue(pos / 1000);
+
+    QString currentStr = "00:00:00", totalStr = "00:00:00";
+    if (pos || duration) {
+        QTime current((pos / 3600000 ) % 60, (pos / 60000) % 60, (pos / 1000) % 60, pos % 1000);
+        QTime total((duration / 3600000) % 60, (duration / 60000) % 60, (duration / 1000) % 60, duration % 1000);
+        QString format = "mm:ss";
+        if (duration > 3600000)
+            format = "hh:mm:ss";
+        currentStr = current.toString(format);
+        totalStr = total.toString(format);
+    }
+    ui->currentPosLineEdit->setText(currentStr);
+    ui->totalPosLineEdit->setText(totalStr);
+}
+
+void MainWindow::seek(int where)
+{
+    player->setPosition(where * 1000);
 }
 
 void MainWindow::when_mouse_moved()
@@ -213,6 +254,7 @@ void MainWindow::on_multifileRadioButton_clicked()
     timeline->setVisible(false);
     multiTimeline->setVisible(true);
     cursorPosLabel->setText("");
+    ui->audioControls->hide();
 }
 
 void MainWindow::on_simpleRadioButton_clicked()
@@ -220,12 +262,21 @@ void MainWindow::on_simpleRadioButton_clicked()
     ui->transcriptionComboBox->setEnabled(true);
     multiTimeline->setVisible(false);
     timeline->setVisible(true);
+    Transcription *t = transcriptions->find(ui->transcriptionComboBox->currentData().toInt()).value();
+    if (t->getRecording() != 0)
+        ui->audioControls->show();
 }
 
 void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
 {
     int id = ui->transcriptionComboBox->itemData(index).toInt();
     Transcription *trs = transcriptions->find(id).value();
+    if (trs->getRecording() != 0) {
+        player->setMedia(QUrl::fromLocalFile(trs->getRecording()->getFilename()));
+        ui->audioControls->show();
+    } else {
+        ui->audioControls->hide();
+    }
     timeline->setTranscription(trs);
     timeline->reloadScene();
 }
@@ -233,5 +284,20 @@ void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
 void MainWindow::on_actionStatistics_triggered()
 {
     statistics->show();
-    // TODO: Leak, Qt::WDestructiveClose ?
+}
+
+void MainWindow::on_playButton_clicked()
+{
+    if (player->state() == QMediaPlayer::PlayingState) {
+        ui->playButton->setIcon(QIcon(":/toolbar/icons/play"));
+        player->pause();
+    } else {
+        ui->playButton->setIcon(QIcon(":/toolbar/icons/pause"));
+        player->play();
+    }
+}
+
+void MainWindow::on_actionSlicer_triggered()
+{
+    slicer->show();
 }

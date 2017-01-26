@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     drawables/multifile/transcriptiongraphicsitem.cpp \
     statistics.cpp \
     drawables/multifile/mspeakergraphicsitem.cpp \
-    drawables/multifile/mspeakercountgraphicsitem.cpp
+    drawables/multifile/mspeakercountgraphicsitem.cpp \
+    slicer.cpp
 
 HEADERS  += mainwindow.h \
     helpers.h \
@@ -63,11 +64,13 @@ HEADERS  += mainwindow.h \
     drawables/multifile/transcriptiongraphicsitem.h \
     statistics.h \
     drawables/multifile/mspeakergraphicsitem.h \
-    drawables/multifile/mspeakercountgraphicsitem.h
+    drawables/multifile/mspeakercountgraphicsitem.h \
+    slicer.h
 
 FORMS    += mainwindow.ui \
     filemanager.ui \
-    statistics.ui
+    statistics.ui \
+    slicer.ui
 
 DISTFILES += \
     ../rand.wav
