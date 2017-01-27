@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMap>
+#include <QHash>
 #include <QPair>
 #include <QStandardItemModel>
 
@@ -29,6 +30,11 @@ public:
 
 private slots:
     void generateGeneralModel();
+
+    void on_exportButton_clicked();
+
+    void on_exportAllButton_clicked();
+
 private:
     Ui::Statistics *ui;
 
@@ -38,6 +44,7 @@ private:
 
     QStandardItemModel *generalModel;
     QMap<int, QStandardItemModel*> speakerModels, sectionModels, topicModels;
+    QHash<int, int>  pageToTranscriptionId;
 
     void addTranscription(Transcription *t);
     void generateTranscriptionModels(Transcription *t);

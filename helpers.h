@@ -6,6 +6,7 @@
 #include <QXmlStreamReader>
 #include <QMap>
 #include <QMultiMap>
+#include <QStandardItemModel>
 
 class Transcription;
 
@@ -15,6 +16,7 @@ public:
     Helpers();
 
     static Transcription* parseTranscript(const QString &filename);
+    static int exportStdItemModelToCsv(const QString &filename, QStandardItemModel *model, bool headers = 1);
 };
 
 #endif // HELPERS_H

@@ -14,6 +14,7 @@ Transcription::Transcription(const QString &filepath)
     this->id = idCounter++;
     QStringList splitFilepath = filepath.split("/");
     this->filename = splitFilepath.at(splitFilepath.length() - 1);
+    this->title = this->filename.split(".").at(0);
 }
 
 Transcription::~Transcription()
@@ -82,6 +83,11 @@ void Transcription::setRecording(Recording *rec)
 QString Transcription::getFilename() const
 {
     return filename;
+}
+
+QString Transcription::getTitle() const
+{
+    return title;
 }
 
 int Transcription::getId() const

@@ -32,13 +32,14 @@ public:
     void setRecording(Recording *rec);
 
     QString getFilename() const;
+    QString getTitle() const;
 
     int getId() const;
 
 private:
     static int idCounter;
     int id;
-    QString filepath, filename;
+    QString filepath, filename, title;
     Recording *recording;
     QList <Topic*> topics;
     QList <Speaker*> speakers;

@@ -3,6 +3,7 @@
 
 #include "math.h"
 
+#include "helpers.h"
 #include "data-models/transcription.h"
 #include "data-models/speaker.h"
 #include "data-models/turn.h"
@@ -16,6 +17,8 @@
 
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include <QDebug>
 
@@ -144,6 +147,7 @@ void Statistics::addTranscription(Transcription *t)
 
     w->setLayout(verticalLayout);
     ui->tabWidget->addTab(w, t->getFilename());
+    pageToTranscriptionId.insert(ui->tabWidget->indexOf(w), t->getId());
 }
 
 void Statistics::generateTranscriptionModels(Transcription *t)
@@ -493,4 +497,67 @@ QPair<double, double> Statistics::turnLengthRange(Section *s) const
                 max = t->getDuration();
     }
     return QPair<double, double>(min, max);
+}
+
+void Statistics::on_exportButton_clicked()
+{
+    bool success = true, headers = ui->headersCheckBox->checkState() == Qt::Checked;
+
+    if (ui->tabWidget->currentIndex() != 0) {
+        int trsId = pageToTranscriptionId.find(ui->tabWidget->currentIndex()).value();
+        QString prefix = QFileDialog::getSaveFileName(this, "Select prefix and location for exported files", "/", "Any (*.*)");
+        if (prefix == "") return;
+        QString fileName = prefix + "-" + transcriptions->find(trsId).value()->getTitle() + "-speakers.csv";
+        success &= Helpers::exportStdItemModelToCsv(fileName, speakerModels.find(trsId).value(), headers) == 1;
+        fileName = prefix + "-" + transcriptions->find(trsId).value()->getTitle() + "-sections.csv";
+        success &= Helpers::exportStdItemModelToCsv(fileName, sectionModels.find(trsId).value(), headers) == 1;
+        fileName = prefix + "-" + transcriptions->find(trsId).value()->getTitle() + "-topics.csv";
+        success &= Helpers::exportStdItemModelToCsv(fileName, topicModels.find(trsId).value(), headers) == 1;
+    } else {
+        QString generalFile = QFileDialog::getSaveFileName(this, "General statistics", "/", "Comma-Seperated Values (*.csv)");
+        if (generalFile == "") return;
+        if (generalFile.split(".").last() != "csv")
+            generalFile += ".csv";
+        success &= Helpers::exportStdItemModelToCsv(generalFile, generalModel, headers) == 1;
+    }
+
+    QMessageBox msgBox;
+    if (success) {
+        msgBox.setText("File(s) have been successfully exported.");
+        msgBox.setIcon(QMessageBox::Information);
+    } else {
+        msgBox.setText("Something went wrong.");
+        msgBox.setIcon(QMessageBox::Critical);
+    }
+    msgBox.exec();
+}
+
+void Statistics::on_exportAllButton_clicked()
+{
+    bool success = true, headers = ui->headersCheckBox->checkState() == Qt::Checked;
+
+    QString prefix = QFileDialog::getSaveFileName(this, "Select prefix and location for exported files", "/", "Any (*.*)");
+    if (prefix == "") return;
+
+    QString fileName = prefix + "-general.csv";
+    success &= Helpers::exportStdItemModelToCsv(fileName, generalModel, headers) == 1;
+
+    foreach (int trsId, pageToTranscriptionId) {
+        QString fileName = prefix + "-" + transcriptions->find(trsId).value()->getTitle() + "-speakers.csv";
+        success &= Helpers::exportStdItemModelToCsv(fileName, speakerModels.find(trsId).value(), headers) == 1;
+        fileName = prefix + "-" + transcriptions->find(trsId).value()->getTitle() + "-sections.csv";
+        success &= Helpers::exportStdItemModelToCsv(fileName, sectionModels.find(trsId).value(), headers) == 1;
+        fileName = prefix + "-" + transcriptions->find(trsId).value()->getTitle() + "-topics.csv";
+        success &= Helpers::exportStdItemModelToCsv(fileName, topicModels.find(trsId).value(), headers) == 1;
+    }
+
+    QMessageBox msgBox;
+    if (success) {
+        msgBox.setText("File(s) have been successfully exported.");
+        msgBox.setIcon(QMessageBox::Information);
+    } else {
+        msgBox.setText("Something went wrong.");
+        msgBox.setIcon(QMessageBox::Critical);
+    }
+    msgBox.exec();
 }

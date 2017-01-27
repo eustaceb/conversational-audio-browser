@@ -113,3 +113,33 @@ Transcription* Helpers::parseTranscript(const QString &filename)
     delete file;
     return result;
 }
+
+int Helpers::exportStdItemModelToCsv(const QString &filename, QStandardItemModel *model, bool headers)
+{
+    qInfo() << "Writing to " << filename;
+    QFile f(filename);
+    if (f.open(QIODevice::WriteOnly)) {
+        QTextStream out(&f);
+        if (headers) {
+            for (int i = 0; i < model->columnCount(); i++) {
+                out << model->headerData(i, Qt::Orientation::Horizontal).toString() << ",";
+            }
+            out << endl;
+        }
+        for (int i = 0; i < model->rowCount(); i++) {
+            for (int j = 0; j < model->columnCount(); j++) {
+                QString data = model->data(model->index(i, j)).toString();
+                if (data.contains(",") || data.contains("\""))
+                    data = "\"" + data + "\"";
+                out << data;
+                if (j != model->columnCount() - 1)
+                    out << ",";
+            }
+            out << endl;
+        }
+    } else {
+        return -1;
+    }
+    f.close();
+    return 1;
+}
