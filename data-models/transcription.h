@@ -9,6 +9,8 @@
 class Topic;
 class Speaker;
 class Recording;
+class Turn;
+class Section;
 
 class Transcription : public Selectable, public Filterable
 {
@@ -19,11 +21,14 @@ public:
     void addTopic(Topic *t);
     void addSpeaker(Speaker *s);
 
-    QList<Topic*> getTopics() const;
+    QList<Topic *> getTopics() const;
     void setTopics(const QList<Topic*> &value);
 
-    QList<Speaker*> getSpeakers() const;
+    QList<Speaker *> getSpeakers() const;
     void setSpeakers(const QList<Speaker*> &value);
+
+    QList<Turn *> getTurnList(bool selected = false) const;
+    QList<Section *> getSectionList(bool selected = false) const;
 
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
     QString getFilepath() const;

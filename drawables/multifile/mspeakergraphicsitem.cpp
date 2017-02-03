@@ -2,6 +2,8 @@
 #include "multitimelinewidget.h"
 #include "data-models/speaker.h"
 
+#include <math.h>
+
 int MSpeakerGraphicsItem::yCounter = 0;
 QFont MSpeakerGraphicsItem::font = QFont("times", 14);
 
@@ -17,7 +19,15 @@ MSpeakerGraphicsItem::MSpeakerGraphicsItem(Speaker *s, const QRectF &trsRect, Mu
     label = " " + speaker->getName() + " " + QString::number(speaker->getTotalTurnLength()) + " seconds";
     QFontMetrics fm(font);
 
-    barRect = QRectF(trsRect.right(), trsRect.y() + yCounter, speaker->getTotalTurnLength() * 10, elementH);
+    int width;
+    if (speaker->getTotalTurnLength() == 0)
+        width = 0;
+    else if (speaker->getTotalTurnLength() == 1)
+        width = 100;
+    else
+        width = log(speaker->getTotalTurnLength()) * 100;
+
+    barRect = QRectF(trsRect.right(), trsRect.y() + yCounter, width, elementH);
     rect = barRect.united(QRectF(barRect.topLeft(), QSizeF(fm.width(label), 0)));
 
     yCounter += elementH + vSpacing;

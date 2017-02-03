@@ -70,12 +70,14 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(when_transcription_loaded(QString, QString)));
 
     // Statistics setup
-    statistics = new Statistics(transcriptions, selectionTree, filterTree);
+    statistics = new Statistics(transcriptions);
     connect(filterTree, SIGNAL(treeUpdated()), statistics, SLOT(generateGeneralModel()));
     connect(selectionTree, SIGNAL(treeUpdated()), statistics, SLOT(generateGeneralModel()));
 
     // Slicer setup
-    slicer = new Slicer;
+    slicer = new Slicer(transcriptions);
+    connect(filterTree, SIGNAL(treeUpdated()), slicer, SLOT(recalculateFileCount()));
+    connect(selectionTree, SIGNAL(treeUpdated()), slicer, SLOT(recalculateFileCount()));
 
     // Audio setup
     player = new QMediaPlayer;

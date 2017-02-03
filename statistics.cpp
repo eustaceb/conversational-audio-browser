@@ -22,12 +22,8 @@
 
 #include <QDebug>
 
-Statistics::Statistics(QMap<int, Transcription *> *transcriptions,
-                       SelectionTreeModel *selectionTree, FilterTreeModel *filterTree,
-                       QWidget *parent) :
+Statistics::Statistics(QMap<int, Transcription *> *transcriptions, QWidget *parent) :
     transcriptions(transcriptions),
-    selectionTree(selectionTree),
-    filterTree(filterTree),
     QWidget(parent),
     ui(new Ui::Statistics)
 {
@@ -534,10 +530,10 @@ void Statistics::on_exportButton_clicked()
 
 void Statistics::on_exportAllButton_clicked()
 {
+    QMessageBox msgBox;
     bool success = true, headers = ui->headersCheckBox->checkState() == Qt::Checked;
 
     QString prefix = QFileDialog::getSaveFileName(this, "Select prefix and location for exported files", "/", "Any (*.*)");
-    if (prefix == "") return;
 
     QString fileName = prefix + "-general.csv";
     success &= Helpers::exportStdItemModelToCsv(fileName, generalModel, headers) == 1;
@@ -551,7 +547,6 @@ void Statistics::on_exportAllButton_clicked()
         success &= Helpers::exportStdItemModelToCsv(fileName, topicModels.find(trsId).value(), headers) == 1;
     }
 
-    QMessageBox msgBox;
     if (success) {
         msgBox.setText("File(s) have been successfully exported.");
         msgBox.setIcon(QMessageBox::Information);

@@ -29,6 +29,8 @@ public:
     // Selection tree
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
 
+    int getId() const;
+
 private:
     static int idCounter;
     int id;

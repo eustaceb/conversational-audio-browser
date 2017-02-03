@@ -16,6 +16,13 @@ SectionGraphicsItem::SectionGraphicsItem(Section *s, TimelineWidget *timelineWid
     : section(s), timelineWidget(timelineWidget)
 {
     color = QColor(qrand() % 255, qrand() % 255, qrand() % 255, 255);
+    textColor = QColor(255 - color.red(), 255 - color.green(), 255 - color.blue(), 100);
+
+    if (color.lightness() > 127)
+        textColor = textColor.darker(200);
+    else
+        textColor = textColor.lighter(200);
+
     double adjust = -200;
 
     this->rect = QRectF(
@@ -29,6 +36,7 @@ SectionGraphicsItem::SectionGraphicsItem(Section *s, TimelineWidget *timelineWid
 
     label = QStaticText((section->getTopic()->getDesc() + " ").repeated(repeat + 1));
 
+    setAcceptHoverEvents(true);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
@@ -56,9 +64,24 @@ void SectionGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawRect(rect);
 
     painter->setFont(font);
-    painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue(), 100)));
+    painter->setPen(QPen(textColor));
     painter->drawStaticText(rect.x(), rect.y(), label);
     painter->drawStaticText(rect.x(), rect.y() + rect.height() - 25, label);
+}
+
+
+void SectionGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event);
+    textColor.setAlpha(255);
+    this->update();
+}
+
+void SectionGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    Q_UNUSED(event);
+    textColor.setAlpha(100);
+    this->update();
 }
 
 void SectionGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

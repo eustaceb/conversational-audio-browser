@@ -3,6 +3,8 @@
 #include "multitimelinewidget.h"
 #include "data-models/speaker.h"
 
+#include "math.h"
+
 int MSpeakerCountGraphicsItem::yCounter = 0;
 QFont MSpeakerCountGraphicsItem::font = QFont("times", 14);
 
@@ -18,7 +20,14 @@ MSpeakerCountGraphicsItem::MSpeakerCountGraphicsItem(Speaker *s, const QRectF &t
     label = speaker->getName() + " " + QString::number(speaker->getTurns().length()) + " occurences ";
     QFontMetrics fm(font);
 
-    int width = speaker->getTurns().length() * 10;
+    int width;
+    if (speaker->getTurns().length() == 0)
+        width = 0;
+    else if (speaker->getTurns().length() == 1)
+        width = 100;
+    else
+        width = log(speaker->getTurns().length()) * 100;
+
     barRect = QRectF(trsRect.left() - width, trsRect.y() + yCounter, width, elementH);
     rect = barRect.united(QRectF(QPointF(barRect.right() - fm.width(label), barRect.y()), QSizeF(fm.width(label), 0)));
 
@@ -48,7 +57,7 @@ void MSpeakerCountGraphicsItem::paint(QPainter *painter, const QStyleOptionGraph
     QBrush brush = QBrush(color);
     brush.setStyle(Qt::SolidPattern);
     painter->setBrush(brush);
-    painter->drawRect(rect);
+    painter->drawRect(barRect);
 
     painter->setFont(font);
     painter->setPen(QPen(QColor(255 - color.red(), 255 - color.green(), 255 - color.blue())));

@@ -66,3 +66,8 @@ QList<QVariant> Turn::composeTreePayload() const
     return payload;
 }
 
+int Turn::getId() const
+{
+    return id;
+}
+

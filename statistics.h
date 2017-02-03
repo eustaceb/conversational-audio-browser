@@ -11,8 +11,6 @@ namespace Ui {
 class Statistics;
 }
 
-class SelectionTreeModel;
-class FilterTreeModel;
 class Transcription;
 class Speaker;
 class Topic;
@@ -24,7 +22,6 @@ class Statistics : public QWidget
 
 public:
     explicit Statistics(QMap<int, Transcription *> *transcriptions,
-                        SelectionTreeModel *selectionTree, FilterTreeModel *filterTree,
                         QWidget *parent = 0);
     ~Statistics();
 
@@ -39,8 +36,6 @@ private:
     Ui::Statistics *ui;
 
     QMap<int, Transcription *> *transcriptions;
-    SelectionTreeModel *selectionTree;
-    FilterTreeModel *filterTree;
 
     QStandardItemModel *generalModel;
     QMap<int, QStandardItemModel*> speakerModels, sectionModels, topicModels;

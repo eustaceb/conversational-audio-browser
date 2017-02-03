@@ -31,13 +31,15 @@ public:
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 
 private:
     Section *section;
     TimelineWidget *timelineWidget;
 
     QRectF rect;
-    QColor color;
+    QColor color, textColor;
     QStaticText label;
     static QFont font;
 };

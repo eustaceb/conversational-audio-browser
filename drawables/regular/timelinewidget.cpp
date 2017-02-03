@@ -41,7 +41,7 @@ TimelineWidget::TimelineWidget(QWidget *parent)
 
 TimelineWidget::~TimelineWidget()
 {
-    qDeleteAll(speakerGraphics);
+    //qDeleteAll(speakerGraphics);
     delete scene;
 
 }

@@ -3,6 +3,7 @@
 #include "data-models/speaker.h"
 #include "data-models/recording.h"
 #include "data-models/turn.h"
+#include "data-models/section.h"
 
 #include "helpers.h"
 
@@ -52,6 +53,36 @@ QList<Speaker*> Transcription::getSpeakers() const
 void Transcription::setSpeakers(const QList<Speaker*> &value)
 {
     speakers = value;
+}
+
+QList<Turn *> Transcription::getTurnList(bool selected) const
+{
+    QList<Turn *> result;
+    foreach (Speaker *s, speakers) {
+        if (selected) {
+            if (s->isFiltered()) {
+                foreach (Turn *t, s->getTurns()) {
+                    if (t->isSelected())
+                        result.append(t);
+                }
+            }
+        } else result.append(s->getTurns());
+    }
+    return result;
+}
+
+QList<Section *> Transcription::getSectionList(bool selected) const
+{
+    QList<Section *> result;
+    foreach (Topic *t, topics) {
+        if (selected) {
+            foreach (Section *s, t->getSections()) {
+                if (s->isSelected())
+                    result.append(s);
+            }
+        } else result.append(t->getSections());
+    }
+    return result;
 }
 
 QList<QVariant> Transcription::composeTreePayload() const

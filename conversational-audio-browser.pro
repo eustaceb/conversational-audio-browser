@@ -77,3 +77,16 @@ DISTFILES += \
 
 RESOURCES += \
     res.qrc
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../libs/libsndfile/lib/release/ -lsndfile
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../libs/libsndfile/lib/debug/ -lsndfile
+else:unix: LIBS += -L$$PWD/../../../libs/libsndfile/lib/ -lsndfile
+
+INCLUDEPATH += $$PWD/../../../libs/libsndfile/include
+DEPENDPATH += $$PWD/../../../libs/libsndfile/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/release/libsndfile.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/debug/libsndfile.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/release/sndfile.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/debug/sndfile.lib
+else:unix: PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/libsndfile.a
