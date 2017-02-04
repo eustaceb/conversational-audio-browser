@@ -80,6 +80,8 @@ private slots:
 
     void on_actionSlicer_triggered();
 
+    void on_stopButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Statistics *statistics;

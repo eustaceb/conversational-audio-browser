@@ -47,19 +47,24 @@
       <widget class="QWidget" name="lowerHalfWidget" native="true">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
+         <widget class="QLabel" name="noAudioFileLoaded">
+          <property name="statusTip">
+           <string>Audio controls would be shown here.</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">color: rgb(255, 0, 0);</string>
+          </property>
+          <property name="text">
+           <string>No audio file loaded.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QWidget" name="audioControls" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <item>
-            <widget class="QToolButton" name="backButton">
-             <property name="text">
-              <string>BW</string>
-             </property>
-             <property name="icon">
-              <iconset resource="res.qrc">
-               <normaloff>:/toolbar/icons/fbw</normaloff>:/toolbar/icons/fbw</iconset>
-             </property>
-            </widget>
-           </item>
            <item>
             <widget class="QToolButton" name="playButton">
              <property name="text">
@@ -72,7 +77,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QToolButton" name="forwardButton">
+            <widget class="QToolButton" name="stopButton">
              <property name="text">
               <string>FW</string>
              </property>

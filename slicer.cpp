@@ -16,6 +16,7 @@ Slicer::Slicer(QMap<int, Transcription *> *transcriptions, QWidget *parent) :
     QWidget(parent), ui(new Ui::Slicer)
 {
     ui->setupUi(this);
+    recalculateFileCount();
 }
 
 Slicer::~Slicer()

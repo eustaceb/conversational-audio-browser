@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Timeline setup
     timeline = new TimelineWidget(this);
+    connect(ui->syncTimelineBox, SIGNAL(stateChanged(int)), timeline, SLOT(syncCheckBox(int)));
     multiTimeline = new MultiTimelineWidget(transcriptions, this);
     when_transcription_loaded("/home/justas/Dissertation/F01.trs", "");
     ui->splitter->insertWidget(0, timeline);
@@ -86,8 +87,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
     connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(player, SIGNAL(positionChanged(qint64)), timeline, SLOT(syncPosition(qint64)));
     connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
     connect(player, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(mediaErrorMessage()));
+    connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), timeline, SLOT(playerStateChanged(QMediaPlayer::State)));
 
     // Trigger the Hand Tool and Simple Timeline by default
     on_actionHand_Tool_triggered();
@@ -225,7 +228,10 @@ void MainWindow::seek(int where)
 
 void MainWindow::when_mouse_moved()
 {
-    cursorPosLabel->setText("Cursor at " + QString::number(timeline->getCursor().x()/10 + 20) + "s");
+    int s = timeline->getCursor().x()/10 + 20;
+    if (s < 0) s = 0;
+    QString minutesAndSeconds = QString::number((s / 60)) + "'" + QString::number((s % 60));
+    cursorPosLabel->setText("Cursor at " + QString::number(s) + "s (" + minutesAndSeconds + ")");
     ui->statusBar->update();
 }
 
@@ -256,6 +262,7 @@ void MainWindow::on_multifileRadioButton_clicked()
     timeline->setVisible(false);
     multiTimeline->setVisible(true);
     cursorPosLabel->setText("");
+    ui->noAudioFileLoaded->hide();
     ui->audioControls->hide();
 }
 
@@ -265,8 +272,12 @@ void MainWindow::on_simpleRadioButton_clicked()
     multiTimeline->setVisible(false);
     timeline->setVisible(true);
     Transcription *t = transcriptions->find(ui->transcriptionComboBox->currentData().toInt()).value();
-    if (t->getRecording() != 0)
+    if (t->getRecording() != 0) {
+        ui->noAudioFileLoaded->hide();
         ui->audioControls->show();
+    }
+    else
+        ui->noAudioFileLoaded->show();
 }
 
 void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
@@ -275,9 +286,11 @@ void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
     Transcription *trs = transcriptions->find(id).value();
     if (trs->getRecording() != 0) {
         player->setMedia(QUrl::fromLocalFile(trs->getRecording()->getFilename()));
+        ui->noAudioFileLoaded->hide();
         ui->audioControls->show();
     } else {
         ui->audioControls->hide();
+        ui->noAudioFileLoaded->show();
     }
     timeline->setTranscription(trs);
     timeline->reloadScene();
@@ -302,4 +315,10 @@ void MainWindow::on_playButton_clicked()
 void MainWindow::on_actionSlicer_triggered()
 {
     slicer->show();
+}
+
+void MainWindow::on_stopButton_clicked()
+{
+    player->stop();
+    ui->playButton->setIcon(QIcon(":/toolbar/icons/play"));
 }

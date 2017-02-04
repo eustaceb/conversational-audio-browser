@@ -50,10 +50,10 @@ void Ruler::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
     for (int i = 0; i < rect.width(); i += increment) {
         int x = rect.x() + i;
-
+        QString mark = QString::number((i / 10) / 60) + "'" + QString::number((i / 10) % 60);
         if (type == Below) {
             if (!(i % 100)) { // Bigger separators between text
-                painter->drawText(x - periodW / 2, rect.bottom() - textHeight, periodW, rect.height(), Qt::AlignHCenter, QString::number(i/10));
+                painter->drawText(x - periodW / 2, rect.bottom() - textHeight, periodW, rect.height(), Qt::AlignHCenter, mark);
                 painter->drawLine(x, rect.top(), x, rect.top() + textHeight);
             } else if (!(i % 50)) { // Separators that fall on text
                 painter->drawLine(x, rect.top(), x, rect.top() + (rect.height() / 2));
@@ -63,7 +63,7 @@ void Ruler::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
         }
         else if (type == Above) {
             if (!(i % 100)) { // Bigger separators between text
-                painter->drawText(x - periodW / 2, rect.top(), periodW, rect.height(), Qt::AlignHCenter, QString::number(i/10));
+                painter->drawText(x - periodW / 2, rect.top(), periodW, rect.height(), Qt::AlignHCenter, mark);
                 painter->drawLine(x, rect.bottom(), x, rect.bottom() - textHeight);
             } else if (!(i % 50)) { // Separators that fall on text
                 painter->drawLine(x, rect.bottom(), x, rect.bottom() - (rect.height() / 2));

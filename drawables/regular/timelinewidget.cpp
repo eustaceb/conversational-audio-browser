@@ -16,12 +16,12 @@
 #include <QGraphicsSceneEvent>
 
 TimelineWidget::TimelineWidget(QWidget *parent)
-    : QGraphicsView(parent), zoomScale(1), cursor(0, 0)
+    : QGraphicsView(parent), zoomScale(1), cursor(0, 0), markerPos(-200)
 {
     scene = new QGraphicsScene(this);
     // TODO: Change to some indexing for possible optimisation
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    //scene->setSceneRect(-200, -200, 1600, 1600);
+
     setScene(scene);
     setCacheMode(CacheNone);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -37,6 +37,8 @@ TimelineWidget::TimelineWidget(QWidget *parent)
     tool = SelectTool;
     this->setCursor(Qt::ArrowCursor);
     selectArea = new QRubberBand(QRubberBand::Rectangle, this);
+
+    sync = false;
 }
 
 TimelineWidget::~TimelineWidget()
@@ -162,11 +164,6 @@ void TimelineWidget::setTool(const Tool &t)
     tool = t;
 }
 
-void TimelineWidget::itemMoved()
-{
-
-}
-
 
 void TimelineWidget::zoomIn()
 {
@@ -176,6 +173,28 @@ void TimelineWidget::zoomIn()
 void TimelineWidget::zoomOut()
 {
     scaleView(1 / qreal(1.2));
+}
+
+void TimelineWidget::syncCheckBox(int value)
+{
+    if (value == 2)
+        sync = true;
+    else
+        sync = false;
+}
+
+void TimelineWidget::syncPosition(qint64 pos)
+{
+    markerPos = (pos / 100) - 200;
+    if (sync) {
+        centerOn(QPointF(markerPos, 0));
+    }
+    viewport()->repaint();
+}
+
+void TimelineWidget::playerStateChanged(QMediaPlayer::State playerState)
+{
+    this->playerState = playerState;
 }
 
 void TimelineWidget::keyPressEvent(QKeyEvent *event)
@@ -211,6 +230,17 @@ void TimelineWidget::scaleView(qreal scaleFactor)
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     scale(scaleFactor, scaleFactor);
     setTransformationAnchor(QGraphicsView::NoAnchor);
+}
+
+void TimelineWidget::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    QGraphicsView::drawForeground(painter, rect);
+
+    if (playerState == QMediaPlayer::PausedState || playerState == QMediaPlayer::PlayingState) {
+        QBrush brush = QBrush(QColor(255, 0, 0));
+        painter->setBrush(brush);
+        painter->drawRect(markerPos, -210 - 20, -2, 460 + 40);
+    }
 }
 
 qint16 TimelineWidget::getMaxSpeakerNameW() const

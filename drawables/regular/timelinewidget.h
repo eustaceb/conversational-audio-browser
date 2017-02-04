@@ -5,6 +5,7 @@
 #include <QRubberBand>
 #include <QRect>
 #include <QMap>
+#include <QMediaPlayer>
 
 class Transcription;
 class Speaker;
@@ -22,8 +23,6 @@ public:
     void setTranscription(Transcription *t);
 
     void reloadScene();
-
-    void itemMoved();
 
     Tool getTool() const;
     void setTool(const Tool &t);
@@ -43,6 +42,9 @@ signals:
 public slots:
     void zoomIn();
     void zoomOut();
+    void syncCheckBox(int value);
+    void syncPosition(qint64 pos);
+    void playerStateChanged(QMediaPlayer::State playerState);
 
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -54,6 +56,8 @@ protected:
     void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
 #endif
     void scaleView(qreal scaleFactor);
+
+    virtual void drawForeground(QPainter * painter, const QRectF & rect) Q_DECL_OVERRIDE;
 private:
     QGraphicsScene *scene;
     QRubberBand *selectArea;
@@ -66,8 +70,13 @@ private:
 
     Tool tool;
 
+    // Audio player related variables
+    bool sync;
+    QMediaPlayer::State playerState;
+
     qreal zoomScale;
     QPointF cursor, origin;
+    qreal markerPos;
 };
 
 #endif // TIMELINEWIDGET_H
