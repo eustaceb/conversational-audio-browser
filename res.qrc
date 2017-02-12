@@ -1,13 +1,12 @@
 <RCC>
-    <qresource prefix="/toolbar/icons">
-        <file alias="hand">res/hand-128.png</file>
-        <file alias="pointer">res/pixelated-cursor-arrow-hi.png</file>
-        <file alias="ffw">res/media-fast-forward.png</file>
-        <file alias="pause">res/icon-pause-128.png</file>
-        <file alias="play">res/play1.png</file>
-        <file alias="interval">res/interval-select.png</file>
-        <file alias="open">res/folder_open.png</file>
-        <file alias="stats">res/stats.png</file>
-        <file alias="slicer">res/cutter.png</file>
+    <qresource prefix="/icons">
+        <file alias="stats">res/stat.png</file>
+        <file alias="play">res/play.png</file>
+        <file alias="pause">res/pause.png</file>
+        <file alias="next-section">res/frw.png</file>
+        <file alias="open">res/fld.png</file>
+        <file alias="slicer">res/cut.png</file>
+        <file alias="prev-section">res/bkw.png</file>
+        <file alias="resize">res/resize.png</file>
     </qresource>
 </RCC>

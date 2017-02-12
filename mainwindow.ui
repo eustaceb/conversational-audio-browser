@@ -66,24 +66,39 @@
          <widget class="QWidget" name="audioControls" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
+            <widget class="QToolButton" name="prevSectionButton">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="res.qrc">
+               <normaloff>:/icons/prev-section</normaloff>:/icons/prev-section</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QToolButton" name="playButton">
              <property name="text">
               <string>Play</string>
              </property>
              <property name="icon">
               <iconset resource="res.qrc">
-               <normaloff>:/toolbar/icons/play</normaloff>:/toolbar/icons/play</iconset>
+               <normaloff>:/icons/play</normaloff>
+               <normalon>:/icons/pause</normalon>:/icons/play</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QToolButton" name="stopButton">
+            <widget class="QToolButton" name="nextSectionButton">
              <property name="text">
-              <string>FW</string>
+              <string/>
              </property>
              <property name="icon">
               <iconset resource="res.qrc">
-               <normaloff>:/toolbar/icons/ffw</normaloff>:/toolbar/icons/ffw</iconset>
+               <normaloff>:/icons/next-section</normaloff>:/icons/next-section</iconset>
              </property>
             </widget>
            </item>
@@ -260,33 +275,22 @@
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuActive_file">
-     <property name="title">
-      <string>Active file</string>
-     </property>
-    </widget>
     <addaction name="actionOpen"/>
-    <addaction name="menuActive_file"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
-    <widget class="QMenu" name="menuSingle_file">
-     <property name="title">
-      <string>Single file</string>
-     </property>
-     <addaction name="actionTrs01"/>
-    </widget>
-    <addaction name="menuSingle_file"/>
-    <addaction name="actionMultifile"/>
+    <addaction name="actionResize_timeline"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
     <addaction name="actionStatistics"/>
+    <addaction name="actionSlicer"/>
+    <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -307,13 +311,12 @@
    <addaction name="actionStatistics"/>
    <addaction name="actionSlicer"/>
    <addaction name="separator"/>
-   <addaction name="actionSelect_Tool"/>
-   <addaction name="actionHand_Tool"/>
+   <addaction name="actionResize_timeline"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/open</normaloff>:/toolbar/icons/open</iconset>
+     <normaloff>:/icons/open</normaloff>:/icons/open</iconset>
    </property>
    <property name="text">
     <string>Open...</string>
@@ -322,94 +325,10 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionMultifile">
-   <property name="text">
-    <string>Multifile</string>
-   </property>
-  </action>
-  <action name="actionSelect_Tool">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/pointer</normaloff>
-     <normalon>:/toolbar/icons/pointer</normalon>:/toolbar/icons/pointer</iconset>
-   </property>
-   <property name="text">
-    <string>Select Tool</string>
-   </property>
-   <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Selection Tool&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Allows selection of items that fit in the select box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="shortcut">
-    <string>S</string>
-   </property>
-  </action>
-  <action name="actionPlay">
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/play</normaloff>
-     <normalon>:/toolbar/icons/pause</normalon>:/toolbar/icons/play</iconset>
-   </property>
-   <property name="text">
-    <string>Play</string>
-   </property>
-   <property name="shortcut">
-    <string>Space</string>
-   </property>
-  </action>
-  <action name="actionBeginning">
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/fbw</normaloff>:/toolbar/icons/fbw</iconset>
-   </property>
-   <property name="text">
-    <string>Beginning</string>
-   </property>
-   <property name="toolTip">
-    <string>Go to the beginning of the track</string>
-   </property>
-  </action>
-  <action name="actionEnding">
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/ffw</normaloff>:/toolbar/icons/ffw</iconset>
-   </property>
-   <property name="text">
-    <string>Ending</string>
-   </property>
-   <property name="toolTip">
-    <string>Go to the ending of the track</string>
-   </property>
-  </action>
-  <action name="actionHand_Tool">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/hand</normaloff>:/toolbar/icons/hand</iconset>
-   </property>
-   <property name="text">
-    <string>Hand Tool</string>
-   </property>
-   <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Hand Tool&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Primarily used for navigation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-   </property>
-   <property name="shortcut">
-    <string>H</string>
-   </property>
-  </action>
-  <action name="actionTrs01">
-   <property name="text">
-    <string>trs01</string>
-   </property>
-  </action>
   <action name="actionStatistics">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/stats</normaloff>:/toolbar/icons/stats</iconset>
+     <normaloff>:/icons/stats</normaloff>:/icons/stats</iconset>
    </property>
    <property name="text">
     <string>Statistics</string>
@@ -426,13 +345,33 @@
   <action name="actionSlicer">
    <property name="icon">
     <iconset resource="res.qrc">
-     <normaloff>:/toolbar/icons/slicer</normaloff>:/toolbar/icons/slicer</iconset>
+     <normaloff>:/icons/slicer</normaloff>:/icons/slicer</iconset>
    </property>
    <property name="text">
-    <string>slicer</string>
+    <string>Slicer</string>
    </property>
    <property name="toolTip">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;Slicer&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Slice audio files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </action>
+  <action name="actionResize_timeline">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/icons/resize</normaloff>:/icons/resize</iconset>
+   </property>
+   <property name="text">
+    <string>Resize timeline</string>
+   </property>
+   <property name="toolTip">
+    <string>Resize timeline</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+Return</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

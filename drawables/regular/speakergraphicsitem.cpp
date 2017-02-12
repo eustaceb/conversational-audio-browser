@@ -58,19 +58,6 @@ QPainterPath SpeakerGraphicsItem::shape() const
     return path;
 }
 
-
-void SpeakerGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    update();
-    QGraphicsItem::mousePressEvent(event);
-}
-
-void SpeakerGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    update();
-    QGraphicsItem::mouseReleaseEvent(event);
-}
-
 QColor SpeakerGraphicsItem::getColor() const
 {
     return color;

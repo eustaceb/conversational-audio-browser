@@ -73,6 +73,24 @@ private:
     double turnLengthVariance(Topic *t) const;
     double turnLengthVariance(Section *s) const;
 
+    double turnLengthSkewness(bool selected = false) const;
+    double turnLengthSkewness(Transcription *t) const;
+    double turnLengthSkewness(Speaker *s) const;
+    double turnLengthSkewness(Topic *t) const;
+    double turnLengthSkewness(Section *s) const;
+/*
+    QList<double> getOverlaps(bool selected = false) const;
+    QList<double> getOverlaps(Transcription *t, bool selected = false) const;
+    QList<double> getOverlaps(Speaker *s) const;
+    QList<double> getOverlaps(Topic *t) const;
+    QList<double> getOverlaps(Section *s) const;
+
+    double overlapLength(bool selected = false) const;
+    double overlapLength(Transcription *t) const;
+    double overlapLength(Speaker *s) const;
+    double overlapLength(Topic *t) const;
+    double overlapLength(Section *s) const;
+*/
     QPair<double, double> turnLengthRange(bool selected = false) const;
     QPair<double, double> turnLengthRange(Transcription *t, bool selected = false) const;
     QPair<double, double> turnLengthRange(Speaker *s, bool selected = false) const;

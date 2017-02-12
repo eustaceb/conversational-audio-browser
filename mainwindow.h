@@ -55,10 +55,6 @@ private slots:
 
     void on_actionOpen_triggered();
 
-    void on_actionSelect_Tool_triggered();
-
-    void on_actionHand_Tool_triggered();
-
     void selection_updated();
     void on_selectAllButton_clicked();
 
@@ -80,7 +76,11 @@ private slots:
 
     void on_actionSlicer_triggered();
 
-    void on_stopButton_clicked();
+    void on_prevSectionButton_clicked();
+
+    void on_nextSectionButton_clicked();
+
+    void on_actionResize_timeline_triggered();
 
 private:
     Ui::MainWindow *ui;

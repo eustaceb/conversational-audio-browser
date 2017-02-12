@@ -33,10 +33,7 @@ TimelineWidget::TimelineWidget(QWidget *parent)
     setMouseTracking(true);
     scale(qreal(0.8), qreal(0.8));
 
-    // Setup default tool
-    tool = SelectTool;
-    this->setCursor(Qt::ArrowCursor);
-    selectArea = new QRubberBand(QRubberBand::Rectangle, this);
+    this->setCursor(Qt::OpenHandCursor);
 
     sync = false;
 }
@@ -108,10 +105,6 @@ void TimelineWidget::mousePressEvent(QMouseEvent* event)
 {    //p->show();
     if (event->button() == Qt::LeftButton) {
         origin = event->pos();
-        if (tool == SelectTool) {
-            selectArea->setGeometry(QRect(event->pos(), QSize(0, 0)));
-            selectArea->show();
-        }
     }
 }
 
@@ -120,10 +113,7 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
     QGraphicsView::mouseMoveEvent(event);
 
     cursor = mapToScene(event->pos());
-    if (tool == SelectTool) {
-        selectArea->setGeometry(QRect(origin.toPoint(), event->pos()).normalized());
-    }
-    if ((event->buttons() & Qt::LeftButton) && (tool == HandTool))
+    if (event->buttons() & Qt::LeftButton)
     {
         QPointF oldp = mapToScene(origin.toPoint());
         QPointF newp = mapToScene(event->pos());
@@ -138,30 +128,9 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
     emit mouseMoved();
 }
 
-void TimelineWidget::mouseReleaseEvent(QMouseEvent *event)
-{
-    Q_UNUSED(event);
-    if (tool == SelectTool) {
-        // TODO: Figure out whether this is necessary
-        // foreach(QGraphicsItem *item, scene->items(selectArea->geometry())) {}
-        selectArea->hide();
-    }
-}
-
-
 QMap<Speaker *, SpeakerGraphicsItem *> TimelineWidget::getSpeakerGraphics() const
 {
     return speakerGraphics;
-}
-
-TimelineWidget::Tool TimelineWidget::getTool() const
-{
-    return tool;
-}
-
-void TimelineWidget::setTool(const Tool &t)
-{
-    tool = t;
 }
 
 

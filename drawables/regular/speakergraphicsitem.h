@@ -28,10 +28,6 @@ public:
 
     QColor getColor() const;
 
-protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-
 private:
     Speaker *speaker;
     TimelineWidget *timelineWidget;

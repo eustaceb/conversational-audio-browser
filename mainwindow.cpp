@@ -7,6 +7,7 @@
 
 #include "data-models/transcription.h"
 #include "data-models/recording.h"
+#include "data-models/section.h"
 
 #include "trees/filtertreemodel.h"
 #include "trees/selectiontreemodel.h"
@@ -56,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent) :
     timeline = new TimelineWidget(this);
     connect(ui->syncTimelineBox, SIGNAL(stateChanged(int)), timeline, SLOT(syncCheckBox(int)));
     multiTimeline = new MultiTimelineWidget(transcriptions, this);
-    when_transcription_loaded("/home/justas/Dissertation/F01.trs", "");
+    //when_transcription_loaded("/home/justas/Dissertation/F01.trs", "");
     ui->splitter->insertWidget(0, timeline);
     ui->splitter->insertWidget(1, multiTimeline);
 
@@ -92,8 +93,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(player, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(mediaErrorMessage()));
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), timeline, SLOT(playerStateChanged(QMediaPlayer::State)));
 
-    // Trigger the Hand Tool and Simple Timeline by default
-    on_actionHand_Tool_triggered();
     ui->simpleRadioButton->click();
 }
 
@@ -158,24 +157,6 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
 void MainWindow::on_actionOpen_triggered()
 {
     fileManager->show();
-}
-
-void MainWindow::on_actionSelect_Tool_triggered()
-{
-    timeline->setTool(TimelineWidget::SelectTool);
-    timeline->setCursor(Qt::ArrowCursor);
-
-    ui->actionSelect_Tool->setChecked(true);
-    ui->actionHand_Tool->setChecked(false);
-}
-
-void MainWindow::on_actionHand_Tool_triggered()
-{
-    timeline->setTool(TimelineWidget::HandTool);
-    timeline->setCursor(Qt::OpenHandCursor);
-
-    ui->actionHand_Tool->setChecked(true);
-    ui->actionSelect_Tool->setChecked(false);
 }
 
 void MainWindow::selection_updated()
@@ -264,6 +245,8 @@ void MainWindow::on_multifileRadioButton_clicked()
     cursorPosLabel->setText("");
     ui->noAudioFileLoaded->hide();
     ui->audioControls->hide();
+    // Reset timeline / selection splitter
+    ui->splitter->setSizes(QList<int>({0, 200, 200}));
 }
 
 void MainWindow::on_simpleRadioButton_clicked()
@@ -271,13 +254,17 @@ void MainWindow::on_simpleRadioButton_clicked()
     ui->transcriptionComboBox->setEnabled(true);
     multiTimeline->setVisible(false);
     timeline->setVisible(true);
-    Transcription *t = transcriptions->find(ui->transcriptionComboBox->currentData().toInt()).value();
-    if (t->getRecording() != 0) {
-        ui->noAudioFileLoaded->hide();
-        ui->audioControls->show();
+    if (transcriptions->find(ui->transcriptionComboBox->currentData().toInt()) != transcriptions->end()) {
+        Transcription *t = transcriptions->find(ui->transcriptionComboBox->currentData().toInt()).value();
+        if (t->getRecording() != 0) {
+            ui->noAudioFileLoaded->hide();
+            ui->audioControls->show();
+        }
+        else
+            ui->noAudioFileLoaded->show();
     }
-    else
-        ui->noAudioFileLoaded->show();
+    // Reset timeline / selection splitter
+    ui->splitter->setSizes(QList<int>({200, 0, 200}));
 }
 
 void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
@@ -304,10 +291,8 @@ void MainWindow::on_actionStatistics_triggered()
 void MainWindow::on_playButton_clicked()
 {
     if (player->state() == QMediaPlayer::PlayingState) {
-        ui->playButton->setIcon(QIcon(":/toolbar/icons/play"));
         player->pause();
     } else {
-        ui->playButton->setIcon(QIcon(":/toolbar/icons/pause"));
         player->play();
     }
 }
@@ -317,8 +302,51 @@ void MainWindow::on_actionSlicer_triggered()
     slicer->show();
 }
 
-void MainWindow::on_stopButton_clicked()
+void MainWindow::on_prevSectionButton_clicked()
 {
-    player->stop();
-    ui->playButton->setIcon(QIcon(":/toolbar/icons/play"));
+    int id = ui->transcriptionComboBox->currentData().toInt();
+    Transcription *trs = transcriptions->find(id).value();
+
+    Section *min = 0;
+    foreach (Section *s, trs->getSectionList()) {
+        if ((s->getEndTime() * 1000 <= player->position() && min == 0)
+            || (min != 0 && s->getEndTime() * 1000 < player->position() && s->getEndTime() > min->getEndTime()))
+            min = s;
+    }
+
+    if (min != 0) {
+        player->setPosition(min->getEndTime() * 1000 - 250);
+    } else {
+        player->setPosition(0);
+    }
+}
+
+void MainWindow::on_nextSectionButton_clicked()
+{
+    int id = ui->transcriptionComboBox->currentData().toInt();
+    Transcription *trs = transcriptions->find(id).value();
+
+    foreach (Section *s, trs->getSectionList()) {
+        if (s->getEndTime() * 1000 > player->position() && player->position() > s->getStartTime() * 1000) {
+            player->setPosition(s->getEndTime() * 1000);
+            return;
+        }
+    }
+}
+
+void MainWindow::on_actionResize_timeline_triggered()
+{
+    if (ui->multifileRadioButton->isChecked()) { // Multifile timeline
+        if (ui->splitter->sizes()[2] == 0) { // Already maximized - minimize
+            ui->splitter->setSizes(QList<int>({0, 200, 200}));
+        } else {
+            ui->splitter->setSizes(QList<int>({0, 200, 0}));
+        }
+    } else { // Simple timeline
+        if (ui->splitter->sizes()[2] == 0) { // Already maximized - minimize
+            ui->splitter->setSizes(QList<int>({200, 0, 200}));
+        } else {
+            ui->splitter->setSizes(QList<int>({200, 0, 0}));
+        }
+    }
 }

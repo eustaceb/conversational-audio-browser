@@ -84,20 +84,8 @@ void SectionGraphicsItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     this->update();
 }
 
-void SectionGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    update();
-    QGraphicsItem::mousePressEvent(event);
-}
-
-void SectionGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
-    update();
-    QGraphicsItem::mouseReleaseEvent(event);
-}
 
 Section* SectionGraphicsItem::getSection() const
 {
     return section;
 }
-

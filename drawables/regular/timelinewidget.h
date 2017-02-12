@@ -15,17 +15,12 @@ class TimelineWidget : public QGraphicsView
 {
     Q_OBJECT
 public:
-    enum Tool { SelectTool, HandTool };
-
     TimelineWidget(QWidget *parent = 0);
     ~TimelineWidget();
 
     void setTranscription(Transcription *t);
 
     void reloadScene();
-
-    Tool getTool() const;
-    void setTool(const Tool &t);
 
     // @TODO: Think whether this is a good idea - consider having a ptr to SpeakerGraphicsItem in Speaker
     QMap<Speaker*, SpeakerGraphicsItem*> getSpeakerGraphics() const;
@@ -49,7 +44,6 @@ public slots:
 protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
     void keyPressEvent(QKeyEvent *event) Q_DECL_OVERRIDE;
 #ifndef QT_NO_WHEELEVENT
@@ -60,15 +54,12 @@ protected:
     virtual void drawForeground(QPainter * painter, const QRectF & rect) Q_DECL_OVERRIDE;
 private:
     QGraphicsScene *scene;
-    QRubberBand *selectArea;
 
     Transcription *transcription;
 
     // Speaker variables
     QMap<Speaker*, SpeakerGraphicsItem*> speakerGraphics;
     qint16 maxSpeakerNameW;
-
-    Tool tool;
 
     // Audio player related variables
     bool sync;

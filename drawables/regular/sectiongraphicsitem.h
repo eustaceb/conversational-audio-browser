@@ -29,8 +29,6 @@ public:
     Section* getSection() const;
 
 protected:
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
 

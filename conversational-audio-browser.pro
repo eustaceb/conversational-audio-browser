@@ -14,7 +14,7 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    transcription.cpp \
+    data-models/transcription.cpp \
     helpers.cpp \
     data-models/section.cpp \
     data-models/speaker.cpp \
