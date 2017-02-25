@@ -53,51 +53,51 @@ void TimelineWidget::setTranscription(Transcription *t)
 void TimelineWidget::reloadScene()
 {
     scene->clear();
+    if (transcription != 0) {
+        SpeakerGraphicsItem::setHeightCounter(0);
 
-    SpeakerGraphicsItem::setHeightCounter(0);
-
-    // Find the max speaker name width for appropriate rendering
-    maxSpeakerNameW = 0;
-    foreach (Speaker *s, transcription->getSpeakers()) {
-        if (s->getName().length() > maxSpeakerNameW)
-            maxSpeakerNameW = s->getName().length();
-    }
-
-    for (int i = 0; i < transcription->getSpeakers().size(); i++) {
-        Speaker *s = transcription->getSpeakers().at(i);
-        SpeakerGraphicsItem *sg = new SpeakerGraphicsItem(s, this);
-        speakerGraphics.insert(s, sg);
-        scene->addItem(sg);
-    }
-
-    // Ruler start point, the top-left point of the first section
-    QRectF sectionsRect(0, 0, 0, 0);
-
-    foreach (Topic *topic, transcription->getTopics()) {
-        foreach (Section *s, topic->getSections()) {
-            SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
-
-            for (int i = 0; i < s->getTurns().size(); i++) {
-                Turn *t = s->getTurns().at(i);
-                TurnGraphicsItem *turnItem = new TurnGraphicsItem(t, this);
-                scene->addItem(turnItem);
-            }
-            // Calculate the biggest rect that surrounds sections for rulers
-            sectionsRect = sectionsRect.united(sectionItem->boundingRect());
-
-            scene->addItem(sectionItem);
+        // Find the max speaker name width for appropriate rendering
+        maxSpeakerNameW = 0;
+        foreach (Speaker *s, transcription->getSpeakers()) {
+            if (s->getName().length() > maxSpeakerNameW)
+                maxSpeakerNameW = s->getName().length();
         }
+
+        for (int i = 0; i < transcription->getSpeakers().size(); i++) {
+            Speaker *s = transcription->getSpeakers().at(i);
+            SpeakerGraphicsItem *sg = new SpeakerGraphicsItem(s, this);
+            speakerGraphics.insert(s, sg);
+            scene->addItem(sg);
+        }
+
+        // Ruler start point, the top-left point of the first section
+        QRectF sectionsRect(0, 0, 0, 0);
+
+        foreach (Topic *topic, transcription->getTopics()) {
+            foreach (Section *s, topic->getSections()) {
+                SectionGraphicsItem *sectionItem = new SectionGraphicsItem(s, this);
+
+                for (int i = 0; i < s->getTurns().size(); i++) {
+                    Turn *t = s->getTurns().at(i);
+                    TurnGraphicsItem *turnItem = new TurnGraphicsItem(t, this);
+                    scene->addItem(turnItem);
+                }
+                // Calculate the biggest rect that surrounds sections for rulers
+                sectionsRect = sectionsRect.united(sectionItem->boundingRect());
+
+                scene->addItem(sectionItem);
+            }
+        }
+        // Calculate scene rect
+        int margin = 100;
+        QRectF r = scene->itemsBoundingRect();
+        scene->setSceneRect(r.x() - margin, r.y() - margin, r.width() + margin*2, r.height() + margin * 2);
+
+        // Add rulers
+        // TODO: length maybe max(audioRec, lastSection)?
+        scene->addItem(new Ruler(sectionsRect, Ruler::Above));
+        scene->addItem(new Ruler(sectionsRect, Ruler::Below));
     }
-    // Calculate scene rect
-    int margin = 100;
-    QRectF r = scene->itemsBoundingRect();
-    scene->setSceneRect(r.x() - margin, r.y() - margin, r.width() + margin*2, r.height() + margin * 2);
-
-    // Add rulers
-    // TODO: length maybe max(audioRec, lastSection)?
-    scene->addItem(new Ruler(sectionsRect, Ruler::Above));
-    scene->addItem(new Ruler(sectionsRect, Ruler::Below));
-
     viewport()->update();
 }
 

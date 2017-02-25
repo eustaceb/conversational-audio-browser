@@ -30,6 +30,7 @@ public:
     void selectAll();
     void selectNone();
     void appendTranscription(Transcription *trs);
+    void removeTranscription(Transcription *trs);
 
 signals:
     void treeUpdated();

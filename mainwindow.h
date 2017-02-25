@@ -82,6 +82,9 @@ private slots:
 
     void on_actionResize_timeline_triggered();
 
+    void on_toolButton_clicked();
+    void on_closeTranscriptionButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     Statistics *statistics;

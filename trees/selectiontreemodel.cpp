@@ -177,6 +177,16 @@ void SelectionTreeModel::appendTranscription(Transcription *trs)
     emit layoutChanged();
 }
 
+void SelectionTreeModel::removeTranscription(Transcription *trs)
+{
+    for (int i = 0; i < root->getChildren().size(); i++) {
+        if (root->getChildren()[i]->getDataModel() == trs) {
+            root->removeChild(i);
+            break;
+        }
+    }
+}
+
 void SelectionTreeModel::refresh()
 {
     emit dataChanged(QModelIndex(), QModelIndex());

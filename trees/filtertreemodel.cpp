@@ -154,6 +154,16 @@ void FilterTreeModel::appendTranscription(Transcription *trs)
     emit treeUpdated();
 }
 
+void FilterTreeModel::removeTranscription(Transcription *trs)
+{
+    for (int i = 0; i < root->getChildren().size(); i++) {
+        if (root->getChildren()[i]->getDataModel() == trs) {
+            root->getChildren().removeAt(i);
+            break;
+        }
+    }
+}
+
 void FilterTreeModel::refresh()
 {
     emit dataChanged(QModelIndex(), QModelIndex());

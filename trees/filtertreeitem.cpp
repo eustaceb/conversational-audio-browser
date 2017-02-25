@@ -104,6 +104,11 @@ void FilterTreeItem::propagateChildrenFiltering(bool value)
     }
 }
 
+Filterable *FilterTreeItem::getDataModel() const
+{
+    return dataModel;
+}
+
 QList<FilterTreeItem *> FilterTreeItem::getChildren() const
 {
     return children;

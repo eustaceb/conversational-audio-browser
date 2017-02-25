@@ -25,6 +25,8 @@ public:
 
     QList<FilterTreeItem *> getChildren() const;
 
+    Filterable *getDataModel() const;
+
 private:
     void propagateParentFiltering(bool value);
     void propagateChildrenFiltering(bool value);

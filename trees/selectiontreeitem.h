@@ -26,6 +26,7 @@ public:
     void propagateSelected(bool value);
 
     QList<SelectionTreeItem *> getChildren() const;
+    void removeChild(int index);
 
     Selectable *getDataModel() const;
 

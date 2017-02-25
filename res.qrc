@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/icons">
+    <qresource prefix="/icons" lang="icon">
         <file alias="stats">res/stat.png</file>
         <file alias="play">res/play.png</file>
         <file alias="pause">res/pause.png</file>
@@ -8,5 +8,8 @@
         <file alias="slicer">res/cut.png</file>
         <file alias="prev-section">res/bkw.png</file>
         <file alias="resize">res/resize.png</file>
+        <file alias="sound">res/sound.png</file>
+        <file alias="sound-off">res/sound-off.png</file>
+        <file alias="icon">res/icon.png</file>
     </qresource>
 </RCC>

@@ -85,15 +85,20 @@ MainWindow::MainWindow(QWidget *parent) :
     player = new QMediaPlayer;
     duration = 0;
     player->setVolume(50);
+    ui->trackSlider->setRange(0, 0);
 
-    connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
-    connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
+    connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int))); // TODO: Problem
+    connect(ui->volumeSlider, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
+    connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64))); // TODO: Problem
     connect(player, SIGNAL(positionChanged(qint64)), timeline, SLOT(syncPosition(qint64)));
     connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
     connect(player, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(mediaErrorMessage()));
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), timeline, SLOT(playerStateChanged(QMediaPlayer::State)));
 
     ui->simpleRadioButton->click();
+    fileManager->show();
+    fileManager->activateWindow();
+    fileManager->raise();
 }
 
 
@@ -180,7 +185,7 @@ void MainWindow::mediaErrorMessage()
 void MainWindow::durationChanged(qint64 d)
 {
     duration = d;
-    ui->trackSlider->setMaximum(duration / 1000);
+    ui->trackSlider->setRange(0, duration / 1000);
 }
 
 void MainWindow::positionChanged(qint64 pos)
@@ -269,17 +274,23 @@ void MainWindow::on_simpleRadioButton_clicked()
 
 void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
 {
-    int id = ui->transcriptionComboBox->itemData(index).toInt();
-    Transcription *trs = transcriptions->find(id).value();
-    if (trs->getRecording() != 0) {
-        player->setMedia(QUrl::fromLocalFile(trs->getRecording()->getFilename()));
-        ui->noAudioFileLoaded->hide();
-        ui->audioControls->show();
-    } else {
+    if (index == -1) {
         ui->audioControls->hide();
         ui->noAudioFileLoaded->show();
+        timeline->setTranscription(0);
+    } else {
+        int id = ui->transcriptionComboBox->itemData(index).toInt();
+        Transcription *trs = transcriptions->find(id).value();
+        if (trs->getRecording() != 0) {
+            player->setMedia(QUrl::fromLocalFile(trs->getRecording()->getFilename()));
+            ui->noAudioFileLoaded->hide();
+            ui->audioControls->show();
+        } else {
+            ui->audioControls->hide();
+            ui->noAudioFileLoaded->show();
+        }
+        timeline->setTranscription(trs);
     }
-    timeline->setTranscription(trs);
     timeline->reloadScene();
 }
 
@@ -348,5 +359,33 @@ void MainWindow::on_actionResize_timeline_triggered()
         } else {
             ui->splitter->setSizes(QList<int>({200, 0, 0}));
         }
+    }
+}
+
+void MainWindow::on_toolButton_clicked()
+{
+    if (!player->isMuted())
+        player->setMuted(true);
+    else
+        player->setMuted(false);
+}
+
+void MainWindow::on_closeTranscriptionButton_clicked()
+{
+    if (transcriptions->find(ui->transcriptionComboBox->currentData().toInt()) != transcriptions->end()) {
+        Transcription *trs = transcriptions->find(ui->transcriptionComboBox->currentData().toInt()).value();
+        // Update selection/filter trees
+        selectionTree->removeTranscription(trs);
+        filterTree->removeTranscription(trs);
+        transcriptions->remove(trs->getId());
+        // Update toolbar
+        ui->transcriptionComboBox->clear();
+
+        foreach (Transcription *t, (*transcriptions)) {
+            ui->transcriptionComboBox->addItem(t->getFilename(), QVariant(t->getId()));
+        }
+
+        delete trs;
+        multiTimeline->reloadScene();
     }
 }
