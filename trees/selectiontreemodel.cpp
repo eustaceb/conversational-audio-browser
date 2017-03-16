@@ -136,7 +136,7 @@ bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value
 
     item->propagateSelected(value.toBool());
 
-    emit dataChanged(QModelIndex(), QModelIndex());
+    refresh();
     emit treeUpdated();
 
     return true;
@@ -145,14 +145,14 @@ bool SelectionTreeModel::setData(const QModelIndex &index, const QVariant &value
 void SelectionTreeModel::selectAll()
 {
     root->propagateSelected(true);
-    emit dataChanged(QModelIndex(), QModelIndex());
+    refresh();
     emit treeUpdated();
 }
 
 void SelectionTreeModel::selectNone()
 {
     root->propagateSelected(false);
-    emit dataChanged(QModelIndex(), QModelIndex());
+    refresh();
     emit treeUpdated();
 }
 
@@ -185,6 +185,7 @@ void SelectionTreeModel::removeTranscription(Transcription *trs)
             break;
         }
     }
+    emit layoutChanged();
 }
 
 void SelectionTreeModel::refresh()

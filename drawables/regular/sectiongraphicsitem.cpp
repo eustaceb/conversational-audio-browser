@@ -1,16 +1,15 @@
 #include "sectiongraphicsitem.h"
 #include "data-models/topic.h"
 
-// TODO: Move these out of here?
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
-#include <QDebug>
-#include <QTextOption>
-#include <QFontMetrics>
-
 QFont SectionGraphicsItem::font = QFont("times", 18);
+
+namespace {
+   unsigned const short elementH = 460;
+   unsigned const short scaleW = 10;
+   const short leftMargin = -200;
+   const short topMargin = -210;
+}
+
 
 SectionGraphicsItem::SectionGraphicsItem(Section *s, TimelineWidget *timelineWidget)
     : section(s), timelineWidget(timelineWidget)
@@ -23,13 +22,11 @@ SectionGraphicsItem::SectionGraphicsItem(Section *s, TimelineWidget *timelineWid
     else
         textColor = textColor.lighter(200);
 
-    double adjust = -200;
-
     this->rect = QRectF(
-                section->getStartTime() * 10 + adjust, // x
-                -10 + adjust, // y
-                (section->getEndTime() - section->getStartTime()) * 10, // w
-                460); // h;
+                section->getStartTime() * scaleW + leftMargin, // x
+                topMargin, // y
+                (section->getEndTime() - section->getStartTime()) * scaleW, // w
+                elementH); // h;
 
     QFontMetrics metrics(font);
     int repeat = rect.width() / metrics.width(section->getTopic()->getDesc());

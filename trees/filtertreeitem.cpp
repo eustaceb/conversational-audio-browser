@@ -113,3 +113,8 @@ QList<FilterTreeItem *> FilterTreeItem::getChildren() const
 {
     return children;
 }
+
+void FilterTreeItem::removeChild(int index)
+{
+    children.removeAt(index);
+}

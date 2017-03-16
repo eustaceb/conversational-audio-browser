@@ -13,7 +13,6 @@ public:
     int sliceOut(double from, double to, QString resultFile);
 
     QString getFilename() const;
-    void setFilename(const QString &value);
 
 private:
     QString filename;

@@ -56,11 +56,6 @@ QList<Turn*> Section::getTurns() const
     return turns;
 }
 
-void Section::setTurns(const QList<Turn *> &value)
-{
-    turns = value;
-}
-
 QList<QVariant> Section::composeTreePayload() const
 {
     QList<QVariant> payload;

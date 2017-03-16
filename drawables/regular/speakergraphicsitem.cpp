@@ -2,29 +2,28 @@
 #include "timelinewidget.h"
 #include "data-models/speaker.h"
 
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
-#include <QDebug>
-#include <QTextOption>
-#include <QFontMetrics>
-
 int SpeakerGraphicsItem::heightCounter = 0;
 QFont SpeakerGraphicsItem::font = QFont("times", 18);
+
+namespace {
+   unsigned const short elementH = 30;
+   unsigned const short vSpacing = 10;
+   unsigned const short scaleW = 15;
+   const short leftMargin = -350;
+   const short topMargin = -200;
+}
 
 SpeakerGraphicsItem::SpeakerGraphicsItem(Speaker *s, TimelineWidget *timelineWidget)
     : speaker(s), timelineWidget(timelineWidget)
 {
     color = s->getColor();
-    double adjust = -350;
 
-    this->rect = QRectF(0 + adjust, // x
-                heightCounter + adjust + 150, // y
-                timelineWidget->getMaxSpeakerNameW() * 15, // w
-                30); // h;
+    this->rect = QRectF(0 + leftMargin, // x
+                heightCounter + topMargin, // y
+                timelineWidget->getMaxSpeakerNameW() * scaleW, // w
+                elementH); // h;
 
-    heightCounter += 30 + 10;
+    heightCounter += elementH + vSpacing;
 
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);

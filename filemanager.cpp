@@ -27,7 +27,8 @@ void FileManager::on_annotationFileLookupButton_clicked()
 
 void FileManager::on_cancelOkButtonBox_accepted()
 {
-    // TODO: Save
+    if (ui->annotationsFileLineEdit->text() != "")
+        on_loadFilesButton_clicked();
     this->close();
 }
 

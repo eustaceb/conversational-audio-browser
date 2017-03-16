@@ -1,6 +1,7 @@
 #include "mspeakergraphicsitem.h"
 #include "multitimelinewidget.h"
 #include "data-models/speaker.h"
+#include "statistics.h"
 
 #include <math.h>
 
@@ -15,17 +16,17 @@ namespace {
 MSpeakerGraphicsItem::MSpeakerGraphicsItem(Speaker *s, const QRectF &trsRect, MultiTimelineWidget *timelineWidget)
     : speaker(s), timelineWidget(timelineWidget)
 {
+    double totalTurnLen = Statistics::turnLength(speaker);
+
     color = s->getColor();
-    label = " " + speaker->getName() + " " + QString::number(speaker->getTotalTurnLength()) + " seconds";
+    label = " " + speaker->getName() + " " + QString::number(totalTurnLen) + " seconds";
     QFontMetrics fm(font);
 
     int width;
-    if (speaker->getTotalTurnLength() == 0)
+    if (totalTurnLen == 0)
         width = 0;
-    else if (speaker->getTotalTurnLength() == 1)
-        width = 100;
     else
-        width = log(speaker->getTotalTurnLength()) * 100;
+        width = abs(log(totalTurnLen)) * 100;
 
     barRect = QRectF(trsRect.right(), trsRect.y() + yCounter, width, elementH);
     rect = barRect.united(QRectF(barRect.topLeft(), QSizeF(fm.width(label), 0)));

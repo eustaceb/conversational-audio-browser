@@ -121,7 +121,7 @@ bool FilterTreeModel::setData(const QModelIndex &index, const QVariant &value, i
 
     item->propagateFiltered(value.toBool());
 
-    emit dataChanged(QModelIndex(), QModelIndex());
+    refresh();
     emit treeUpdated();
 
     return true;
@@ -130,14 +130,14 @@ bool FilterTreeModel::setData(const QModelIndex &index, const QVariant &value, i
 void FilterTreeModel::selectAll()
 {
     root->propagateFiltered(true);
-    emit dataChanged(QModelIndex(), QModelIndex());
+    refresh();
     emit treeUpdated();
 }
 
 void FilterTreeModel::selectNone()
 {
     root->propagateFiltered(false);
-    emit dataChanged(QModelIndex(), QModelIndex());
+    refresh();
     emit treeUpdated();
 }
 
@@ -151,17 +151,17 @@ void FilterTreeModel::appendTranscription(Transcription *trs)
     root->appendChild(transcriptionItem);
 
     emit layoutChanged();
-    emit treeUpdated();
 }
-
+#include <QDebug>
 void FilterTreeModel::removeTranscription(Transcription *trs)
 {
     for (int i = 0; i < root->getChildren().size(); i++) {
         if (root->getChildren()[i]->getDataModel() == trs) {
-            root->getChildren().removeAt(i);
+            root->removeChild(i);
             break;
         }
     }
+    emit layoutChanged();
 }
 
 void FilterTreeModel::refresh()

@@ -50,9 +50,3 @@ QString Recording::getFilename() const
 {
     return filename;
 }
-
-void Recording::setFilename(const QString &value)
-{
-    filename = value;
-    originalFile = SndfileHandle(filename.toStdString());
-}

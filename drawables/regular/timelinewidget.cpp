@@ -10,7 +10,7 @@
 
 #include <math.h>
 #include <QKeyEvent>
-#include <QDebug>\
+#include <QDebug>
 
 #include <QApplication>
 #include <QGraphicsSceneEvent>
@@ -36,6 +36,7 @@ TimelineWidget::TimelineWidget(QWidget *parent)
     this->setCursor(Qt::OpenHandCursor);
 
     sync = false;
+    playerState = QMediaPlayer::StoppedState;
 }
 
 TimelineWidget::~TimelineWidget()

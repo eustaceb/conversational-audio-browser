@@ -29,7 +29,6 @@ public:
     void setTopic(Topic *value);
 
     QList<Turn*> getTurns() const;
-    void setTurns(const QList<Turn*> &value);
 
     // Selection tree
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;

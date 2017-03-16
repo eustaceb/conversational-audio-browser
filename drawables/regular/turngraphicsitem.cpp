@@ -8,6 +8,11 @@
 
 QFont TurnGraphicsItem::font = QFont("arial", 16);
 
+namespace {
+   unsigned const short scaleW = 10;
+   const short leftMargin = -200;
+}
+
 TurnGraphicsItem::TurnGraphicsItem(Turn *t, TimelineWidget *timelineWidget)
     :turn(t), timelineWidget(timelineWidget), hovered(false)
 {
@@ -18,10 +23,9 @@ TurnGraphicsItem::TurnGraphicsItem(Turn *t, TimelineWidget *timelineWidget)
 
     qreal width = t->getDuration() * 10;
 
-    // TODO: Fix the hardcoded 200
-    rect = QRectF(t->getStartTime() * 10 - 200, sg->boundingRect().y(), width, sg->boundingRect().height());
+    rect = QRectF(t->getStartTime() * scaleW + leftMargin, sg->boundingRect().y(), width, sg->boundingRect().height());
 
-    hoverLabel = turn->getSpeaker()->getName()
+    hoverLabel = "trn" + QString::number(turn->getId()) + " - " + turn->getSpeaker()->getName()
             + " from " + QString::number(turn->getStartTime()) + " to "   + QString::number(turn->getEndTime());
 }
 
@@ -47,8 +51,6 @@ void TurnGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         brush.setStyle(Qt::Dense4Pattern);
     else
         brush.setStyle(Qt::SolidPattern);
-
-
 
     QPen pen = QPen(QColor(0, 0, 0));
     pen.setWidth(0);

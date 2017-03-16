@@ -32,17 +32,12 @@ public:
     QColor getColor() const;
     void setColor(const QColor &value);
 
-    double getTotalTurnLength() const;
-
 private:
-    //TODO: Add more fields for
-    // accent="" check="no" dialect="native" id="spk4" name="filler_c" scope="local" type="unknown"
     QString id;
     QString name;
     QColor color;
 
     QList <Turn*> turns;
-    double totalTurnLen;
 };
 
 #endif // SPEAKER_H

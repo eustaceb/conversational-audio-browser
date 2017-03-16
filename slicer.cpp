@@ -12,8 +12,9 @@
 #include <QFileDialog>
 
 Slicer::Slicer(QMap<int, Transcription *> *transcriptions, QWidget *parent) :
-    transcriptions(transcriptions),
-    QWidget(parent), ui(new Ui::Slicer)
+    QWidget(parent),
+    ui(new Ui::Slicer),
+    transcriptions(transcriptions)
 {
     ui->setupUi(this);
     recalculateFileCount();

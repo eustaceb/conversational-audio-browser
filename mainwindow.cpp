@@ -86,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     duration = 0;
     player->setVolume(50);
     ui->trackSlider->setRange(0, 0);
+    player->setNotifyInterval(100);
 
     connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int))); // TODO: Problem
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
@@ -136,6 +137,8 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
     // Update selection/filter trees
     selectionTree->appendTranscription(trs);
     filterTree->appendTranscription(trs);
+    // Register transcription with the statistics component
+    statistics->addTranscription(trs);
 
     // Update toolbar
     ui->transcriptionComboBox->clear();
@@ -278,6 +281,7 @@ void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
         ui->audioControls->hide();
         ui->noAudioFileLoaded->show();
         timeline->setTranscription(0);
+        player->setMedia(QMediaContent());
     } else {
         int id = ui->transcriptionComboBox->itemData(index).toInt();
         Transcription *trs = transcriptions->find(id).value();
@@ -377,7 +381,11 @@ void MainWindow::on_closeTranscriptionButton_clicked()
         // Update selection/filter trees
         selectionTree->removeTranscription(trs);
         filterTree->removeTranscription(trs);
+
         transcriptions->remove(trs->getId());
+        // Update statistics
+        statistics->removeTranscription(trs);
+
         // Update toolbar
         ui->transcriptionComboBox->clear();
 

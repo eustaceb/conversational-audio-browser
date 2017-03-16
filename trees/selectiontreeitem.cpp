@@ -116,6 +116,5 @@ QList<SelectionTreeItem *> SelectionTreeItem::getChildren() const
 
 void SelectionTreeItem::removeChild(int index)
 {
-    // TODO: Check if this is needed
     children.removeAt(index);
 }

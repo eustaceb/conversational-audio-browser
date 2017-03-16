@@ -88,6 +88,9 @@
               <iconset resource="res.qrc">
                <normaloff>:/icons/prev-section</normaloff>:/icons/prev-section</iconset>
              </property>
+             <property name="shortcut">
+              <string>Shift+Left</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -99,6 +102,9 @@
               <iconset resource="res.qrc">
                <normaloff>:/icons/play</normaloff>
                <normalon>:/icons/pause</normalon>:/icons/play</iconset>
+             </property>
+             <property name="shortcut">
+              <string>Space</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -113,6 +119,9 @@
              <property name="icon">
               <iconset resource="res.qrc">
                <normaloff>:/icons/next-section</normaloff>:/icons/next-section</iconset>
+             </property>
+             <property name="shortcut">
+              <string>Shift+Right</string>
              </property>
             </widget>
            </item>
@@ -205,6 +214,9 @@
               <iconset resource="res.qrc">
                <normaloff>:/icons/sound</normaloff>
                <normalon>:/icons/sound-off</normalon>:/icons/sound</iconset>
+             </property>
+             <property name="shortcut">
+              <string>M</string>
              </property>
              <property name="checkable">
               <bool>true</bool>

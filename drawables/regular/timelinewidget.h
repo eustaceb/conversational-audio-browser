@@ -22,7 +22,6 @@ public:
 
     void reloadScene();
 
-    // @TODO: Think whether this is a good idea - consider having a ptr to SpeakerGraphicsItem in Speaker
     QMap<Speaker*, SpeakerGraphicsItem*> getSpeakerGraphics() const;
 
     QPointF getCursor() const;

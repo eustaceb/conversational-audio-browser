@@ -40,19 +40,9 @@ QList<Topic*> Transcription::getTopics() const
     return topics;
 }
 
-void Transcription::setTopics(const QList<Topic*> &value)
-{
-    topics = value;
-}
-
 QList<Speaker*> Transcription::getSpeakers() const
 {
     return speakers;
-}
-
-void Transcription::setSpeakers(const QList<Speaker*> &value)
-{
-    speakers = value;
 }
 
 QList<Turn *> Transcription::getTurnList(bool selected) const
