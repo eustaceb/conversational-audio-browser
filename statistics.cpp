@@ -31,11 +31,6 @@ Statistics::Statistics(QMap<int, Transcription *> *transcriptions, QWidget *pare
     //ui->tabWidget->addTab()
 
     generalModel = new QStandardItemModel;
-    QStringList labels(QList<QString>() << "From" << "Turn Count" << "Turn length" <<
-                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range" <<
-                       "No of overlaps" << "Len of overlaps" << "Overlap %");
-    generalModel->setHorizontalHeaderLabels(labels);
 
     generateGeneralModel();
 
@@ -54,8 +49,8 @@ void Statistics::generateGeneralModel()
     //generalModel->
     QStringList labels(QList<QString>() << "From" << "Turn Count" << "Turn length" <<
                        "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range" <<
-                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+                       //"No of overlaps" << "Len of overlaps" << "Overlap %");
     generalModel->setHorizontalHeaderLabels(labels);
     // All
     generalModel->setItem(0, 0, new QStandardItem(QString("All")));
@@ -109,6 +104,7 @@ void Statistics::generateGeneralModel()
         generalModel->setItem(i, 8, new QStandardItem(rangeStr));
         i++;
     }
+    ui->generalTableView->setSortingEnabled(true);
 }
 
 void Statistics::addTranscription(Transcription *t)
@@ -121,24 +117,24 @@ void Statistics::addTranscription(Transcription *t)
     QStandardItemModel *speakerModel = new QStandardItemModel;
     QStringList labels(QList<QString>() << "Speaker" << "Turn Count" << "Turn length" <<
                        "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range" <<
-                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+                       //"No of overlaps" << "Len of overlaps" << "Overlap %");
     speakerModel->setHorizontalHeaderLabels(labels);
     speakerModels.insert(t->getId(), speakerModel);
 
     QStandardItemModel *topicModel = new QStandardItemModel;
     labels = QStringList(QList<QString>() << "Topic" << "Turn Count" << "Turn length" <<
                        "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range" <<
-                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+                       //"No of overlaps" << "Len of overlaps" << "Overlap %");
     topicModel->setHorizontalHeaderLabels(labels);
     topicModels.insert(t->getId(), topicModel);
 
     QStandardItemModel *sectionModel = new QStandardItemModel;
     labels = QStringList(QList<QString>() << "Section" << "Turn Count" << "Turn length" <<
                        "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range" <<
-                       "No of overlaps" << "Len of overlaps" << "Overlap %");
+                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+                       //"No of overlaps" << "Len of overlaps" << "Overlap %");
     sectionModel->setHorizontalHeaderLabels(labels);
     sectionModels.insert(t->getId(), sectionModel);
 
@@ -151,14 +147,17 @@ void Statistics::addTranscription(Transcription *t)
     verticalLayout->addWidget(new QLabel("Speakers"));
     QTableView *speakerTable = new QTableView;
     speakerTable->setModel(speakerModel);
+    speakerTable->setSortingEnabled(true);
     verticalLayout->addWidget(speakerTable);
     verticalLayout->addWidget(new QLabel("Topics"));
     QTableView *topicTable = new QTableView;
     topicTable->setModel(topicModel);
+    topicTable->setSortingEnabled(true);
     verticalLayout->addWidget(topicTable);
     verticalLayout->addWidget(new QLabel("Sections"));
     QTableView *sectionTable = new QTableView;
     sectionTable->setModel(sectionModel);
+    sectionTable->setSortingEnabled(true);
     verticalLayout->addWidget(sectionTable);
 
     w->setLayout(verticalLayout);
@@ -533,7 +532,7 @@ QPair<double, double> Statistics::turnLengthRange(QMap<int, Transcription *> *tr
     double min = 0, max = 0;
     foreach (Transcription *t, (*transcriptions)) {
         QPair<double, double> p = turnLengthRange(t, selected);
-        if (min == 0 || p.first < min)
+        if (min == 0 || (p.first < min && p.first != 0))
             min = p.first;
         if (p.second > max)
             max = p.second;
@@ -546,7 +545,7 @@ QPair<double, double> Statistics::turnLengthRange(Transcription *t, bool selecte
     double min = 0, max = 0;
     foreach (Speaker *s, t->getSpeakers()) {
         QPair<double, double> p = turnLengthRange(s, selected);
-        if (min == 0 || p.first < min)
+        if (min == 0 || (p.first < min && p.first != 0))
             min = p.first;
         if (p.second > max)
             max = p.second;
@@ -574,7 +573,7 @@ QPair<double, double> Statistics::turnLengthRange(Topic *t)
     double min = 0, max = 0;
     foreach (Section *s, t->getSections()) {
         QPair<double, double> p = turnLengthRange(s);
-        if (min == 0 || p.first < min)
+        if (min == 0 || (p.first < min && p.first != 0))
             min = p.first;
         if (p.second > max)
             max = p.second;

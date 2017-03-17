@@ -26,7 +26,7 @@ MSpeakerGraphicsItem::MSpeakerGraphicsItem(Speaker *s, const QRectF &trsRect, Mu
     if (totalTurnLen == 0)
         width = 0;
     else
-        width = abs(log(totalTurnLen)) * 100;
+        width = fabs(log(totalTurnLen)) * 100;
 
     barRect = QRectF(trsRect.right(), trsRect.y() + yCounter, width, elementH);
     rect = barRect.united(QRectF(barRect.topLeft(), QSizeF(fm.width(label), 0)));

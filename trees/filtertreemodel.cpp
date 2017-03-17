@@ -152,7 +152,7 @@ void FilterTreeModel::appendTranscription(Transcription *trs)
 
     emit layoutChanged();
 }
-#include <QDebug>
+
 void FilterTreeModel::removeTranscription(Transcription *trs)
 {
     for (int i = 0; i < root->getChildren().size(); i++) {

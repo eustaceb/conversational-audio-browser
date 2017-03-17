@@ -24,7 +24,7 @@ MSpeakerCountGraphicsItem::MSpeakerCountGraphicsItem(Speaker *s, const QRectF &t
     if (speaker->getTurns().length() == 0)
         width = 0;
     else
-        width = abs(log(speaker->getTurns().length())) * 100;
+        width = fabs(log(speaker->getTurns().length())) * 100;
 
     barRect = QRectF(trsRect.left() - width, trsRect.y() + yCounter, width, elementH);
     rect = barRect.united(QRectF(QPointF(barRect.right() - fm.width(label), barRect.y()), QSizeF(fm.width(label), 0)));

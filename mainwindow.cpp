@@ -40,6 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Selection tree
     selectionTree = new SelectionTreeModel;
     ui->selectionTreeView->setModel(selectionTree);
+    ui->selectionTreeView->setColumnWidth(0, 150); // just so turn IDs are fully visible
+    // ideally width should be calculated using ui->selectionTreeView->fontMetrics().boundingRect()
+
     // Connect the selection tree
     connect(selectionTree, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &)),
             this, SLOT(selection_updated()));
