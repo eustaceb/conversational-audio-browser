@@ -25,18 +25,15 @@ int Recording::sliceOut(double from, double to, QString resultFile)
     originalFile.seek(from * originalFile.samplerate(), SEEK_SET);
 
     int ms = (to - from) * 1000;
-    double samplesPer10Ms = (originalFile.samplerate() / 100) * originalFile.channels();
-    int framesTotal = samplesPer10Ms * (ms / 10);
-
-    //qInfo() << "About to export" << resultFile << "length of " << ms << "ms or" << ms / 1000 << "s";
-    //qInfo() << "Samples per 10ms" << samplesPer10Ms << "total frames" << framesTotal;
+    double samplesPerMs = (originalFile.samplerate() / 1000) * originalFile.channels();
+    // Slight data loss if sample rate not divisable by 1000, round up to prevent
+    int framesTotal = ceil(samplesPerMs) * ms;
 
     short *buffer = new short[MAX_BUFFER_SIZE];
 
     int count = 0;
     while (count < framesTotal) {
         sf_count_t toWrite = ((count + MAX_BUFFER_SIZE) < framesTotal) ? MAX_BUFFER_SIZE : (framesTotal - count);
-        //if (toWrite % 2 != 0) toWrite--;
 
         originalFile.read(buffer, toWrite);
         outFile.write(buffer, toWrite);

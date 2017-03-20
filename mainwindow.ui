@@ -32,7 +32,7 @@
        <item>
         <widget class="QRadioButton" name="simpleRadioButton">
          <property name="text">
-          <string>Simple</string>
+          <string>Single</string>
          </property>
         </widget>
        </item>

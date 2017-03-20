@@ -1,6 +1,8 @@
 #-------------------------------------------------
 #
 # Project created by QtCreator 2016-11-16T17:34:31
+# Author: Justinas Bikulcius, 2095878b
+# github.com/eustaceb
 #
 #-------------------------------------------------
 
@@ -38,7 +40,10 @@ SOURCES += main.cpp\
     statistics.cpp \
     drawables/multifile/mspeakergraphicsitem.cpp \
     drawables/multifile/mspeakercountgraphicsitem.cpp \
-    slicer.cpp
+    slicer.cpp \
+    tests/test_main.cpp \
+    tests/teststatistics.cpp \
+    tests/testdatamodels.cpp
 
 HEADERS  += mainwindow.h \
     helpers.h \
@@ -65,19 +70,39 @@ HEADERS  += mainwindow.h \
     statistics.h \
     drawables/multifile/mspeakergraphicsitem.h \
     drawables/multifile/mspeakercountgraphicsitem.h \
-    slicer.h
+    slicer.h \
+    tests/teststatistics.h \
+    tests/testdatamodels.h
 
 FORMS    += mainwindow.ui \
     filemanager.ui \
     statistics.ui \
     slicer.ui
 
-DISTFILES += \
-    ../rand.wav
-
 RESOURCES += \
     res.qrc
 
+test {
+    message(Test build)
+
+    QT += testlib
+
+    TARGET = CDBTests
+
+    SOURCES -= main.cpp
+
+} else {
+    message(Normal build)
+    # Remove all test files to avoid clashing speed build up
+    HEADERS -= tests/teststatistics.h \
+        tests/testdatamodels.h
+
+    SOURCES -= tests/test_main.cpp \
+        tests/teststatistics.cpp \
+        tests/testdatamodels.cpp
+}
+
+# LIBSNDFILE
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../libs/libsndfile/lib/release/ -lsndfile
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../libs/libsndfile/lib/debug/ -lsndfile
 else:unix: LIBS += -L$$PWD/../../../libs/libsndfile/lib/ -lsndfile
@@ -90,5 +115,3 @@ else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../li
 else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/release/sndfile.lib
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/debug/sndfile.lib
 else:unix: PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/libsndfile.a
-
-STATECHARTS +=

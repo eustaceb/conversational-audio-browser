@@ -11,14 +11,14 @@ class Speaker;
 class Turn : public Selectable
 {
 public:
-    Turn(const double &startTime, const double &endTime, Speaker *speaker);
+    Turn(const qreal &startTime, const qreal &endTime, Speaker *speaker);
     virtual ~Turn();
 
     int getId() const;
     Speaker *getSpeaker() const;
-    double getStartTime() const;
-    double getEndTime() const;
-    double getDuration() const;
+    qreal getStartTime() const;
+    qreal getEndTime() const;
+    qreal getDuration() const;
 
     // Payload for Selection tree
     QList<QVariant> composeTreePayload() const Q_DECL_OVERRIDE;
@@ -28,8 +28,8 @@ private:
     static int idCounter;
     int id;
 
-    double startTime;
-    double endTime;
+    qreal startTime;
+    qreal endTime;
     // Ownership, 1 speaker : m turns
     Speaker *speaker;
 };

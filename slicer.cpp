@@ -37,7 +37,7 @@ void Slicer::on_sliceButton_clicked()
     bool sections = ui->sectionsRadioButton->isChecked();
 
     QString prefix = QFileDialog::getSaveFileName(this, "Select prefix and location for exported files", "/", "Any (*.*)");
-
+    if (prefix == "") return;
     foreach (Transcription *t, (*transcriptions)) {
         if (t->getRecording() == 0) continue;
         QString filename = prefix + "-" + t->getTitle();

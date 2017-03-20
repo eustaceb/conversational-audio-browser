@@ -78,7 +78,7 @@ QList<Section *> Transcription::getSectionList(bool selected) const
 QList<QVariant> Transcription::composeTreePayload() const
 {
     QList<QVariant> payload;
-    payload.append("trs" + QString::number(id));\
+    payload.append(title);
     payload.append(filename);
     payload.append("transcription");
     payload.append(QString::number(topics.length()) + " topics, " + QString::number(speakers.length()) + " speakers");

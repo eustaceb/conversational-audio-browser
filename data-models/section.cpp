@@ -20,23 +20,23 @@ void Section::addTurn(Turn *turn)
     turns.append(turn);
 }
 
-double Section::getStartTime() const
+qreal Section::getStartTime() const
 {
     return startTime;
 }
 
-void Section::setStartTime(const double &value)
+void Section::setStartTime(const qreal &value)
 {
     startTime = value;
 
 }
 
-double Section::getEndTime() const
+qreal Section::getEndTime() const
 {
     return endTime;
 }
 
-void Section::setEndTime(const double &value)
+void Section::setEndTime(const qreal &value)
 {
     endTime = value;
 }
@@ -62,7 +62,7 @@ QList<QVariant> Section::composeTreePayload() const
     payload.append("sct" + QString::number(id));
     payload.append(topic->getDesc());
     payload.append("section");
-    payload.append(QString::number(startTime) + " to " + QString::number(endTime));
+    payload.append(QString::number(startTime, 'g', 8) + " to " + QString::number(endTime, 'g', 8));
     return payload;
 }
 

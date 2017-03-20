@@ -47,9 +47,9 @@ void Statistics::generateGeneralModel()
 {
     generalModel->clear();
     //generalModel->
-    QStringList labels(QList<QString>() << "From" << "Turn Count" << "Turn length" <<
-                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+    QStringList labels(QList<QString>() << "From" << "Turn Count" << "Total turn length" <<
+                       "Mean turn length" << "Turn length median" << "Turn length variance" <<
+                       "Turn length stdev" << "Turn length skewness" << "Turn length range");
                        //"No of overlaps" << "Len of overlaps" << "Overlap %");
     generalModel->setHorizontalHeaderLabels(labels);
     // All
@@ -105,6 +105,7 @@ void Statistics::generateGeneralModel()
         i++;
     }
     ui->generalTableView->setSortingEnabled(true);
+    ui->generalTableView->resizeColumnsToContents();
 }
 
 void Statistics::addTranscription(Transcription *t)
@@ -115,25 +116,25 @@ void Statistics::addTranscription(Transcription *t)
     // First, generate item models (empty tables)
 
     QStandardItemModel *speakerModel = new QStandardItemModel;
-    QStringList labels(QList<QString>() << "Speaker" << "Turn Count" << "Turn length" <<
-                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+    QStringList labels(QList<QString>() << "Speaker" << "Turn Count" << "Total turn length" <<
+                       "Mean turn length" << "Turn length median" << "Turn length variance" <<
+                       "Turn length stdev" << "Turn length skewness" << "Turn length range");
                        //"No of overlaps" << "Len of overlaps" << "Overlap %");
     speakerModel->setHorizontalHeaderLabels(labels);
     speakerModels.insert(t->getId(), speakerModel);
 
     QStandardItemModel *topicModel = new QStandardItemModel;
-    labels = QStringList(QList<QString>() << "Topic" << "Turn Count" << "Turn length" <<
-                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+    labels = QStringList(QList<QString>() << "Topic" << "Turn Count" << "Total turn length" <<
+                       "Mean turn length" << "Turn length median" << "Turn length variance" <<
+                       "Turn length stdev" << "Turn length skewness" << "Turn length range");
                        //"No of overlaps" << "Len of overlaps" << "Overlap %");
     topicModel->setHorizontalHeaderLabels(labels);
     topicModels.insert(t->getId(), topicModel);
 
     QStandardItemModel *sectionModel = new QStandardItemModel;
     labels = QStringList(QList<QString>() << "Section" << "Turn Count" << "Turn length" <<
-                       "Mean turn length" << "Turn len median" << "Turn len variance" <<
-                       "Turn len stdev" << "Turn len skewness" << "Turn len range");
+                       "Mean turn length" << "Turn length median" << "Turn length variance" <<
+                       "Turn length stdev" << "Turn length skewness" << "Turn length range");
                        //"No of overlaps" << "Len of overlaps" << "Overlap %");
     sectionModel->setHorizontalHeaderLabels(labels);
     sectionModels.insert(t->getId(), sectionModel);
@@ -148,16 +149,22 @@ void Statistics::addTranscription(Transcription *t)
     QTableView *speakerTable = new QTableView;
     speakerTable->setModel(speakerModel);
     speakerTable->setSortingEnabled(true);
+    speakerTable->resizeColumnsToContents();
+    speakerTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     verticalLayout->addWidget(speakerTable);
     verticalLayout->addWidget(new QLabel("Topics"));
     QTableView *topicTable = new QTableView;
     topicTable->setModel(topicModel);
     topicTable->setSortingEnabled(true);
+    topicTable->resizeColumnsToContents();
+    topicTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     verticalLayout->addWidget(topicTable);
     verticalLayout->addWidget(new QLabel("Sections"));
     QTableView *sectionTable = new QTableView;
     sectionTable->setModel(sectionModel);
     sectionTable->setSortingEnabled(true);
+    sectionTable->resizeColumnsToContents();
+    sectionTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     verticalLayout->addWidget(sectionTable);
 
     w->setLayout(verticalLayout);

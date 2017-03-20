@@ -3,7 +3,7 @@
 
 int Turn::idCounter = 0;
 
-Turn::Turn(const double &startTime, const double &endTime, Speaker *speaker)
+Turn::Turn(const qreal &startTime, const qreal &endTime, Speaker *speaker)
     : id(++idCounter)
 {
     this->startTime = startTime;
@@ -21,17 +21,17 @@ Speaker *Turn::getSpeaker() const
     return speaker;
 }
 
-double Turn::getStartTime() const
+qreal Turn::getStartTime() const
 {
     return startTime;
 }
 
-double Turn::getEndTime() const
+qreal Turn::getEndTime() const
 {
     return endTime;
 }
 
-double Turn::getDuration() const
+qreal Turn::getDuration() const
 {
     return endTime - startTime;
 }
@@ -42,7 +42,7 @@ QList<QVariant> Turn::composeTreePayload() const
     payload.append("trn" + QString::number(id));
     payload.append(speaker->getName());
     payload.append("turn");
-    payload.append(QString::number(startTime) + " to " + QString::number(endTime));
+    payload.append(QString::number(startTime, 'g', 8) + " to " + QString::number(endTime, 'g', 8));
     return payload;
 }
 

@@ -87,18 +87,20 @@ MainWindow::MainWindow(QWidget *parent) :
     // Audio setup
     player = new QMediaPlayer;
     duration = 0;
-    player->setVolume(50);
-    ui->trackSlider->setRange(0, 0);
     player->setNotifyInterval(100);
 
     connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int))); // TODO: Problem
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
+    connect(player, SIGNAL(volumeChanged(int)), ui->volumeSlider, SLOT(setValue(int)));
     connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64))); // TODO: Problem
     connect(player, SIGNAL(positionChanged(qint64)), timeline, SLOT(syncPosition(qint64)));
     connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
     connect(player, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(mediaErrorMessage()));
     connect(player, SIGNAL(stateChanged(QMediaPlayer::State)), timeline, SLOT(playerStateChanged(QMediaPlayer::State)));
+    player->setVolume(50);
+    ui->trackSlider->setRange(0, 0);
 
+    // Final touches
     ui->simpleRadioButton->click();
     fileManager->show();
     fileManager->activateWindow();

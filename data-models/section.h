@@ -19,11 +19,11 @@ public:
 
     void addTurn(Turn *turn);
 
-    double getStartTime() const;
-    void setStartTime(const double &value);
+    qreal getStartTime() const;
+    void setStartTime(const qreal &value);
 
-    double getEndTime() const;
-    void setEndTime(const double &value);
+    qreal getEndTime() const;
+    void setEndTime(const qreal &value);
 
     Topic *getTopic() const;
     void setTopic(Topic *value);
@@ -38,7 +38,7 @@ private:
     static int idCounter;
     int id;
 
-    double startTime, endTime;
+    qreal startTime, endTime;
     Topic *topic;
     QList <Turn*> turns;
 };
