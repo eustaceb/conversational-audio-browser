@@ -2,7 +2,7 @@
 #define TESTSTATISTICS_H
 
 #include <QObject>
-#include <QTest>
+#include <QtTest/QtTest>
 
 class Transcription;
 
@@ -10,13 +10,19 @@ class TestStatistics : public QObject
 {
     Q_OBJECT
 private:
-    Transcription *t1, *t2;
+    Transcription *trs;
+    bool areRealsEqual(qreal actual, qreal expected, qreal epsilon = 0.00001);
 private slots:
     void initTestCase();
     void cleanupTestCase();
 
-    void init();
-    void cleanup();
+    void testMedian();
+    void testTurnCount();
+    void testTurnLength();
+    void testMedianTurnLength();
+    void testTurnLengthVariance();
+    void testTurnLengthSkewness();
+    void testTurnLengthRange();
 };
 
 #endif // TESTSTATISTICS_H

@@ -12,11 +12,11 @@ namespace {
    unsigned const short elementH = 25;
    unsigned const short vSpacing = 10;
 }
-#include <QDebug>
+
 MSpeakerGraphicsItem::MSpeakerGraphicsItem(Speaker *s, const QRectF &trsRect, MultiTimelineWidget *timelineWidget)
     : speaker(s), timelineWidget(timelineWidget)
 {
-    double totalTurnLen = Statistics::turnLength(speaker);
+    qreal totalTurnLen = Statistics::turnLength(speaker);
 
     color = s->getColor();
     label = " " + speaker->getName() + " " + QString::number(totalTurnLen) + " seconds";

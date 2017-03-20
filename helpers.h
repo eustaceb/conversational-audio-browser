@@ -13,9 +13,7 @@ class Transcription;
 class Helpers
 {
 public:
-    Helpers();
-
-    static Transcription* parseTranscript(const QString &filename);
+    static Transcription* parseTranscript(QIODevice *source);
     static int exportStdItemModelToCsv(const QString &filename, QStandardItemModel *model, bool headers = 1);
 };
 

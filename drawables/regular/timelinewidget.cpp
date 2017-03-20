@@ -184,7 +184,7 @@ void TimelineWidget::keyPressEvent(QKeyEvent *event)
 #ifndef QT_NO_WHEELEVENT
 void TimelineWidget::wheelEvent(QWheelEvent *event)
 {
-    scaleView(pow((double)2, event->delta() / 240.0));
+    scaleView(pow((qreal)2, event->delta() / 240.0));
 }
 #endif
 

@@ -14,7 +14,7 @@ Recording::~Recording()
 
 }
 
-int Recording::sliceOut(double from, double to, QString resultFile)
+int Recording::sliceOut(qreal from, qreal to, QString resultFile)
 {
     const int format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
     const int MAX_BUFFER_SIZE = originalFile.samplerate() * originalFile.channels();
@@ -25,7 +25,7 @@ int Recording::sliceOut(double from, double to, QString resultFile)
     originalFile.seek(from * originalFile.samplerate(), SEEK_SET);
 
     int ms = (to - from) * 1000;
-    double samplesPerMs = (originalFile.samplerate() / 1000) * originalFile.channels();
+    qreal samplesPerMs = (originalFile.samplerate() / 1000) * originalFile.channels();
     // Slight data loss if sample rate not divisable by 1000, round up to prevent
     int framesTotal = ceil(samplesPerMs) * ms;
 

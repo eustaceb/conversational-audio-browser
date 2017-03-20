@@ -55,22 +55,22 @@ void Statistics::generateGeneralModel()
     // All
     generalModel->setItem(0, 0, new QStandardItem(QString("All")));
     int turnCountAll = turnCount(transcriptions);
-    double turnLenAll = turnLength(transcriptions);
+    qreal turnLenAll = turnLength(transcriptions);
     generalModel->setItem(0, 1, new QStandardItem(QString::number(turnCountAll)));
     generalModel->setItem(0, 2, new QStandardItem(QString::number(turnLenAll)));
     generalModel->setItem(0, 3, new QStandardItem(QString::number(turnCountAll == 0 ? 0 : turnLenAll / turnCountAll)));
     generalModel->setItem(0, 4, new QStandardItem(QString::number(medianTurnLength(transcriptions))));
-    double variance = turnLengthVariance(transcriptions);
+    qreal variance = turnLengthVariance(transcriptions);
     generalModel->setItem(0, 5, new QStandardItem(QString::number(variance)));
     generalModel->setItem(0, 6, new QStandardItem(QString::number(sqrt(variance))));
     generalModel->setItem(0, 7, new QStandardItem(QString::number(turnLengthSkewness(transcriptions))));
-    QPair<double, double> range = turnLengthRange(transcriptions);
+    QPair<qreal, qreal> range = turnLengthRange(transcriptions);
     QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
     generalModel->setItem(0, 8, new QStandardItem(rangeStr));
 
     // Selection
     int count = turnCount(transcriptions, true);
-    double len = turnLength(transcriptions, true);
+    qreal len = turnLength(transcriptions, true);
     generalModel->setItem(1, 0, new QStandardItem(QString("Selection")));
     generalModel->setItem(1, 1, new QStandardItem(QString::number(count)));
     generalModel->setItem(1, 2, new QStandardItem(QString::number(len)));
@@ -110,7 +110,7 @@ void Statistics::generateGeneralModel()
 
 void Statistics::addTranscription(Transcription *t)
 {
-    // Prevent from double-adding. Checking just one of the maps is sufficient.
+    // Prevent from qreal-adding. Checking just one of the maps is sufficient.
     if (speakerModels.contains(t->getId())) return;
 
     // First, generate item models (empty tables)
@@ -196,11 +196,11 @@ void Statistics::generateTranscriptionModels(Transcription *t)
         speakerModel->setItem(i, 2, new QStandardItem(QString::number(turnLength(s))));
         speakerModel->setItem(i, 3, new QStandardItem(QString::number(turnCount(s) == 0 ? 0 : turnLength(s) / turnCount(s))));
         speakerModel->setItem(i, 4, new QStandardItem(QString::number(medianTurnLength(s))));
-        double variance = turnLengthVariance(s);
+        qreal variance = turnLengthVariance(s);
         speakerModel->setItem(i, 5, new QStandardItem(QString::number(variance)));
         speakerModel->setItem(i, 6, new QStandardItem(QString::number(sqrt(variance))));
         speakerModel->setItem(i, 7, new QStandardItem(QString::number(turnLengthSkewness(s))));
-        QPair<double, double> range = turnLengthRange(s);
+        QPair<qreal, qreal> range = turnLengthRange(s);
         QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
         speakerModel->setItem(i, 8, new QStandardItem(rangeStr));
         i++;
@@ -217,11 +217,11 @@ void Statistics::generateTranscriptionModels(Transcription *t)
             sectionModel->setItem(j, 2, new QStandardItem(QString::number(turnLength(s))));
             sectionModel->setItem(j, 3, new QStandardItem(QString::number(turnCount(s) == 0 ? 0 : turnLength(s) / turnCount(s))));
             sectionModel->setItem(j, 4, new QStandardItem(QString::number(medianTurnLength(s))));
-            double variance = turnLengthVariance(s);
+            qreal variance = turnLengthVariance(s);
             sectionModel->setItem(j, 5, new QStandardItem(QString::number(variance)));
             sectionModel->setItem(j, 6, new QStandardItem(QString::number(sqrt(variance))));
             sectionModel->setItem(i, 7, new QStandardItem(QString::number(turnLengthSkewness(s))));
-            QPair<double, double> range = turnLengthRange(s);
+            QPair<qreal, qreal> range = turnLengthRange(s);
             QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
             sectionModel->setItem(j, 8, new QStandardItem(rangeStr));
             j++;
@@ -231,11 +231,11 @@ void Statistics::generateTranscriptionModels(Transcription *t)
         topicModel->setItem(i, 2, new QStandardItem(QString::number(turnLength(to))));
         topicModel->setItem(i, 3, new QStandardItem(QString::number(turnCount(to) == 0 ? 0 : turnLength(to) / turnCount(to))));
         topicModel->setItem(i, 4, new QStandardItem(QString::number(medianTurnLength(to))));
-        double variance = turnLengthVariance(to);
+        qreal variance = turnLengthVariance(to);
         topicModel->setItem(i, 5, new QStandardItem(QString::number(variance)));
         topicModel->setItem(i, 6, new QStandardItem(QString::number(sqrt(variance))));
         topicModel->setItem(i, 7, new QStandardItem(QString::number(turnLengthSkewness(to))));
-        QPair<double, double> range = turnLengthRange(to);
+        QPair<qreal, qreal> range = turnLengthRange(to);
         QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
         topicModel->setItem(i, 8, new QStandardItem(rangeStr));
         i++;
@@ -248,10 +248,11 @@ void Statistics::generateTranscriptionModels(Transcription *t)
  * STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS
  * STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS STATS
  */
-double Statistics::median(const QList<double> &values)
+qreal Statistics::median(QList<qreal> values)
 {
     if (values.size() == 0) return nan("");
-    double middle = values.at(values.size() / 2);
+    qSort(values);
+    qreal middle = values.at(values.size() / 2);
     if (values.size() % 2 != 0)
         return middle;
     else
@@ -296,63 +297,63 @@ int Statistics::turnCount(Section *s)
     return s->getTurns().length();
 }
 
-double Statistics::turnLength(QMap<int, Transcription *> *transcriptions, bool selected)
+qreal Statistics::turnLength(QMap<int, Transcription *> *transcriptions, bool selected)
 {
-    double len = 0;
+    qreal len = 0;
     foreach (Transcription *t, (*transcriptions)) {
         len += turnLength(t, selected);
     }
     return len;
 }
 
-double Statistics::turnLength(Transcription *t, bool selected)
+qreal Statistics::turnLength(Transcription *t, bool selected)
 {
-    double len = 0;
+    qreal len = 0;
     foreach (Speaker *s, t->getSpeakers()) {
         len += turnLength(s, selected);
     }
     return len;
 }
 
-double Statistics::turnLength(Speaker *s, bool selected)
+qreal Statistics::turnLength(Speaker *s, bool selected)
 {
     if (selected && !s->isFiltered()) return 0;
 
-    double len = 0;
+    qreal len = 0;
     foreach (Turn *trn, s->getTurns())
             if (!selected || trn->isSelected())
                 len += trn->getDuration();
     return len;
 }
 
-double Statistics::turnLength(Topic *t)
+qreal Statistics::turnLength(Topic *t)
 {
-    double len = 0;
+    qreal len = 0;
     foreach (Section *s, t->getSections())
         len += turnLength(s);
     return len;
 }
 
-double Statistics::turnLength(Section *s)
+qreal Statistics::turnLength(Section *s)
 {
-    double len = 0;
+    qreal len = 0;
     foreach (Turn *t, s->getTurns())
         len += t->getDuration();
     return len;
 }
 
-double Statistics::medianTurnLength(QMap<int, Transcription *> *transcriptions, bool selected)
+qreal Statistics::medianTurnLength(QMap<int, Transcription *> *transcriptions, bool selected)
 {
-    QMultiMap<double, bool> turnLengths;
+    QMultiMap<qreal, bool> turnLengths;
     foreach (Transcription *t, (*transcriptions))
         foreach (Turn *trn, t->getTurnList(selected))
             turnLengths.insert(trn->getDuration(), true);
     return median(turnLengths.keys());
 }
 
-double Statistics::medianTurnLength(Transcription *t)
+qreal Statistics::medianTurnLength(Transcription *t)
 {
-    QMultiMap<double, bool> turnLengths;
+    QMultiMap<qreal, bool> turnLengths;
 
     foreach (Speaker *s, t->getSpeakers())
         foreach (Turn *trn, s->getTurns())
@@ -361,9 +362,9 @@ double Statistics::medianTurnLength(Transcription *t)
     return median(turnLengths.keys());
 }
 
-double Statistics::medianTurnLength(Speaker *s)
+qreal Statistics::medianTurnLength(Speaker *s)
 {
-    QMultiMap<double, bool> turnLengths;
+    QMultiMap<qreal, bool> turnLengths;
 
     foreach (Turn *trn, s->getTurns())
         turnLengths.insert(trn->getDuration(), true);
@@ -371,9 +372,9 @@ double Statistics::medianTurnLength(Speaker *s)
     return median(turnLengths.keys());
 }
 
-double Statistics::medianTurnLength(Topic *t)
+qreal Statistics::medianTurnLength(Topic *t)
 {
-    QMultiMap<double, bool> turnLengths;
+    QMultiMap<qreal, bool> turnLengths;
 
     foreach (Section *s, t->getSections())
         foreach (Turn *trn, s->getTurns())
@@ -382,9 +383,9 @@ double Statistics::medianTurnLength(Topic *t)
     return median(turnLengths.keys());
 }
 
-double Statistics::medianTurnLength(Section *s)
+qreal Statistics::medianTurnLength(Section *s)
 {
-    QMultiMap<double, bool> turnLengths;
+    QMultiMap<qreal, bool> turnLengths;
 
     foreach (Turn *trn, s->getTurns())
         turnLengths.insert(trn->getDuration(), true);
@@ -392,11 +393,11 @@ double Statistics::medianTurnLength(Section *s)
     return median(turnLengths.keys());
 }
 
-double Statistics::turnLengthVariance(QMap<int, Transcription *> *transcriptions, bool selected)
+qreal Statistics::turnLengthVariance(QMap<int, Transcription *> *transcriptions, bool selected)
 {
     int count = turnCount(transcriptions, selected);
-    double mean = turnLength(transcriptions, selected) / count;
-    double squaredDiff = 0;
+    qreal mean = turnLength(transcriptions, selected) / count;
+    qreal squaredDiff = 0;
 
     foreach (Transcription *t, (*transcriptions))
         foreach (Turn *trn, t->getTurnList(selected))
@@ -405,11 +406,11 @@ double Statistics::turnLengthVariance(QMap<int, Transcription *> *transcriptions
     return squaredDiff / count;
 }
 
-double Statistics::turnLengthVariance(Transcription *t)
+qreal Statistics::turnLengthVariance(Transcription *t)
 {
     int count = turnCount(t);
-    double squaredDiff = 0;
-    double mean = turnLength(t) / count;
+    qreal squaredDiff = 0;
+    qreal mean = turnLength(t) / count;
 
     foreach (Speaker *s, t->getSpeakers())
         foreach (Turn *trn, s->getTurns())
@@ -418,11 +419,11 @@ double Statistics::turnLengthVariance(Transcription *t)
     return squaredDiff / count;
 }
 
-double Statistics::turnLengthVariance(Speaker *s)
+qreal Statistics::turnLengthVariance(Speaker *s)
 {
     int count = turnCount(s);
-    double squaredDiff = 0;
-    double mean = turnLength(s) / count;
+    qreal squaredDiff = 0;
+    qreal mean = turnLength(s) / count;
 
     foreach (Turn *trn, s->getTurns())
         squaredDiff += pow((trn->getDuration() - mean), 2);
@@ -430,11 +431,11 @@ double Statistics::turnLengthVariance(Speaker *s)
     return squaredDiff / count;
 }
 
-double Statistics::turnLengthVariance(Topic *t)
+qreal Statistics::turnLengthVariance(Topic *t)
 {
     int count = turnCount(t);
-    double squaredDiff = 0;
-    double mean = turnLength(t) / count;
+    qreal squaredDiff = 0;
+    qreal mean = turnLength(t) / count;
 
     foreach (Section *s, t->getSections())
         foreach (Turn *trn, s->getTurns())
@@ -443,11 +444,11 @@ double Statistics::turnLengthVariance(Topic *t)
     return squaredDiff / count;
 }
 
-double Statistics::turnLengthVariance(Section *s)
+qreal Statistics::turnLengthVariance(Section *s)
 {
     int count = turnCount(s);
-    double squaredDiff = 0;
-    double mean = turnLength(s) / count;
+    qreal squaredDiff = 0;
+    qreal mean = turnLength(s) / count;
 
     foreach (Turn *trn, s->getTurns())
         squaredDiff += pow((trn->getDuration() - mean), 2);
@@ -455,71 +456,71 @@ double Statistics::turnLengthVariance(Section *s)
     return squaredDiff / count;
 }
 
-double Statistics::turnLengthSkewness(QMap<int, Transcription *> *transcriptions, bool selected)
+qreal Statistics::turnLengthSkewness(QMap<int, Transcription *> *transcriptions, bool selected)
 {
-    double mean = turnLength(transcriptions, selected) / turnCount(transcriptions, selected);
+    qreal mean = turnLength(transcriptions, selected) / turnCount(transcriptions, selected);
     return 3 * (mean - medianTurnLength(transcriptions, selected)) / sqrt(turnLengthVariance(transcriptions, selected));
 }
 
-double Statistics::turnLengthSkewness(Transcription *t)
+qreal Statistics::turnLengthSkewness(Transcription *t)
 {
-    double mean = turnLength(t) / turnCount(t);
+    qreal mean = turnLength(t) / turnCount(t);
     return 3 * (mean - medianTurnLength(t)) / sqrt(turnLengthVariance(t));
 }
 
-double Statistics::turnLengthSkewness(Speaker *s)
+qreal Statistics::turnLengthSkewness(Speaker *s)
 {
-    double mean = turnLength(s) / turnCount(s);
+    qreal mean = turnLength(s) / turnCount(s);
     return 3 * (mean - medianTurnLength(s)) / sqrt(turnLengthVariance(s));
 }
 
-double Statistics::turnLengthSkewness(Topic *t)
+qreal Statistics::turnLengthSkewness(Topic *t)
 {
-    double mean = turnLength(t) / turnCount(t);
+    qreal mean = turnLength(t) / turnCount(t);
     return 3 * (mean - medianTurnLength(t)) / sqrt(turnLengthVariance(t));
 }
 
-double Statistics::turnLengthSkewness(Section *s)
+qreal Statistics::turnLengthSkewness(Section *s)
 {
-    double mean = turnLength(s) / turnCount(s);
+    qreal mean = turnLength(s) / turnCount(s);
     return 3 * (mean - medianTurnLength(s)) / sqrt(turnLengthVariance(s));
 }
 /*
-QList<double> Statistics::getOverlaps(bool selected)
+QList<qreal> Statistics::getOverlaps(bool selected)
 {
-    QList<double> result;
+    QList<qreal> result;
     foreach (Transcription *t, (*transcriptions))
         result.append(getOverlaps(t, selected));
     return result;
 }
 
-QList<double> Statistics::getOverlaps(Transcription *t, bool selected)
+QList<qreal> Statistics::getOverlaps(Transcription *t, bool selected)
 {
-    QList<double> result;
+    QList<qreal> result;
     // We're going to need a list of pairs sorted by the first element
-    // Not single doubles so we keep track of what are the bounds of the interval
-    QMap<QPair<double, double>, int> intervalMap;
+    // Not single qreals so we keep track of what are the bounds of the interval
+    QMap<QPair<qreal, qreal>, int> intervalMap;
     foreach (Turn *trn, t->getTurnList(selected)) {
-        if (!intervalMap.contains(QPair<double, double>(trn->getEndTime(), trn->getStartTime()))) {
-            intervalMap.insert(QPair<double, double>(trn->getStartTime(), trn->getEndTime()), 1);
-            intervalMap.insert(QPair<double, double>(trn->getEndTime(), trn->getStartTime()), 1);
+        if (!intervalMap.contains(QPair<qreal, qreal>(trn->getEndTime(), trn->getStartTime()))) {
+            intervalMap.insert(QPair<qreal, qreal>(trn->getStartTime(), trn->getEndTime()), 1);
+            intervalMap.insert(QPair<qreal, qreal>(trn->getEndTime(), trn->getStartTime()), 1);
         } else {
-            intervalMap[QPair<double, double>(trn->getEndTime(), trn->getStartTime())]++;
+            intervalMap[QPair<qreal, qreal>(trn->getEndTime(), trn->getStartTime())]++;
         }
     }
     // TODO: custom comparator required; ties - end points before start points
-    QList<QPair<double, double>> intervals = intervalMap.keys();
+    QList<QPair<qreal, qreal>> intervals = intervalMap.keys();
     std::sort(intervals.begin(), intervals.end());
 
-    QList<QPair<double, double>> currentlyOpen;
+    QList<QPair<qreal, qreal>> currentlyOpen;
     for (int i = 0; i < intervals.size(); i++) {
-        QPair<double, double> now = intervals.at(i);
+        QPair<qreal, qreal> now = intervals.at(i);
         if (now.first > now.second) { // interval opens
             currentlyOpen.add(now);
         } else {
             int r = 0;
             for (int j = 0; j < currentlyOpen.size(); j++) {
-                QPair<double, double> openPair = currentlyOpen.at(j);
+                QPair<qreal, qreal> openPair = currentlyOpen.at(j);
                 if (openPair.first == now.second && openPair.second == now.first) {
                     int intervalCount = intervalMap.find(now).value()
                     r = j;
@@ -534,36 +535,36 @@ QList<double> Statistics::getOverlaps(Transcription *t, bool selected)
 
 }*/
 
-QPair<double, double> Statistics::turnLengthRange(QMap<int, Transcription *> *transcriptions, bool selected)
+QPair<qreal, qreal> Statistics::turnLengthRange(QMap<int, Transcription *> *transcriptions, bool selected)
 {
-    double min = 0, max = 0;
+    qreal min = 0, max = 0;
     foreach (Transcription *t, (*transcriptions)) {
-        QPair<double, double> p = turnLengthRange(t, selected);
+        QPair<qreal, qreal> p = turnLengthRange(t, selected);
         if (min == 0 || (p.first < min && p.first != 0))
             min = p.first;
         if (p.second > max)
             max = p.second;
     }
-    return QPair<double, double>(min, max);
+    return QPair<qreal, qreal>(min, max);
 }
 
-QPair<double, double> Statistics::turnLengthRange(Transcription *t, bool selected)
+QPair<qreal, qreal> Statistics::turnLengthRange(Transcription *t, bool selected)
 {
-    double min = 0, max = 0;
+    qreal min = 0, max = 0;
     foreach (Speaker *s, t->getSpeakers()) {
-        QPair<double, double> p = turnLengthRange(s, selected);
+        QPair<qreal, qreal> p = turnLengthRange(s, selected);
         if (min == 0 || (p.first < min && p.first != 0))
             min = p.first;
         if (p.second > max)
             max = p.second;
     }
-    return QPair<double, double>(min, max);
+    return QPair<qreal, qreal>(min, max);
 }
 
-QPair<double, double> Statistics::turnLengthRange(Speaker *s, bool selected)
+QPair<qreal, qreal> Statistics::turnLengthRange(Speaker *s, bool selected)
 {
-    if (selected && !s->isFiltered()) return QPair<double, double>(0, 0);
-    double min = 0, max = 0;
+    if (selected && !s->isFiltered()) return QPair<qreal, qreal>(0, 0);
+    qreal min = 0, max = 0;
     foreach (Turn *t, s->getTurns()) {
         if (!selected || t->isSelected()) {
             if (min == 0 || t->getDuration() < min)
@@ -572,32 +573,32 @@ QPair<double, double> Statistics::turnLengthRange(Speaker *s, bool selected)
                 max = t->getDuration();
         }
     }
-    return QPair<double, double>(min, max);
+    return QPair<qreal, qreal>(min, max);
 }
 
-QPair<double, double> Statistics::turnLengthRange(Topic *t)
+QPair<qreal, qreal> Statistics::turnLengthRange(Topic *t)
 {
-    double min = 0, max = 0;
+    qreal min = 0, max = 0;
     foreach (Section *s, t->getSections()) {
-        QPair<double, double> p = turnLengthRange(s);
+        QPair<qreal, qreal> p = turnLengthRange(s);
         if (min == 0 || (p.first < min && p.first != 0))
             min = p.first;
         if (p.second > max)
             max = p.second;
     }
-    return QPair<double, double>(min, max);
+    return QPair<qreal, qreal>(min, max);
 }
 
-QPair<double, double> Statistics::turnLengthRange(Section *s)
+QPair<qreal, qreal> Statistics::turnLengthRange(Section *s)
 {
-    double min = 0, max = 0;
+    qreal min = 0, max = 0;
     foreach (Turn *t, s->getTurns()) {
             if (min == 0 || t->getDuration() < min)
                 min = t->getDuration();
             if (t->getDuration() > max)
                 max = t->getDuration();
     }
-    return QPair<double, double>(min, max);
+    return QPair<qreal, qreal>(min, max);
 }
 
 void Statistics::on_exportButton_clicked()

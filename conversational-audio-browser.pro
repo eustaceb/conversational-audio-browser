@@ -43,7 +43,8 @@ SOURCES += main.cpp\
     slicer.cpp \
     tests/test_main.cpp \
     tests/teststatistics.cpp \
-    tests/testdatamodels.cpp
+    tests/testdatamodels.cpp \
+    tests/testhelpers.cpp
 
 HEADERS  += mainwindow.h \
     helpers.h \
@@ -72,7 +73,8 @@ HEADERS  += mainwindow.h \
     drawables/multifile/mspeakercountgraphicsitem.h \
     slicer.h \
     tests/teststatistics.h \
-    tests/testdatamodels.h
+    tests/testdatamodels.h \
+    tests/testhelpers.h
 
 FORMS    += mainwindow.ui \
     filemanager.ui \
@@ -95,11 +97,13 @@ test {
     message(Normal build)
     # Remove all test files to avoid clashing speed build up
     HEADERS -= tests/teststatistics.h \
-        tests/testdatamodels.h
+        tests/testdatamodels.h \
+        tests/testhelpers.h
 
     SOURCES -= tests/test_main.cpp \
         tests/teststatistics.cpp \
-        tests/testdatamodels.cpp
+        tests/testdatamodels.cpp \
+        tests/testhelpers.cpp
 }
 
 # LIBSNDFILE

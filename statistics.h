@@ -31,7 +31,7 @@ public:
     /*
      * Functions used for calculating stats
      */
-    static double median(const QList<double> &values);
+    static qreal median(QList<qreal> values);
 
     static int turnCount(QMap<int, Transcription *> *transcriptions, bool selected = false);
     static int turnCount(Transcription *t, bool selected = false);
@@ -39,47 +39,47 @@ public:
     static int turnCount(Topic *t);
     static int turnCount(Section *s);
 
-    static double turnLength(QMap<int, Transcription *> *transcriptions, bool selected = false);
-    static double turnLength(Transcription *t, bool selected = false);
-    static double turnLength(Speaker *s, bool selected = false);
-    static double turnLength(Topic *t);
-    static double turnLength(Section *s);
+    static qreal turnLength(QMap<int, Transcription *> *transcriptions, bool selected = false);
+    static qreal turnLength(Transcription *t, bool selected = false);
+    static qreal turnLength(Speaker *s, bool selected = false);
+    static qreal turnLength(Topic *t);
+    static qreal turnLength(Section *s);
 
-    static double medianTurnLength(QMap<int, Transcription *> *transcriptions, bool selected = false);
-    static double medianTurnLength(Transcription *t);
-    static double medianTurnLength(Speaker *s);
-    static double medianTurnLength(Topic *t);
-    static double medianTurnLength(Section *s);
+    static qreal medianTurnLength(QMap<int, Transcription *> *transcriptions, bool selected = false);
+    static qreal medianTurnLength(Transcription *t);
+    static qreal medianTurnLength(Speaker *s);
+    static qreal medianTurnLength(Topic *t);
+    static qreal medianTurnLength(Section *s);
 
-    static double turnLengthVariance(QMap<int, Transcription *> *transcriptions, bool selected = false);
-    static double turnLengthVariance(Transcription *t);
-    static double turnLengthVariance(Speaker *s);
-    static double turnLengthVariance(Topic *t);
-    static double turnLengthVariance(Section *s);
+    static qreal turnLengthVariance(QMap<int, Transcription *> *transcriptions, bool selected = false);
+    static qreal turnLengthVariance(Transcription *t);
+    static qreal turnLengthVariance(Speaker *s);
+    static qreal turnLengthVariance(Topic *t);
+    static qreal turnLengthVariance(Section *s);
 
-    static double turnLengthSkewness(QMap<int, Transcription *> *transcriptions, bool selected = false);
-    static double turnLengthSkewness(Transcription *t);
-    static double turnLengthSkewness(Speaker *s);
-    static double turnLengthSkewness(Topic *t);
-    static double turnLengthSkewness(Section *s);
+    static qreal turnLengthSkewness(QMap<int, Transcription *> *transcriptions, bool selected = false);
+    static qreal turnLengthSkewness(Transcription *t);
+    static qreal turnLengthSkewness(Speaker *s);
+    static qreal turnLengthSkewness(Topic *t);
+    static qreal turnLengthSkewness(Section *s);
 /*
-    QList<double> getOverlaps(bool selected = false);
-    QList<double> getOverlaps(Transcription *t, bool selected = false);
-    QList<double> getOverlaps(Speaker *s);
-    QList<double> getOverlaps(Topic *t);
-    QList<double> getOverlaps(Section *s);
+    QList<qreal> getOverlaps(bool selected = false);
+    QList<qreal> getOverlaps(Transcription *t, bool selected = false);
+    QList<qreal> getOverlaps(Speaker *s);
+    QList<qreal> getOverlaps(Topic *t);
+    QList<qreal> getOverlaps(Section *s);
 
-    double overlapLength(bool selected = false);
-    double overlapLength(Transcription *t);
-    double overlapLength(Speaker *s);
-    double overlapLength(Topic *t);
-    double overlapLength(Section *s);
+    qreal overlapLength(bool selected = false);
+    qreal overlapLength(Transcription *t);
+    qreal overlapLength(Speaker *s);
+    qreal overlapLength(Topic *t);
+    qreal overlapLength(Section *s);
 */
-    static QPair<double, double> turnLengthRange(QMap<int, Transcription *> *transcriptions, bool selected = false);
-    static QPair<double, double> turnLengthRange(Transcription *t, bool selected = false);
-    static QPair<double, double> turnLengthRange(Speaker *s, bool selected = false);
-    static QPair<double, double> turnLengthRange(Topic *t);
-    static QPair<double, double> turnLengthRange(Section *s);
+    static QPair<qreal, qreal> turnLengthRange(QMap<int, Transcription *> *transcriptions, bool selected = false);
+    static QPair<qreal, qreal> turnLengthRange(Transcription *t, bool selected = false);
+    static QPair<qreal, qreal> turnLengthRange(Speaker *s, bool selected = false);
+    static QPair<qreal, qreal> turnLengthRange(Topic *t);
+    static QPair<qreal, qreal> turnLengthRange(Section *s);
 
 private slots:
     void generateGeneralModel();

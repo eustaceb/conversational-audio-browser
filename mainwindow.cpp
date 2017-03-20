@@ -134,7 +134,11 @@ void MainWindow::when_transcription_loaded(const QString &annotationsFile, const
         }
     }
 
-    Transcription *trs = Helpers::parseTranscript(annotationsFile);
+    QFile *file = new QFile(annotationsFile);
+    file->setObjectName(annotationsFile); // pass in file name
+    Transcription *trs = Helpers::parseTranscript(file);
+    delete file;
+
     if (audioFile != "")
         trs->setRecording(new Recording(audioFile));
     transcriptions->insert(trs->getId(), trs);

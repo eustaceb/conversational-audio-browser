@@ -1,12 +1,12 @@
 #include "testdatamodels.h"
 
-#include <data-models/filterable.h>
-#include <data-models/selectable.h>
-#include <data-models/transcription.h>
-#include <data-models/speaker.h>
-#include <data-models/turn.h>
-#include <data-models/topic.h>
-#include <data-models/section.h>
+#include "data-models/filterable.h"
+#include "data-models/selectable.h"
+#include "data-models/transcription.h"
+#include "data-models/speaker.h"
+#include "data-models/turn.h"
+#include "data-models/topic.h"
+#include "data-models/section.h"
 
 void TestDataModels::testTranscription()
 {

@@ -10,7 +10,7 @@ public:
     Recording(const QString &filename);
     ~Recording();
 
-    int sliceOut(double from, double to, QString resultFile);
+    int sliceOut(qreal from, qreal to, QString resultFile);
 
     QString getFilename() const;
 
