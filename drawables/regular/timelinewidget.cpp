@@ -19,7 +19,6 @@ TimelineWidget::TimelineWidget(QWidget *parent)
     : QGraphicsView(parent), zoomScale(1), cursor(0, 0), markerPos(-200)
 {
     scene = new QGraphicsScene(this);
-    // TODO: Change to some indexing for possible optimisation
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
 
     setScene(scene);
@@ -95,7 +94,6 @@ void TimelineWidget::reloadScene()
         scene->setSceneRect(r.x() - margin, r.y() - margin, r.width() + margin*2, r.height() + margin * 2);
 
         // Add rulers
-        // TODO: length maybe max(audioRec, lastSection)?
         scene->addItem(new Ruler(sectionsRect, Ruler::Above));
         scene->addItem(new Ruler(sectionsRect, Ruler::Below));
     }
@@ -124,7 +122,6 @@ void TimelineWidget::mouseMoveEvent(QMouseEvent* event)
 
         origin = event->pos();
     }
-    // TODO: Do we really need to repaint every time?
     viewport()->repaint();
     emit mouseMoved();
 }

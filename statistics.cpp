@@ -132,7 +132,7 @@ void Statistics::addTranscription(Transcription *t)
     topicModels.insert(t->getId(), topicModel);
 
     QStandardItemModel *sectionModel = new QStandardItemModel;
-    labels = QStringList(QList<QString>() << "Section" << "Turn Count" << "Turn length" <<
+    labels = QStringList(QList<QString>() << "Section" << "Section Length" << "Turn Count" << "Total turn length" <<
                        "Mean turn length" << "Turn length median" << "Turn length variance" <<
                        "Turn length stdev" << "Turn length skewness" << "Turn length range");
                        //"No of overlaps" << "Len of overlaps" << "Overlap %");
@@ -213,17 +213,18 @@ void Statistics::generateTranscriptionModels(Transcription *t)
     foreach (Topic *to, t->getTopics()) {
         foreach (Section *s, to->getSections()) {
             sectionModel->setItem(j, 0, new QStandardItem(QString::number(s->getId()) + " - " + to->getDesc()));
-            sectionModel->setItem(j, 1, new QStandardItem(QString::number(turnCount(s))));
-            sectionModel->setItem(j, 2, new QStandardItem(QString::number(turnLength(s))));
-            sectionModel->setItem(j, 3, new QStandardItem(QString::number(turnCount(s) == 0 ? 0 : turnLength(s) / turnCount(s))));
-            sectionModel->setItem(j, 4, new QStandardItem(QString::number(medianTurnLength(s))));
+            sectionModel->setItem(j, 1, new QStandardItem(QString::number(s->getEndTime() - s->getStartTime())));
+            sectionModel->setItem(j, 2, new QStandardItem(QString::number(turnCount(s))));
+            sectionModel->setItem(j, 3, new QStandardItem(QString::number(turnLength(s))));
+            sectionModel->setItem(j, 4, new QStandardItem(QString::number(turnCount(s) == 0 ? 0 : turnLength(s) / turnCount(s))));
+            sectionModel->setItem(j, 5, new QStandardItem(QString::number(medianTurnLength(s))));
             qreal variance = turnLengthVariance(s);
-            sectionModel->setItem(j, 5, new QStandardItem(QString::number(variance)));
-            sectionModel->setItem(j, 6, new QStandardItem(QString::number(sqrt(variance))));
-            sectionModel->setItem(i, 7, new QStandardItem(QString::number(turnLengthSkewness(s))));
+            sectionModel->setItem(j, 6, new QStandardItem(QString::number(variance)));
+            sectionModel->setItem(j, 7, new QStandardItem(QString::number(sqrt(variance))));
+            sectionModel->setItem(i, 8, new QStandardItem(QString::number(turnLengthSkewness(s))));
             QPair<qreal, qreal> range = turnLengthRange(s);
             QString rangeStr = "[" + QString::number(range.first) + "," + QString::number(range.second) + "]";
-            sectionModel->setItem(j, 8, new QStandardItem(rangeStr));
+            sectionModel->setItem(j, 9, new QStandardItem(rangeStr));
             j++;
         }
         topicModel->setItem(i, 0, new QStandardItem(to->getDesc()));

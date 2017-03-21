@@ -19,7 +19,6 @@ MultiTimelineWidget::MultiTimelineWidget(QMap<int, Transcription *> *transcripti
     : QGraphicsView(parent), transcriptions(transcriptions), zoomScale(1), cursor(0, 0)
 {
     scene = new QGraphicsScene(this);
-    // TODO: Change to some indexing for possible optimisation
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     setScene(scene);
     setCacheMode(CacheNone);
@@ -51,7 +50,7 @@ void MultiTimelineWidget::reloadScene()
     foreach (Transcription *t, (*transcriptions)) {
         TranscriptionGraphicsItem *tgi = new TranscriptionGraphicsItem(t, previousRect, this);
         scene->addItem(tgi);
-        MSpeakerGraphicsItem::setYCounter(0); // TODO: Get rid of this hack
+        MSpeakerGraphicsItem::setYCounter(0);
         MSpeakerCountGraphicsItem::setYCounter(0);
         foreach (Speaker *s, t->getSpeakers()) {
             scene->addItem(new MSpeakerGraphicsItem(s, tgi->boundingRect(), this));
@@ -109,9 +108,9 @@ void MultiTimelineWidget::mouseMoveEvent(QMouseEvent *event)
         translate(translation.x(), translation.y());
 
         origin = event->pos();
+        viewport()->repaint();
     }
-    // TODO: Do we really need to repaint every time?
-    viewport()->repaint();
+
 }
 
 void MultiTimelineWidget::mouseReleaseEvent(QMouseEvent *event)

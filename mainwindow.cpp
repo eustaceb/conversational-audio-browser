@@ -89,10 +89,10 @@ MainWindow::MainWindow(QWidget *parent) :
     duration = 0;
     player->setNotifyInterval(100);
 
-    connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int))); // TODO: Problem
+    connect(ui->trackSlider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int))); // TODO: Investigate why clicking doesn't work
     connect(ui->volumeSlider, SIGNAL(valueChanged(int)), player, SLOT(setVolume(int)));
     connect(player, SIGNAL(volumeChanged(int)), ui->volumeSlider, SLOT(setValue(int)));
-    connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64))); // TODO: Problem
+    connect(player, SIGNAL(positionChanged(qint64)), this, SLOT(positionChanged(qint64)));
     connect(player, SIGNAL(positionChanged(qint64)), timeline, SLOT(syncPosition(qint64)));
     connect(player, SIGNAL(durationChanged(qint64)), this, SLOT(durationChanged(qint64)));
     connect(player, SIGNAL(error(QMediaPlayer::Error)), this, SLOT(mediaErrorMessage()));

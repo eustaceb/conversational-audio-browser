@@ -95,7 +95,7 @@ test {
 
 } else {
     message(Normal build)
-    # Remove all test files to avoid clashing speed build up
+    # Remove all test files to avoid clashing and to speed up build
     HEADERS -= tests/teststatistics.h \
         tests/testdatamodels.h \
         tests/testhelpers.h
@@ -107,15 +107,18 @@ test {
 }
 
 # LIBSNDFILE
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../libs/libsndfile/lib/release/ -lsndfile
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../libs/libsndfile/lib/debug/ -lsndfile
-else:unix: LIBS += -L$$PWD/../../../libs/libsndfile/lib/ -lsndfile
+# Set this to where the compiled library is located
+LIBSNDFILE_LOC = $$PWD/libs/libsndfile
 
-INCLUDEPATH += $$PWD/../../../libs/libsndfile/include
-DEPENDPATH += $$PWD/../../../libs/libsndfile/include
+win32:CONFIG(release, debug|release): LIBS += -L$${LIBSNDFILE_LOC}/lib/release/ -lsndfile
+else:win32:CONFIG(debug, debug|release): LIBS += -L$${LIBSNDFILE_LOC}/lib/debug/ -lsndfile
+else:unix: LIBS += -L$${LIBSNDFILE_LOC}/lib/ -lsndfile
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/release/libsndfile.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/debug/libsndfile.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/release/sndfile.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/debug/sndfile.lib
-else:unix: PRE_TARGETDEPS += $$PWD/../../../libs/libsndfile/lib/libsndfile.a
+INCLUDEPATH += $${LIBSNDFILE_LOC}/include
+DEPENDPATH += $${LIBSNDFILE_LOC}/include
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/release/libsndfile.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/debug/libsndfile.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/release/sndfile.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/debug/sndfile.lib
+else:unix: PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/libsndfile.a
