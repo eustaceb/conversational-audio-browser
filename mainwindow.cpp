@@ -263,7 +263,7 @@ void MainWindow::on_multifileRadioButton_clicked()
     ui->noAudioFileLoaded->hide();
     ui->audioControls->hide();
     // Reset timeline / selection splitter
-    ui->splitter->setSizes(QList<int>({0, 200, 200}));
+    ui->splitter->setSizes(QList<int>() << 0 << 200 << 200);
 }
 
 void MainWindow::on_simpleRadioButton_clicked()
@@ -281,7 +281,7 @@ void MainWindow::on_simpleRadioButton_clicked()
             ui->noAudioFileLoaded->show();
     }
     // Reset timeline / selection splitter
-    ui->splitter->setSizes(QList<int>({200, 0, 200}));
+    ui->splitter->setSizes(QList<int>() << 200 << 0 << 200);
 }
 
 void MainWindow::on_transcriptionComboBox_currentIndexChanged(int index)
@@ -362,15 +362,15 @@ void MainWindow::on_actionResize_timeline_triggered()
 {
     if (ui->multifileRadioButton->isChecked()) { // Multifile timeline
         if (ui->splitter->sizes()[2] == 0) { // Already maximized - minimize
-            ui->splitter->setSizes(QList<int>({0, 200, 200}));
+            ui->splitter->setSizes(QList<int>() << 0 << 200 << 200);
         } else {
-            ui->splitter->setSizes(QList<int>({0, 200, 0}));
+            ui->splitter->setSizes(QList<int>() << 0 << 200 << 0);
         }
     } else { // Simple timeline
         if (ui->splitter->sizes()[2] == 0) { // Already maximized - minimize
-            ui->splitter->setSizes(QList<int>({200, 0, 200}));
+            ui->splitter->setSizes(QList<int>() << 200 << 0 << 200);
         } else {
-            ui->splitter->setSizes(QList<int>({200, 0, 0}));
+            ui->splitter->setSizes(QList<int>() << 200 << 0 << 0);
         }
     }
 }

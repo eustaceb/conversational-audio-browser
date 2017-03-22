@@ -21,7 +21,7 @@ FileManager::~FileManager()
 void FileManager::on_annotationFileLookupButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this,
-        tr("Select a TRS transcription file"), "/home/justas/Dissertation", tr("TRS Files (*.trs)"));
+        tr("Select a TRS transcription file"), "/", tr("TRS Files (*.trs)"));
     ui->annotationsFileLineEdit->setText(filename);
 }
 

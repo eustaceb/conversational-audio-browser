@@ -5,6 +5,7 @@
 #include "data-models/turn.h"
 #include "data-models/speaker.h"
 #include "drawables/regular/timelinewidget.h"
+#include <cmath>
 
 QFont TurnGraphicsItem::font = QFont("arial", 16);
 

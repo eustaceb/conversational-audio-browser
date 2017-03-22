@@ -2,6 +2,7 @@
 #include "sndfile.hh"
 
 #include <QDebug>
+#include <cmath>
 
 Recording::Recording(const QString &filename)
 {

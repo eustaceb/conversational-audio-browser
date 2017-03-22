@@ -113,7 +113,7 @@ int Helpers::exportStdItemModelToCsv(const QString &filename, QStandardItemModel
         QTextStream out(&f);
         if (headers) {
             for (int i = 0; i < model->columnCount(); i++) {
-                out << model->headerData(i, Qt::Orientation::Horizontal).toString() << ",";
+                out << model->headerData(i, Qt::Horizontal).toString() << ",";
             }
             out << endl;
         }

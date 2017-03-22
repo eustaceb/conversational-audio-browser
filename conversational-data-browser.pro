@@ -10,9 +10,8 @@ QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = conversational-audio-browser
+TARGET = conversational-data-browser
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -106,19 +105,24 @@ test {
         tests/testhelpers.cpp
 }
 
+#####################################################
+#                  CONFIGURE THIS                   #
+#####################################################
 # LIBSNDFILE
 # Set this to where the compiled library is located
 LIBSNDFILE_LOC = $$PWD/libs/libsndfile
 
-win32:CONFIG(release, debug|release): LIBS += -L$${LIBSNDFILE_LOC}/lib/release/ -lsndfile
-else:win32:CONFIG(debug, debug|release): LIBS += -L$${LIBSNDFILE_LOC}/lib/debug/ -lsndfile
+# Uncomment this if the build fails due to enums
+QMAKE_CXXFLAGS += -std=gnu++11
+# QMAKE_CXXFLAGS += -std=c++0x
+
+win32: LIBS += -L$${LIBSNDFILE_LOC}/lib/ -llibsndfile-1
 else:unix: LIBS += -L$${LIBSNDFILE_LOC}/lib/ -lsndfile
 
 INCLUDEPATH += $${LIBSNDFILE_LOC}/include
-DEPENDPATH += $${LIBSNDFILE_LOC}/include
+DEPENDPATH += $${LIBSNDFILE_LOC}/
 
-win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/release/libsndfile.a
-else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/debug/libsndfile.a
-else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/release/sndfile.lib
-else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/debug/sndfile.lib
+# Depending on version, lib filenames might differ - edit as needed
+win32-g++: PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/libsndfile-1.lib
+else:win32:!win32-g++: PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/libsndfile-1.lib
 else:unix: PRE_TARGETDEPS += $${LIBSNDFILE_LOC}/lib/libsndfile.a
