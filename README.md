@@ -1,6 +1,19 @@
 # Conversational Data Browser
 A research tool I have developed for my dissertation using C++ and the Qt5 framework.
 
+A short (1 minute) presentation of the project can be seen at https://youtu.be/gLyyy59sgy0
+
+![CDB Screenshot](http://i.imgur.com/PpX4Gfn.png)
+
+## Abstract
+Conversations in the form of audio recordings carry both verbal and non-verbal cues. Most software tools are
+only concerned with the former because verbal communication carries more information and is easier to work
+with. However, there is a growing need to analyse conversational data that contains multiple layers of both
+verbal and non-verbal communication signals. Through the course of this project, a desktop application for
+presenting, traversing and analysing such data was developed. The application aims to improve the efficiency of
+conversational data investigations in research.
+
+
 # Compile Instructions
 ### Prerequisite: QT
 1. Download Qt from https://www.qt.io/download/, open source version
